@@ -1,7 +1,9 @@
 body {
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'İnter', cursive;
+  background: black;
 }
 .bold-text {
+  color: white;
   margin-top: 50px;
   display: flex;
   justify-content: center;
