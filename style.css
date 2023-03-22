@@ -1,17 +1,39 @@
 body {
   font-family: 'Inter', sans-serif;
   background: black;
-}
-.bold-text {
   color: white;
-  margin-top: 50px;
   display: flex;
-  justify-content: center;
-  font-size: 70px;
-  font-weight: ;
+  flex-direction: column;
+  align-items: center;
+  
 }
 .image {
-  margin-top: 30px;
+  margin-top: 80px;
   display: flex;
   justify-content: center;
+}
+.hello {
+  font-family: 'Delicious Handrawn', cursive;
+  margin-top: 50px;
+  font-size: 40px;
+  width: 400px;
+  text-align: center;
+}
+.my {
+  margin-top: 100px;
+  font-family: serif;
+  font-size: 30px;
+  text-align: center;
+  justify-content: space-evenly;
+  width: 1500px;
+
+}
+.contact {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+  width: 600px;
+}
+.link {
+  height: 64px;
 }
