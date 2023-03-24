@@ -649,7 +649,9 @@ video {
     line-height: 2.5rem;
   }
 }
-
+footer {
+  margin-bottom: 200px
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
