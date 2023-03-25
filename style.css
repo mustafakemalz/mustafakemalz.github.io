@@ -557,7 +557,7 @@ video {
 
 @keyframes torch {
   from {
-    background-position: -100% 0;
+    background-position: -150% 0;
   }
 
   to {
@@ -660,6 +660,3 @@ footer {
 .spotify {
   margin-bottom: 100px;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
