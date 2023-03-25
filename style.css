@@ -11,6 +11,7 @@ body {
   margin-top: 80px;
   display: flex;
   justify-content: center;
+  scroll-padding-bottom: 0;
 }
 .hello {
   font-family: 'Delicious Handrawn', cursive;
@@ -651,6 +652,13 @@ video {
 }
 footer {
   margin-bottom: 200px
+}
+.best {
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+.spotify {
+  margin-bottom: 100px;
 }
 @tailwind base;
 @tailwind components;
