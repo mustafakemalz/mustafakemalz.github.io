@@ -21,12 +21,13 @@ body {
   text-align: center;
 }
 .my {
+  display: flex;
   margin-top: 100px;
   font-family: serif;
   font-size: 30px;
+  justify-content: center;
   text-align: center;
-  justify-content: space-evenly;
-  width: 1500px;
+  width: 75%;
 
 }
 .contact {
