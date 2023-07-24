@@ -1,36 +1,157 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Delicious+Handrawn&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="main.js">
-  <link data-n-head="ssr" rel="icon" type="image/png" sizes="32x32" href="/image/computer.png">
-  <title>Mustafa Kemal Göçer - Junior Fron End Developer</title>
+<head> 
+    <script src="script.js" defer></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mustafa Kemal Göçer</title>
+    <link rel="shortcut icon" type="image/png" href="images/computer.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/e02270dea9.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
-  <div class="relative flex min-h-screen items-center justify-center bg-black">
-    <h1 class="animate-torch select-none whitespace-nowrap bg-gradient-to-r from-black via-white to-black bg-[length:100px_30px] bg-clip-text bg-no-repeat text-lg font-bold uppercase text-transparent sm:bg-[length:200px_50px] sm:text-4xl">MUSTAFA KEMAL GÖÇER</h1>
-  </div>
-  <div class="image"><img src="image/memoji.png"  width="300" height="300"></div>
-  <div class="hello">Selam, Ben Mustafa Kemal</div>
-  <article class="my">Merhaba, ben Mustafa Kemal Göçer. 18 yaşındayım ve Front-End geliştiricisi olmak için kendimi geliştirmeye çalışıyorum. Kod yazmaktan ve yeni projeler oluşturmaktan büyük keyif alıyorum. Henüz çok tecrübeli değilim, ancak bu sektörde ilerlemek için azimli ve hırslıyım. Kendimi sürekli geliştirmeye ve en iyi işleri ortaya çıkarmaya çalışıyorum.</article>
-  <footer>
-    <div class="contact">
-      <a target="_blank" href="https://github.com/mustafakemalz"><img class="link" src="image/github.png" alt="Github"></a>
-      <a target="_blank" href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"><img class="link" src="image/linkedin.png" alt="Linkedin"></a>
-      <a target="_blank" href="https://www.instagram.com/mustafakemalz/"><img class="link" src="image/instagram.png" alt="İnstagram"></a>
-      <a target="_blank" href="https://twitter.com/mustafakemalz_"><img class="link" src="image/twitter-sign.png" alt="Twitter"></a>
+    <div class="clock">
+        <span id="hours">00</span>
+        <span></span>:</span>
+        <span id="minutes">00</span>
+        <span></span>:</span>
+        <span id="seconds">00</span>
+        <span id="session">AM</span>
     </div>
-  </footer>
-  <h1 class="now1">↓Şu anda ne mi dinliyorum↓</h1>
-  <iframe class="now" src="https://streamdps.com/widgets/70950/?slide0=&slide2=&slide3=&size1=8&color1=00E92C&font1=201&offset1=1&css=1000&channelname=muskscollz&channelid=UCkH4_SwMNDDv6sp-l4jkqpw&hash=baec405e7db90004e632f1c458a82f969f3285b36b3099f6bc2ac035e84bd3fab51982c5839af18c6396c7f471522d4f13d1f13409fabbdcdc46facb2aec8f64&frame=1" frameborder="0"></iframe>
-  <h1 class="best" >↓En Sevdiğim Şarkı↓</h1>
-  <iframe class="spotify" style="border-radius:12px" src="https://open.spotify.com/embed/track/6cH4gZB3pI7UDSyiSIW3jp?utm_source=generator" width="75%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    
+    <div id ="header">
+        <div class="container">
+            <nav>
+                <img src="images/mkgocer.png" class="logo">
+                <ul id="sidemenu">
+                    <li><a href="#header">Anasayfa</a></li>
+                    <li><a href="#about">Hakkımda</a></li>
+                    <li><a href="#contact">İletişim</a></li>
+                    <i class="fa-regular fa-x" onclick="closemenu()"></i>
+
+                </ul>
+                <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+            </nav>
+            <div class="header-text">
+                <p>Elektronik Ön Lisans Öğrencisi</p>
+                <h1>Merhaba ! Ben Mustafa. Birbirinden farklı ilgi alanları olan bir öğrenciyim.
+                </h1>
+            </div>
+        </div>
+        </div>
+        
+        <div id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="about-col-1">
+                        <img src="images/profilresmi4.png" alt="">
+                    </div>
+                    <div class="about-col-2">
+                        <h1 class="sub-title">Hakkımda</h1>
+                        <p>Çukurova Üniversitesinde 2. sınıf Elektronik Teknolojileri Ön Lisans öğrencisiyim. Elektronik ve Bilgisayarla
+                            küçüklüğümden beri ilgiliyim. Farklı ilgi alanları ve bunların getirdiği bakış açılarına
+                            sahibim. Okulum dışında Kendime vlog tarzı içerikler çekiyorum ve motivasyonum düşük oldugu zamanlarda study 
+                            with me yayınları yapıyorum.</p>
+
+                            <div class="tab-titles">
+                                <p class="tab-links active-link" onclick="opentab('becerilerim')">Becerilerim</p>
+                                <p class="tab-links" onclick="opentab('tecrübelerim')" >Tecrübelerim</p>
+                                <p class="tab-links" onclick="opentab('eğitimlerim')">Eğitimlerim</p>
+                            </div>
+                            <div class="tab-contents active-tab" id="becerilerim">
+                                <ul>
+                                    <li><span>Sanat</span><br>Sanatta, gitar çalmayı ve GarageBand'de müzik yapmayı severim.<br>web site tasarliyorum.<br>kurgu yapmayi severim.</li>
+                                    <li><span>Bilgisayar</span><br>C, php,python(hala öğreniyorum), js, css ve html<br>IBM urunlerini incelemyi cok severim</li>
+                                    <li><span>Yabancı Dil</span><br>İngilizce, Fransizca(hala öğreniyorum) ve Japonca(hala öğreniyorum)</li>
+                                </ul>
+                            </div>
+                            <div class="tab-contents" id="tecrübelerim">
+                                <ul>
+                                    <li><span>Sanat</span><br>Ortaokulda Buharada STEM atolyesinde Lego technic odevelerini yapardim verdim.<br>Web site tasarimlarimi bazi platformlarda sergiliyorum<br>Küçüklüğümden beri çizdiğim için resim konusunda farklı tekniklere hakimim.<br>Birkaç yıldır blogumda ve fiziki defterimde düz yazılar yazıyorum.</li>
+                                    <li><span>Bilgisayar</span><br> Yazilimi Lisede kendi cabamla ve Üniversitemde programlama dersleri almamın yanında Youtubeda sayısız pratik yaptım.<br>Kendi klavyemi ve bilgisayarımı topladım ve birleştirdim. Zaman zaman eklemeler yapıyorum.</li>
+                                    <li><span>Yabancı Dil</span><br>İngilizcede C1, Fransizca A2 belgelerim var.<br>Kendi uğraşımın yanında internet uzerinden Japonca dersi alıyorum.<br>Korece ogrenmek cok istiyorum ama simdilik dizi izlemekten ibaret.</li>
+                                </ul>
+                            </div>
+                            <div class="tab-contents" id="eğitimlerim">
+                                <ul>
+                                    <li><span>2018</span><br>Buhara Ortaokuldan mezun.</li>
+                                    <li><span>2022</span><br>Emine Nabi Menemencioğlu Lisesinden mezun</li>
+                                    <li><span>2023</span><br>Çukurova Üniversitesinde Elektronik Teknolojileri 2. sınıfa devam ediyorum.</li>
+                                </ul>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contact">
+            <div class="container">
+                <div class="row">
+                    <div class="contact-left">
+                        <h1 class="sub-title">iletişim</h1>
+                        <p><i class="fa-solid fa-envelope"></i> info.mkemal@gmail.com</p>
+                        <div class="social-icons">
+                            <a target="_blank" href="https://www.youtube.com/@mustafakemalz"><i class="fa-brands fa-youtube"></i></a>
+                            <a target="_blank" href="https://www.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255/"><i class="fa-brands fa-linkedin"></i></a>
+                            <a target="_blank" href="https://www.instagram.com/mustafakemalz/"><i class="fa-brands fa-instagram"></i></a>
+                            <a target="_blank" href="https://tr.pinterest.com/muskscullz/"><i class="fa-brands fa-pinterest"></i></a>
+                            <a target="_blank" href="https://open.spotify.com/user/0wu2ixnxr61i99ci84hgtlolr"><i class="fa-brands fa-spotify"></i></a>
+                            <a target="_blank" href="https://github.com/mustafakemalz"><i class="fa-brands fa-github"></i></a>
+                             
+                        </div>
+                     <!-- <a href="images/educgun_cv.pdf" download class="btn btn2">CV indir</a> -->
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="line-2"></div>
+                <div class="madebyme">Copyright © Mustafa Kemal Göçer tarafından yazılmıştır.</div>
+            </div>
+        </div>
+   
+        <script>
+
+            var tablinks = document.getElementsByClassName("tab-links");
+            var tabcontents = document.getElementsByClassName("tab-contents");
+            function opentab(tabname){
+                for(tablink of tablinks){
+                    tablink.classList.remove("active-link");
+                }
+                for(tabcontent of tabcontents){
+                    tabcontent.classList.remove("active-tab");
+                }
+                event.currentTarget.classList.add("active-link");
+                document.getElementById(tabname).classList.add("active-tab");
+            }
+
+        </script>
+
+        <script>
+
+            var sidemenu = document.getElementById("sidemenu");
+            function openmenu(){
+                sidemenu.style.right = "0";
+            }
+            function closemenu(){
+                sidemenu.style.right = "-200px";
+            }
+
+        </script>
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzD2IuSTQJo74IchR0qnz-bDAQTUh1VsudkSPPhuNW_1Vyapo46te80T4zoL9cIB6g/exec'
+    const form = document.forms['submit-to-google-sheet']
+  
+    form.addEventListener('submit', e => {
+      e.preventDefault()
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => console.log('Success!', response))
+        .catch(error => console.error('Error!', error.message))
+    })
+  </script>
+
 </body>
 </html>
