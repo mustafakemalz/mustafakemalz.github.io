@@ -1,17 +1,17 @@
 *{
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', 'sans-serif';
+    font-family: 'Inter', sans-serif;
     box-sizing: border-box;
-
 }
+
 p {
     text-shadow: 2px 2px #000000;
-  }
+}
 
 h1 {
     text-shadow: 3px 3px #000000;
-  }
+}
   
   body{
     background-size: cover;
