@@ -1,10 +1,15 @@
-*{
+* {
     margin: 0;
     padding: 0;
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
 }
-
+.color-yellow {
+    color: #ffde59;
+}
+.color-white {
+    color: white;
+}
 p {
     text-shadow: 2px 2px #000000;
 }
@@ -13,12 +18,12 @@ h1 {
     text-shadow: 3px 3px #000000;
 }
   
-  body{
+body {
     background-size: cover;
     margin: 0%;
     padding: 0%;
 }
-.clock{
+.clock {
     text-shadow: 2px 2px #000000;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
@@ -29,7 +34,7 @@ h1 {
     transform: translate(-50%, -50%);
     font-size: 25px;
 }
-html{
+html {
     scroll-behavior: smooth;
 }
 
@@ -38,7 +43,7 @@ body {
     color: #fff;
 
 }
-#header{
+#header {
     width: 100%;
     height: 100vh;
     background-image: url(images/arkaplan.jpeg);
@@ -55,7 +60,7 @@ nav {
     justify-content: space-between;
     flex-wrap:wrap ;
 }
-.logo{
+.logo {
     width: 140px;
 }
 nav ul li {
@@ -63,14 +68,14 @@ nav ul li {
     list-style: none;
     margin: 10px 20px;
 }
-nav ul li a{
+nav ul li a {
     color: #fff;
     text-decoration: none;
     font-size: 18px;
     position: relative;
 
 }
-nav ul li a::after{
+nav ul li a::after {
     content: '';
     width: 0;
     height: 3px;
@@ -81,16 +86,16 @@ nav ul li a::after{
     transition: 0.5s;
 
 }
-.header-text{
+.header-text {
     margin-top: 35%;
     font-size: 30px;
 
 }
-.header-text h1{
+.header-text h1 {
     font-size: 30px;
     margin-top: 20px;
 }
-#about{
+#about {
     padding: 80px 0;
     color: #fff;
 }
@@ -103,15 +108,15 @@ nav ul li a::after{
     flex-basis: 35%;
 
 }
-.about-col-1 img{
+.about-col-1 img {
     width: 100%;
     border-radius: 15px;
 }
-.about-col-2{
+.about-col-2 {
     flex-basis: 60%;
 
 }
-.sub-title{
+.sub-title {
     font-size: 60px;
     font-weight: 600;
     color: #fff;
