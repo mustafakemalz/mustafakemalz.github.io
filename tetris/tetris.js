@@ -51,10 +51,10 @@ function CreatePiece(type){
             [0, 1, 0, 0],
         ];
     }else if(type === "L"){
-        return{
+        return[
             [0, 2, 0],
             [0, 2, 0],
             [0, 2, 2],
-        };
-    }else if
+        ];
+    }else if( type)
 }
