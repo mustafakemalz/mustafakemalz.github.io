@@ -1,162 +1,309 @@
 <!DOCTYPE html>
-<html lang="tr">
-<head> 
-    <script src="script.js" defer></script>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mustafa Kemal Göçer</title>
-    <link rel="shortcut icon" type="image/png" href="images/computer.png">
+    <title>Mustafa Kemal | Electrical-Electronics Engineer</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/e02270dea9.js" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 100 100' fill='none' stroke='%23d2ff00' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'><path d='M20 80V20L50 50L80 20V80'/></svg>">
 </head>
 <body>
-    <a href="images/arkaplan.png"></a>
-    <div class="clock">
-        <span id="hours">00</span>
-        <span></span>:</span>
-        <span id="minutes">00</span> 
-        <span></span>:</span>
-        <span id="seconds">00</span>
-        <span id="session">AM</span>
-    </div>
-    
-    <div id ="header">
-        <div class="container">
-            <nav>
-                <img src="images/mkgocer.png" class="logo">
-                <ul id="sidemenu">
-                    <li><a class="color-yellow" href="#header">Anasayfa</a></li>
-                    <li><a class="color-yellow" href="#about">Hakkımda</a></li>
-                    <li><a class="color-yellow" href="#contact">İletişim</a></li>
-                    <i class="fa-regular fa-x" onclick="closemenu()"></i>
-
-                </ul>
-                <i class="fa-solid fa-bars" onclick="openmenu()"></i>
-            </nav>
-            <div class="header-text">
-                <p class="color-yellow">Elektronik Elektronik Lisans Öğrencisi</p>
-                <h1>Merhaba ! Ben Mustafa. Birbirinden farklı ilgi alanları olan bir öğrenciyim.
-                </h1>
+    <div id="preloader">
+        <div class="loader-content">
+            <span class="loader-text" id="loader-text">> INITIALIZING SYSTEM...</span>
+            <div class="loader-bar">
+                <div class="bar-fill"></div>
             </div>
         </div>
+    </div>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div class="grain-overlay"></div>
+
+    <div class="sticky-left">
+        <div class="social-icons">
+            <a href="https://github.com/mustafakemalz" target="_blank" rel="noopener noreferrer" title="GitHub">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCdpzXM5RAO0Z2FenGO-sDJQ" target="_blank" rel="noopener noreferrer" title="YouTube">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+        </div>
+        <div class="sidebar-line"></div>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 80V20L50 50L80 20V80" />
+            </svg>
         </div>
         
-        <div id="about">
-            <div class="container">
-                <div class="row">
-                    <div class="about-col-1">
-                        <img src="images/profilresmi4.png" alt="">
-                    </div>
-                    <div class="about-col-2">
-                        <h1 class="sub-title color-yellow">Hakkımda</h1>
-                        <p>Çukurova Üniversitesinde 2. sınıf Elektronik Elektronik Lisans öğrencisiyim. Elektronik ve Bilgisayarla
-                            küçüklüğümden beri ilgiliyim. Farklı ilgi alanları ve bunların getirdiği bakış açılarına
-                            sahibim. Okulum dışında Kendime vlog tarzı içerikler çekiyorum ve motivasyonum düşük oldugu zamanlarda study 
-                            with me yayınları yapıyorum.</p>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#tech" data-lang="nav-skills">SKILLS</a>
+                <a href="#education" data-lang="nav-edu">EDUCATION</a>
+                <a href="#projects" data-lang="nav-projects">PROJECTS</a>
+                <a href="#contact" class="contact-link" data-lang="nav-contact">CONTACT</a>
+            </div>
+            
+            <div class="controls">
+                <button id="lang-btn" class="control-btn">EN / TR</button>
+                <button id="theme-btn" class="control-btn">☀ / ☾</button>
+            </div>
+        </div>
+    </nav>
 
-                            <div class="tab-titles">
-                                <p class="tab-links active-link" onclick="opentab('becerilerim')">Becerilerim</p>
-                                <p class="tab-links" onclick="opentab('tecrübelerim')" >Tecrübelerim</p>
-                                <p class="tab-links" onclick="opentab('eğitimlerim')">Eğitimlerim</p>
-                            </div>
-                            <div class="tab-contents active-tab" id="becerilerim">
-                                <ul>
-                                    <li><span>Sanat</span><br>Sanatta, gitar çalmayı ve GarageBand'de müzik yapmayı severim.<br>web site tasarliyorum.<br>kurgu yapmayi severim.</li>
-                                    <li><span>Bilgisayar</span><br>C, php,python(hala öğreniyorum), js, css ve html<br>IBM urunlerini incelemyi cok severim</li>
-                                    <li><span>Yabancı Dil</span><br>İngilizce, Fransizca(hala öğreniyorum)</li>
-                                </ul>
-                            </div>
-                            <div class="tab-contents" id="tecrübelerim">
-                                <ul>
-                                    <li><span>Sanat</span><br>Ortaokulda Buharada STEM atolyesinde Lego technic odevelerini yapardim verdim.<br>Web site tasarimlarimi bazi platformlarda sergiliyorum<br>Küçüklüğümden beri çizdiğim için resim konusunda farklı tekniklere hakimim.<br>Birkaç yıldır blogumda ve fiziki defterimde düz yazılar yazıyorum.</li>
-                                    <li><span>Bilgisayar</span><br> Yazilimi Lisede kendi cabamla ve Üniversitemde programlama dersleri almamın yanında Youtubeda sayısız pratik yaptım.<br>Kendi klavyemi ve bilgisayarımı topladım ve birleştirdim. Zaman zaman eklemeler yapıyorum.</li>
-                                    <li><span>Yabancı Dil</span><br>İngilizcede C1, Fransizca A2 belgelerim var.<br>Kendi uğraşımın yanında internet uzerinden Japonca dersi alıyorum.<br>Korece ogrenmek cok istiyorum ama simdilik dizi izlemekten ibaret.</li>
-                                </ul>
-                            </div>
-                            <div class="tab-contents" id="eğitimlerim">
-                                <ul>
-                                    <li><span>2018</span><br>Buhara Ortaokuldan mezun.</li>
-                                    <li><span>2022</span><br>Emine Nabi Menemencioğlu Lisesinden mezun</li>
-                                    <li><span>2023</span><br>Çukurova Üniversitesinde Elektronik Elektronik Muhendisligi 2. sınıfa devam ediyorum.</li>
-                                </ul>
-                            </div>
-                    </div>
-                </div>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="status-badge">ENGINEERING PORTFOLIO</div>
+                <h1 class="glitch-text" data-value="MUSTAFA">MUSTAFA<br><span class="outline">KEMAL</span></h1>
+                <p class="tagline" data-lang="hero-title">ELECTRICAL & ELECTRONICS ENGINEER</p>
+                <p class="sub-tagline" data-lang="hero-desc">Bridging the gap between Hardware and Software. Focused on Embedded Systems, IoT Solutions, and Industrial Automation.</p><a href="#projects" class="cta-button" data-lang="hero-cta">VIEW PROJECTS</a>
+</div>
+            </div>
+            
+            <div class="hero-image">
+                <img src="assets/profile.png" alt="Mustafa Kemal" onerror="this.style.display='none'"> 
+            </div>
+        </section>
+
+        <div class="ticker-wrap">
+            <div class="ticker">
+                <span>ELECTRICAL ENGINEERING • EMBEDDED SYSTEMS • IOT SOLUTIONS • PCB DESIGN • AUTOMATION • SIGNAL PROCESSING • </span>
+                <span>ELECTRICAL ENGINEERING • EMBEDDED SYSTEMS • IOT SOLUTIONS • PCB DESIGN • AUTOMATION • SIGNAL PROCESSING • </span>
             </div>
         </div>
 
-        <div id="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="contact-left">
-                        <h1 class="sub-title">İletişim</h1>
-                        <a href="mailto:info.mkemal@gmail.com"><i href="mailto:info.mkemal@gmail.com" class="fa-solid color-white"></i>info.mkemal@gmail.com</a>
-                        <div class="social-icons">
-                            <a target="_blank" href="https://www.youtube.com/@mustafakemalz"><i class="fa-brands fa-youtube"></i></a>
-                            <a target="_blank" href="https://www.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255/"><i class="fa-brands fa-linkedin"></i></a>
-                            <a target="_blank" href="https://www.instagram.com/mustafakemalz/"><i class="fa-brands fa-instagram"></i></a>
-                            <a target="_blank" href="https://tr.pinterest.com/muskscullz/"><i class="fa-brands fa-pinterest"></i></a>
-                            <a target="_blank" href="https://open.spotify.com/user/0wu2ixnxr61i99ci84hgtlolr"><i class="fa-brands fa-spotify"></i></a>
-                            <a target="_blank" href="https://github.com/mustafakemalz"><i class="fa-brands fa-github"></i></a>
-                             
+        <section id="tech" class="tech-section">
+            <div class="section-label">ENGINEERING_TOOLKIT</div>
+            <h2 class="section-title"><span data-lang="tech-title">TECHNICAL</span> <span class="accent">STACK</span></h2>
+
+            <div class="tech-container">
+                <div class="tech-category">
+                    <div class="category-header">EMBEDDED & CONTROL</div>
+                    <div class="tech-grid">
+                        <a href="https://isocpp.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>C</span> C / C++
+                        </a>
+                        <a href="https://www.python.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>PY</span> Python
+                        </a>
+                        <a href="https://go.dev/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>GO</span> GoLang
+                        </a>
+                        <a href="https://www.arduino.cc/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>A</span> Arduino/ESP32
+                        </a>
+                        <a href="https://www.mathworks.com/products/matlab.html" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>M</span> MATLAB
+                        </a>
+                        <a href="https://www.st.com/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>S</span> STM32
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <div class="category-header">SOFTWARE & WEB INTERFACE</div>
+                    <div class="tech-grid">
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>JS</span> JavaScript
+                        </a>
+                        <a href="https://nextjs.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>R</span> React / Next.JS
+                        </a>
+                        <a href="https://www.postgresql.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>SQL</span> PostgreSQL
+                        </a>
+                        <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>D</span> Docker
+                        </a>
+                        <a href="https://git-scm.com/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>G</span> Git/GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="edu-section">
+            <div class="section-label">SYSTEM_LOGS</div>
+            <h2 class="section-title"><span data-lang="edu-title">EXPERIENCE</span> <span class="accent">& EDU.</span></h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <span class="timeline-date">2022 - 2026</span>
+                        <span class="timeline-badge">EDUCATION</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>ÇUKUROVA UNIVERSITY</h3>
+                        <h4 data-lang="edu-1-role">Electrical-Electronics Engineering (B.Sc.)</h4>
+                        <p data-lang="edu-1-desc">Senior Year Student (4th Grade). Specialized in Circuit Design, Power Systems, and Digital Signal Processing.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <span class="timeline-date">2025</span> <span class="timeline-badge" style="border-color: #fff; color: #fff;">WORK</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>ISKAR TECHNOLOGIES</h3>
+                        <h4 data-lang="edu-2-role">R&D Intern (PCB Design)</h4>
+                        <p data-lang="edu-2-desc">Prototype development and multilayer PCB design within the R&D department. Experience with Altium Designer.</p>
+                        <div class="job-techs">
+                            <span>ALTIUM</span> <span>PCB</span> <span>PROTOTYPING</span>
                         </div>
-                     <!-- <a href="images/mkgocer_cv.pdf" download class="btn btn2">CV İndir</a> -->
-                        
                     </div>
-                    
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <span class="timeline-date">2024</span>
+                        <span class="timeline-badge" style="border-color: #fff; color: #fff;">WORK</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>STATU.CO</h3>
+                        <h4 data-lang="edu-3-role">Front-end Developer</h4>
+                        <p data-lang="edu-3-desc">Developed user interfaces for blockchain projects like gotabit.io using modern web technologies.</p>
+                        <div class="job-techs">
+                            <span>REACT</span> <span>TYPESCRIPT</span> <span>WEB3</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="copyright">
-                <div class="line-2"></div>
-                <div class="madebyme">Copyright © Mustafa Kemal Göçer tarafından yazılmıştır.</div>
+        </section>
+
+        <section id="projects" class="projects-section">
+            <div class="section-label">SELECTED_WORKS</div>
+            <h2 class="section-title"><span data-lang="proj-title">FEATURED</span> <span class="accent">PROJECTS</span></h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-tags">IOT / NEXT.JS / MQTT</div>
+                    <h3 data-lang="p1-title">SMART HOME DASHBOARD</h3>
+                    <p data-lang="p1-desc">A real-time control panel for IoT devices utilizing MQTT protocol for instant communication and data visualization.</p>
+                    <a href="https://github.com/mustafakemalz" target="_blank" class="project-link">VIEW CODE -></a>
+                </div>
+                <div class="project-card">
+                    <div class="project-tags">EMBEDDED / PYTHON</div>
+                    <h3 data-lang="p2-title">TELEMETRY SYSTEM</h3>
+                    <p data-lang="p2-desc">High-frequency data acquisition system designed for vehicle dynamics and sensor fusion analysis.</p>
+                    <a href="https://github.com/mustafakemalz" target="_blank" class="project-link">VIEW DETAILS -></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="youtube" class="youtube-section">
+            <div class="section-label">MEDIA</div>
+            <h2 class="section-title"><span data-lang="yt-title">LATEST</span> <span class="accent">STREAM</span></h2>
+            
+            <div class="video-container">
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="https://www.youtube.com/embed/8y1zcWT2Kcw?start=11317" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <div class="section-label">OFF_SCREEN</div>
+            <h2 class="section-title"><span data-lang="gallery-title">LIFE</span> <span class="accent">STYLE</span></h2>
+            <div class="gallery-grid">
+                <div class="gallery-item item-1">
+                    <div class="image-wrapper"><img src="assets/photo1.jpg" alt="Lab/Setup" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1740&auto=format&fit=crop'"></div>
+                    <span class="img-caption">ENGINEERING LAB</span>
+                </div>
+                <div class="gallery-item item-2">
+                    <div class="image-wrapper"><img src="assets/photo2.jpg" alt="Coding" onerror="this.src='https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1740&auto=format&fit=crop'"></div>
+                    <span class="img-caption">SIMULATION</span>
+                </div>
+                <div class="gallery-item item-3">
+                    <div class="image-wrapper"><img src="assets/photo3.gif" alt="Hardware" onerror="this.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1740&auto=format&fit=crop'"></div>
+                    <span class="img-caption">HARDWARE</span>
+                </div>
+                <div class="gallery-item item-4">
+                    <div class="image-wrapper"><img src="assets/photo4.jpg" alt="Travel" onerror="this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1721&auto=format&fit=crop'"></div>
+                    <span class="img-caption">FIELD WORK</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="section-label">GET_IN_TOUCH</div>
+            <h2 class="section-title"><span data-lang="contact-title">CONTACT</span> <span class="accent">ME</span></h2>
+            <div class="contact-container">
+                <form id="contact-form" action="https://formspree.io/f/xeeozdyd" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="name" id="name" required placeholder=" ">
+                        <label for="name" data-lang="form-name">NAME</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" id="email" required placeholder=" ">
+                        <label for="email" data-lang="form-email">EMAIL</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" id="message" required placeholder=" "></textarea>
+                        <label for="message" data-lang="form-msg">MESSAGE</label>
+                    </div>
+                    <button type="submit" class="submit-btn" id="form-btn">
+                        <span data-lang="form-btn">SEND MESSAGE</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                    <p id="form-status"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="copyright">© <span id="year"></span> Mustafa Kemal. <span data-lang="footer-rights">All rights reserved.</span></div>
+                <div class="system-status"><span class="status-dot"></span>SYSTEM ONLINE</div>
+            </div>
+            
+            <div class="footer-right">
+                <a href="https://github.com/mustafakemalz" target="_blank">GITHUB</a>
+                <a href="https://www.youtube.com/@mustafakemalz" target="_blank">YOUTUBE</a>
+                <a href="https://www.linkedin.com/in/mustafa-kemal-göçer-41409b255/" target="_blank">LINKEDIN</a>
             </div>
         </div>
-        <div id="happy">
-            <div class="row">
-                
+    </footer>
+
+    <div class="discord-card" id="discord-widget">
+        <div class="d-avatar-wrapper">
+            <img id="d-avatar" src="https://cdn.discordapp.com/avatars/465079638088089608/4d1c60a280d4c5c824a85bbcb29625e1.webp" alt="Avatar">
+            <div id="d-status-indicator" class="d-status-dot offline"></div>
+        </div>
+        <div class="d-info">
+            <div class="d-header">
+                <span id="d-username">muskscullz</span>
+                <div class="d-badges">
+                    <i class="fa-solid fa-code" title="Dev"></i>
+                </div>
+            </div>
+            <div class="d-activity">
+                <p id="d-activity-text">Loading status...</p>
+                <div id="spotify-wave" class="hidden">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
             </div>
         </div>
-        <script>
+    </div>
 
-            var tablinks = document.getElementsByClassName("tab-links");
-            var tabcontents = document.getElementsByClassName("tab-contents");
-            function opentab(tabname){
-                for(tablink of tablinks){
-                    tablink.classList.remove("active-link");
-                }
-                for(tabcontent of tabcontents){
-                    tabcontent.classList.remove("active-tab");
-                }
-                event.currentTarget.classList.add("active-link");
-                document.getElementById(tabname).classList.add("active-tab");
-            }
-
-        </script>
-
-        <script>
-
-            var sidemenu = document.getElementById("sidemenu");
-            function openmenu(){
-                sidemenu.style.right = "0";
-            }
-            function closemenu(){
-                sidemenu.style.right = "-200px";
-            }
-
-        </script>
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzD2IuSTQJo74IchR0qnz-bDAQTUh1VsudkSPPhuNW_1Vyapo46te80T4zoL9cIB6g/exec'
-    const form = document.forms['submit-to-google-sheet']
-  
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => console.log('Success!', response))
-        .catch(error => console.error('Error!', error.message))
-    })
-  </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
