@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Liquid Glass Demo</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Moving Background */
+        .bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, #6a00ff, transparent 50%),
+                radial-gradient(circle at 80% 70%, #d2ff00, transparent 50%);
+            filter: blur(60px);
+            z-index: 1;
+            animation: bgMove 10s infinite alternate ease-in-out;
+        }
+
+        @keyframes bgMove {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Container for the effect */
+        .card-container {
+            position: relative;
+            z-index: 10;
+            width: 400px;
+            height: 600px;
+        }
+
+        /* The Element that gets distorted */
+        .liquid-card {
+            width: 100%;
+            height: 100%;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            box-sizing: border-box;
+
+            /* KEY: Apply the SVG Filter */
+            filter: url(#liquidFilter);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0 0 20px 0;
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-layer"></div>
+
+    <div class="card-container">
+        <div class="liquid-card">
+            <h1>Liqui<br>dity</h1>
+            <p>True SVG Distortion.</p>
+        </div>
+    </div>
+
+    <!-- THE SVG FILTER -->
+    <!-- We hide it but reference it by ID -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="liquidFilter">
+                <!-- 
+                   baseFrequency: Controls the "roughness" of the liquid (0.01 = big waves, 0.1 = noise) 
+                   numOctaves: Detail level
+                -->
+                <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="warp">
+                    <!-- animate the turbulence to make it flow -->
+                    <animate attributeName="baseFrequency" dur="20s" values="0.015; 0.005; 0.015"
+                        repeatCount="indefinite" />
+                </feTurbulence>
+
+                <!-- 
+                   scale: How strong the distortion is 
+                -->
+                <feDisplacementMap xChannelSelector="R" yChannelSelector="G" scale="30" in="SourceGraphic" in2="warp" />
+            </filter>
+        </defs>
+    </svg>
+
+</body>
+
+</html>
