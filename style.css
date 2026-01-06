@@ -283,10 +283,7 @@ nav {
     /* For shimmer effect */
 }
 
-.nav-hidden {
-    transform: translateX(-50%) translateY(-200%);
-    /* Slide UP and retain X centering */
-}
+
 
 /* Navbar Shimmer Overlay */
 nav::before {
@@ -996,6 +993,34 @@ input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     caret-color: var(--text-color);
 }
+
+/* --- YOUTUBE SECTION --- */
+.stream-stats {
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    /* Remove unwanted lines */
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 15px 20px;
+    border-radius: 12px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.stat-item i {
+    color: var(--accent-color);
+}
+
 
 /* --- FOOTER (GÜNCELLENMİŞ) --- */
 footer {

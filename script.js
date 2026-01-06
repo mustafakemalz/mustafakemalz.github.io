@@ -466,7 +466,7 @@ animateOrbs();
 
 
 /* --- FOOTER GÖRÜNÜNCE SOL MENÜYÜ GİZLE + SMART NAVBAR --- */
-let lastScrollTop = 0;
+
 
 window.addEventListener('scroll', () => {
     const footer = document.querySelector('footer');
@@ -476,29 +476,26 @@ window.addEventListener('scroll', () => {
 
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-    // --- SMART NAVBAR LOGIC ---
-    if (nav) {
-        if (currentScroll > lastScrollTop && currentScroll > 100) {
-            // Scrolling DOWN -> Hide Nav
-            nav.classList.add('nav-hidden');
-        } else {
-            // Scrolling UP -> Show Nav
-            nav.classList.remove('nav-hidden');
-        }
-    }
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
+
 
     // --- SIDEBAR HIDE LOGIC ---
     if (footer) {
         const footerPosition = footer.getBoundingClientRect().top;
         const screenPosition = window.innerHeight;
 
-        if (footerPosition < screenPosition - 50) {
+        if (footerPosition < screenPosition) {
             if (sidebar) sidebar.classList.add('hide-sidebar');
-            if (discordCard) discordCard.style.transform = 'translateY(150%)'; // Widget'ı aşağı kaydırarak gizle
+
+            // Discord Widget: Lift UP above footer instead of hiding
+            if (discordCard) {
+                const overlap = screenPosition - footerPosition;
+                // Lift safely above footer content + 20px padding
+                // Use default 20px bottom + overlap
+                discordCard.style.transform = `translateY(-${overlap + 20}px)`;
+            }
         } else {
             if (sidebar) sidebar.classList.remove('hide-sidebar');
-            if (discordCard) discordCard.style.transform = 'translateY(0)'; // Geri getir
+            if (discordCard) discordCard.style.transform = 'translateY(0)'; // Reset position
         }
     }
 });
