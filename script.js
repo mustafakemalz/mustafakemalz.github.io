@@ -87,6 +87,16 @@ const translations = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. SMOOTH SCROLL (LENIS) ---
+    const lenis = new Lenis();
+
+    function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
     // --- 2. 3D TILT EFFECT ---
     setupTilt();
 
