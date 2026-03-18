@@ -97,6 +97,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     requestAnimationFrame(raf);
 
+    // --- HAMBURGER MENU ---
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navRight = document.querySelector('.nav-right');
+
+    if (hamburgerBtn && navRight) {
+        hamburgerBtn.addEventListener('click', () => {
+            hamburgerBtn.classList.toggle('active');
+            navRight.classList.toggle('open');
+        });
+
+        // Close menu when a nav link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerBtn.classList.remove('active');
+                navRight.classList.remove('open');
+            });
+        });
+
+        // Close menu on scroll
+        window.addEventListener('scroll', () => {
+            if (navRight.classList.contains('open')) {
+                hamburgerBtn.classList.remove('active');
+                navRight.classList.remove('open');
+            }
+        });
+    }
+
     // --- 2. 3D TILT EFFECT ---
     setupTilt();
 
@@ -486,7 +513,14 @@ window.addEventListener('scroll', () => {
 
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-
+    // --- NAVBAR SHRINK ON SCROLL ---
+    if (nav) {
+        if (currentScroll > 80) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    }
 
     // --- SIDEBAR HIDE LOGIC ---
     if (footer) {
