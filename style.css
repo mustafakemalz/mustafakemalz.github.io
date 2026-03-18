@@ -244,7 +244,7 @@ body {
     opacity: 0.5;
 }
 
-/* --- NAVBAR (LIQUID GLASS) --- */
+/* --- NAVBAR (LIQUID GLASS - APPLE STYLE) --- */
 nav {
     display: flex;
     justify-content: center;
@@ -257,33 +257,83 @@ nav {
     transform: translateX(-50%);
     z-index: 1000;
 
-    /* Real Glass Style (Clear & Refractive Look) */
-    background: rgba(255, 255, 255, 0.01);
+    /* Very subtle transparent base like Discord widget */
+    background: rgba(255, 255, 255, 0.03);
 
-    /* Low blur = Clear Glass */
-    backdrop-filter: blur(5px) brightness(1.1);
-    -webkit-backdrop-filter: blur(5px) brightness(1.1);
+    /* Light blur - clear glass, not frosted */
+    backdrop-filter: blur(8px) saturate(140%);
+    -webkit-backdrop-filter: blur(8px) saturate(140%);
 
-    /* Strong Glass Borders */
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    /* Subtle glass borders */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 
-    border-radius: 50px;
+    border-radius: 16px;
 
-    /* Deep Depth Shadow */
+    /* Soft shadow */
     box-shadow:
-        0 25px 50px rgba(0, 0, 0, 0.5),
-        inset 0 0 20px rgba(255, 255, 255, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     width: max-content;
     max-width: 90%;
     overflow: hidden;
-    /* For shimmer effect */
 }
 
+/* Glass rim light / inner glow */
+nav::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.02) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
 
+/* --- NAV SCROLLED (SHRINK ON SCROLL) --- */
+nav.scrolled {
+    padding: 8px 30px;
+    gap: 40px;
+    top: 10px;
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Softer borders on scroll */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+nav.scrolled .logo svg {
+    width: 28px;
+    height: 28px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+nav.scrolled .nav-links {
+    gap: 20px;
+}
+
+nav.scrolled .nav-links a {
+    font-size: 0.65rem;
+}
+
+nav.scrolled .control-btn {
+    padding: 4px 12px;
+    font-size: 0.6rem;
+}
+
+nav.scrolled .nav-right {
+    gap: 25px;
+}
 
 /* Navbar Shimmer Overlay */
 nav::before {
@@ -295,18 +345,22 @@ nav::before {
     height: 100%;
     background: linear-gradient(90deg,
             transparent,
-            rgba(255, 255, 255, 0.2),
+            rgba(255, 255, 255, 0.15),
             transparent);
     transform: skewX(-20deg);
-    transition: 0.5s;
+    transition: 0.6s;
     pointer-events: none;
+    z-index: 2;
 }
 
 nav:hover {
     transform: translateX(-50%) scale(1.02);
-    /* Maintain centering + scale */
     border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 nav:hover::before {
@@ -314,11 +368,14 @@ nav:hover::before {
     transition: 0.7s ease-in-out;
 }
 
-.logo {}
+.logo {
+    flex-shrink: 0;
+    order: 1;
+}
 
 .logo svg {
     color: var(--text-color);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     display: block;
 }
 
@@ -332,11 +389,14 @@ nav:hover::before {
     display: flex;
     align-items: center;
     gap: 40px;
+    transition: gap 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    order: 2;
 }
 
 .nav-links {
     display: flex;
     gap: 30px;
+    transition: gap 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-links a {
@@ -345,16 +405,19 @@ nav:hover::before {
     font-size: 0.75rem;
     letter-spacing: 1px;
     font-weight: 600;
-    transition: 0.3s;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-links a:hover {
     color: var(--accent-color);
 }
 
-.controls {
+.nav-controls {
     display: flex;
     gap: 10px;
+    align-items: center;
+    flex-shrink: 0;
+    order: 3;
 }
 
 .control-btn {
@@ -365,7 +428,7 @@ nav:hover::before {
     font-weight: 600;
     font-size: 0.7rem;
     border-radius: 50px;
-    transition: 0.3s;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .control-btn:hover {
@@ -1545,4 +1608,378 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+/* ============================== */
+/* --- HAMBURGER MENU BUTTON --- */
+/* ============================== */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    padding: 8px;
+    z-index: 1010;
+}
+
+.hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text-color);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+}
+
+/* Hamburger → X animation */
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* ============================== */
+/* --- RESPONSIVE: TABLET ---    */
+/* ============================== */
+@media (max-width: 1024px) {
+    .hero {
+        padding: 120px 5% 40px 5%;
+    }
+
+    .stream-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    section {
+        padding: 60px 5%;
+    }
+}
+
+/* ============================== */
+/* --- RESPONSIVE: MOBILE ---    */
+/* ============================== */
+@media (max-width: 768px) {
+    /* Hide custom cursor on mobile */
+    .cursor, .cursor-follower {
+        display: none !important;
+    }
+
+    * {
+        cursor: auto !important;
+    }
+
+    /* --- NAVBAR MOBILE --- */
+    nav {
+        padding: 12px 20px;
+        gap: 0;
+        top: 20px;
+        left: 4%;
+        right: 4%;
+        width: auto;
+        max-width: none;
+        transform: none;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        border-radius: 30px; /* Pill shape for mobile */
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    nav:hover {
+        transform: none;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    nav.scrolled {
+        transform: none;
+        padding: 10px 18px;
+        gap: 0;
+        top: 10px;
+        border-radius: 30px; /* Keep exact same pill shape */
+    }
+
+    .hamburger {
+        display: flex;
+        padding: 4px;
+        margin-left: 4px;
+    }
+
+    .nav-right {
+        order: 3;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 0;
+    }
+
+    .nav-controls {
+        order: 2;
+    }
+
+    .nav-right.open {
+        max-height: 350px;
+        opacity: 1;
+        visibility: visible;
+        padding-top: 15px;
+        margin-top: 5px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 5px;
+        width: 100%;
+        padding-bottom: 10px;
+    }
+
+    .nav-links a {
+        padding: 12px 10px;
+        font-size: 0.85rem;
+        letter-spacing: 1.5px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        width: 100%;
+        display: block;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none;
+    }
+
+    .nav-controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .control-btn {
+        font-size: 0.65rem;
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    /* --- SIDEBAR HIDDEN ON MOBILE --- */
+    .sticky-left {
+        display: none;
+    }
+
+    /* --- HERO MOBILE --- */
+    .hero {
+        min-height: auto;
+        padding: 90px 5% 30px 5%;
+        gap: 30px;
+        flex-direction: column-reverse;
+        text-align: center;
+        align-items: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: clamp(2.5rem, 12vw, 4rem);
+        letter-spacing: -2px;
+    }
+
+    .tagline {
+        font-size: 0.95rem;
+    }
+
+    .sub-tagline {
+        font-size: 0.85rem;
+    }
+
+    .cta-button {
+        padding: 14px 30px;
+        font-size: 0.85rem;
+    }
+
+    .hero-image img {
+        max-width: 280px;
+    }
+
+    /* --- SECTIONS MOBILE --- */
+    section {
+        padding: 50px 5%;
+    }
+
+    .section-title {
+        font-size: clamp(1.6rem, 7vw, 2.5rem);
+        margin-bottom: 30px;
+    }
+
+    /* --- TECH GRID MOBILE --- */
+    .tech-container {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .tech-grid {
+        gap: 8px;
+    }
+
+    .tech-card {
+        padding: 10px 14px;
+        font-size: 0.8rem;
+    }
+
+    /* --- TIMELINE MOBILE --- */
+    .timeline {
+        padding-left: 20px;
+    }
+
+    .timeline-content h3 {
+        font-size: 1.2rem;
+    }
+
+    /* --- PROJECTS MOBILE --- */
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .project-card {
+        padding: 24px;
+    }
+
+    .project-card h3 {
+        font-size: 1.5rem;
+    }
+
+    /* --- STREAM MOBILE --- */
+    .stream-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* --- GALLERY MOBILE --- */
+    .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    /* --- CONTACT MOBILE --- */
+    .contact-container {
+        padding: 0;
+    }
+
+    /* --- TICKER MOBILE --- */
+    .ticker span {
+        font-size: 1rem;
+    }
+
+    /* --- FOOTER MOBILE --- */
+    footer {
+        padding: 20px 5%;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    /* --- DISCORD WIDGET MOBILE --- */
+    .discord-card {
+        right: 10px !important;
+        bottom: 10px !important;
+        max-width: 220px;
+        transform: scale(0.9);
+        transform-origin: bottom right;
+    }
+
+    /* --- AMBIENT ORBS MOBILE (performance) --- */
+    .orb-1 {
+        width: 80vw;
+        height: 80vw;
+        opacity: 0.3;
+    }
+
+    .orb-2 {
+        width: 60vw;
+        height: 60vw;
+        opacity: 0.3;
+    }
+}
+
+/* ============================== */
+/* --- RESPONSIVE: SMALL PHONE - */
+/* ============================== */
+@media (max-width: 390px) {
+    nav {
+        padding: 8px 12px;
+        top: 8px;
+        left: 3%;
+        right: 3%;
+    }
+
+    .logo svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    h1 {
+        font-size: clamp(2rem, 11vw, 3rem);
+    }
+
+    .hero-image img {
+        max-width: 220px;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-card h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* ============================== */
+/* --- iPhone Safe Area Insets -- */
+/* ============================== */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    footer {
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+
+    .discord-card {
+        bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    }
+
+    nav {
+        top: calc(10px + env(safe-area-inset-top));
+    }
 }

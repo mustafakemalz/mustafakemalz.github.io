@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Selam bu benim ilk web site deneyimim umarım beğenirsin burayi inceliyorsan instagramdan takip etmeyi unutma @jpeg.muskz :D kendine iyi bak. -->
 
 <head>
     <meta charset="UTF-8">
@@ -25,6 +26,38 @@
 </head>
 
 <body>
+    <!-- Liquid Glass SVG Filter -->
+    <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+        <defs>
+            <filter id="liquid-glass" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+                <!-- Blur the background for frosted glass base -->
+                <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blurred" />
+
+                <!-- Specular lighting for glass shine/refraction -->
+                <feSpecularLighting in="blurred" surfaceScale="5" specularConstant="0.8" specularExponent="30"
+                    lighting-color="#ffffff" result="specular">
+                    <fePointLight x="200" y="-50" z="200" />
+                </feSpecularLighting>
+                <feComposite in="specular" in2="SourceGraphic" operator="in" result="specular-shape" />
+
+                <!-- Combine: blurred bg + specular highlight -->
+                <feBlend in="blurred" in2="specular-shape" mode="screen" result="glass" />
+            </filter>
+
+            <!-- Simpler filter for better performance -->
+            <filter id="liquid-glass-lite" x="-10%" y="-10%" width="120%" height="120%"
+                color-interpolation-filters="sRGB">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+                <feSpecularLighting in="blur" surfaceScale="3" specularConstant="0.6" specularExponent="20"
+                    lighting-color="#ffffff" result="spec">
+                    <fePointLight x="150" y="-30" z="150" />
+                </feSpecularLighting>
+                <feComposite in="spec" in2="SourceGraphic" operator="in" result="spec-cut" />
+                <feBlend in="blur" in2="spec-cut" mode="screen" />
+            </filter>
+        </defs>
+    </svg>
+
     <div id="preloader">
         <div class="loader-content">
             <span class="loader-text" id="loader-text">> INITIALIZING SYSTEM...</span>
@@ -66,17 +99,21 @@
             </svg>
         </div>
 
+        <div class="nav-controls">
+            <button id="lang-btn" class="control-btn">EN / TR</button>
+            <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
         <div class="nav-right">
             <div class="nav-links">
                 <a href="#tech" data-lang="nav-skills">SKILLS</a>
                 <a href="#education" data-lang="nav-edu">EDUCATION</a>
                 <a href="#projects" data-lang="nav-projects">PROJECTS</a>
                 <a href="#contact" class="contact-link" data-lang="nav-contact">CONTACT</a>
-            </div>
-
-            <div class="controls">
-                <button id="lang-btn" class="control-btn">EN / TR</button>
-
             </div>
         </div>
     </nav>
