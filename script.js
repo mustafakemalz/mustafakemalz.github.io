@@ -131,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMagnetic();
 
     // --- EXISTING CODE ---
+    // --- EXISTING CODE ---
 
     // --- 1. DİL AYARLARI ---
     const yearSpan = document.getElementById('year');
@@ -150,7 +151,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateLanguage(lang) {
         document.querySelectorAll('[data-lang]').forEach(el => {
             const key = el.getAttribute('data-lang');
-            if (translations[lang][key]) el.innerHTML = translations[lang][key];
+            if (translations[lang] && translations[lang][key]) {
+                el.textContent = translations[lang][key];
+            } else if (translations['en'] && translations['en'][key]) {
+                el.textContent = translations['en'][key];
+            }
         });
         if (langBtn) langBtn.textContent = lang === 'en' ? 'EN / TR' : 'TR / EN';
         localStorage.setItem('site-lang', lang);
@@ -229,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Aktivite Mantığı (Playing/Listening)
             if (!activityText) return;
 
-            if (discordData.listening_to_spotify) {
+            if (discordData.listening_to_spotify && discordData.spotify && discordData.spotify.song) {
                 const song = discordData.spotify.song;
                 const cleanSong = song.length > 25 ? song.substring(0, 25) + "..." : song;
                 activityText.innerHTML = `<i class="fa-brands fa-spotify"></i> ${cleanSong}`;
@@ -318,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Orijinal değeri korumak için data-value'yu kullanıyoruz
 
             const interval = setInterval(() => {
-                target.innerText = target.dataset.value.split("")
+                target.textContent = target.dataset.value.split("")
                     .map((letter, index) => {
                         if (index < iterations) return target.dataset.value[index];
                         return letters[Math.floor(Math.random() * 26)];
@@ -368,15 +373,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    status.innerHTML = translations[currentLang]["form-success"];
+                    if (status) {
+                        status.textContent = translations[currentLang]["form-success"] || "Message sent successfully!";
+                        status.style.color = "var(--accent-color)";
+                    }
                     form.reset();
                     if (btnText) btnText.textContent = originalText;
-                    status.style.color = "var(--accent-color)";
                 } else { throw new Error(); }
             } catch {
-                status.innerHTML = translations[currentLang]["form-error"];
+                if (status) {
+                    status.textContent = translations[currentLang]["form-error"] || "Error sending message. Please try again.";
+                    status.style.color = "#ff4444";
+                }
                 if (btnText) btnText.textContent = originalText;
-                status.style.color = "#ff4444";
             }
         });
     }
@@ -396,7 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let step = 0;
         const textInterval = setInterval(() => {
             if (step < messages.length && loaderText) {
-                loaderText.innerText = messages[step];
+                loaderText.textContent = messages[step];
                 step++;
             } else {
                 clearInterval(textInterval);
