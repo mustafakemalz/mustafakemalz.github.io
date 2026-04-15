@@ -1033,44 +1033,19 @@ section {
     font-size: 0.6rem;
 }
 
-/* Scroll Container */
+/* Grid Container */
 .spotify-scroll-container {
-    overflow-x: auto;
-    overflow-y: hidden;
-    margin: 0 -5%;
-    padding: 10px 5% 20px 5%;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(29, 185, 84, 0.3) transparent;
-}
-
-.spotify-scroll-container::-webkit-scrollbar {
-    height: 4px;
-}
-
-.spotify-scroll-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.spotify-scroll-container::-webkit-scrollbar-thumb {
-    background: rgba(29, 185, 84, 0.3);
-    border-radius: 4px;
-}
-
-.spotify-scroll-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(29, 185, 84, 0.6);
+    padding: 10px 0 20px 0;
 }
 
 .spotify-tracks {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 16px;
-    scroll-snap-type: x mandatory;
-    min-width: max-content;
 }
 
 /* Track Card */
 .spotify-card {
-    flex: 0 0 220px;
-    scroll-snap-align: start;
 
     /* Real Glass Style */
     background: rgba(255, 255, 255, 0.02);
@@ -1311,25 +1286,29 @@ section {
 }
 
 /* Mobile Responsive */
+@media (max-width: 1024px) {
+    .spotify-tracks {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
-    .spotify-card {
-        flex: 0 0 170px;
+    .spotify-tracks {
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .spotify-header-row {
         flex-direction: column;
         align-items: flex-start;
     }
-
-    .spotify-scroll-container {
-        margin: 0 -5%;
-        padding: 10px 5% 15px 5%;
-    }
 }
 
 @media (max-width: 480px) {
+    .spotify-tracks {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .spotify-card {
-        flex: 0 0 150px;
         padding: 10px;
     }
 
