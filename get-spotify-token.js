@@ -28,8 +28,8 @@ const { execSync } = require('child_process');
 // ╔══════════════════════════════════════════════╗
 // ║  BU DEĞERLERİ SPOTIFY DASHBOARD'DAN AL!     ║
 // ╚══════════════════════════════════════════════╝
-const CLIENT_ID = 'd09effbb0a9d47a6a19f4fdd9c3cc314';
-const CLIENT_SECRET = 'f4773b3e3cb2459282d41f612698af75';
+const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || 'BURAYA_CLIENT_ID_YAZ';
+const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || 'BURAYA_CLIENT_SECRET_YAZ';
 const REDIRECT_URI = 'http://127.0.0.1:8888/callback';
 const SCOPES = 'user-read-recently-played user-read-currently-playing';
 
