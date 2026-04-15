@@ -45,17 +45,15 @@ async function getRecentlyPlayed(accessToken) {
 }
 
 export default async function handler(req, res) {
-    // CORS headers
-    const allowedOrigins = ['https://mustafakemalz.github.io', 'http://127.0.0.1:5500', 'http://localhost:5500'];
-    const origin = req.headers.origin;
-    
-    if (allowedOrigins.includes(origin)) {
+    // CORS headers - Daha esnek ama güvenli kontrol
+    const origin = req.headers.origin || '';
+    if (origin.includes('mustafakemalz.github.io') || origin.includes('127.0.0.1') || origin.includes('localhost')) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     } else {
         res.setHeader('Access-Control-Allow-Origin', 'https://mustafakemalz.github.io'); // Fallback
     }
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=30');
 
     if (req.method === 'OPTIONS') {
