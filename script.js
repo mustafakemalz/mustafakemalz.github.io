@@ -41,7 +41,13 @@ const translations = {
         "footer-rights": "All rights reserved.",
         "yt-desc-title": "STREAM & CHAT",
         "yt-desc-text": "Join me while I work on open source projects, design PCBs, and discuss embedded systems engineering. Live coding sessions every week.",
-        "yt-btn": "VISIT CHANNEL"
+        "yt-btn": "VISIT CHANNEL",
+        "spotify-title": "RECENTLY",
+        "spotify-subtitle": "PLAYED",
+        "spotify-source": "Synced from Spotify",
+        "spotify-open": "OPEN SPOTIFY",
+        "spotify-ago": "ago",
+        "spotify-empty": "No recent tracks found"
     },
     tr: {
         "nav-skills": "YETENEKLER",
@@ -82,7 +88,13 @@ const translations = {
         "footer-rights": "Tüm hakları saklıdır.",
         "yt-desc-title": "YAYIN & SOHBET",
         "yt-desc-text": "Açık kaynak projeler üzerinde çalışırken, PCB tasarlarken ve gömülü sistemler üzerine sohbet ederken bana katılın.",
-        "yt-btn": "KANALA GİT"
+        "yt-btn": "KANALA GİT",
+        "spotify-title": "SON",
+        "spotify-subtitle": "DİNLENENLER",
+        "spotify-source": "Spotify'dan senkronize",
+        "spotify-open": "SPOTİFY'I AÇ",
+        "spotify-ago": "önce",
+        "spotify-empty": "Son dinlenen şarkı bulunamadı"
     }
 };
 
@@ -300,6 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Her 5 saniyede bir güncelle (EKSİK OLAN KISIM BU OLABİLİR)
     setInterval(updateDiscordStatus, 5000);
 
+    // --- SPOTIFY RECENTLY PLAYED ---
+    fetchSpotifyTracks();
+
 
     // --- 3. DİĞER EFEKTLER ---
     const cursor = document.querySelector('.cursor');
@@ -362,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.tech-card, .project-card, .youtube-section, .hero, .contact-section, .gallery-item, .timeline-item').forEach(el => {
+    document.querySelectorAll('.tech-card, .project-card, .youtube-section, .hero, .contact-section, .gallery-item, .timeline-item, .spotify-card').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
@@ -450,10 +465,111 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, revealOptions);
 
-    document.querySelectorAll('section, .tech-card, .project-card, .gallery-item').forEach(el => {
+    document.querySelectorAll('section, .tech-card, .project-card, .gallery-item, .spotify-card').forEach(el => {
         el.classList.add('reveal');
         revealObserver.observe(el);
     });
+
+    // --- SPOTIFY RECENTLY PLAYED FETCH ---
+    // Vercel API URL'ini buraya yaz (deploy edince Vercel domain'in olacak)
+    const SPOTIFY_API_URL = 'https://mustafakemalz-github-dorh2i8fl-mustafakemalzs-projects.vercel.app/api/spotify';
+
+    async function fetchSpotifyTracks() {
+        const container = document.getElementById('spotify-tracks');
+        if (!container) return;
+
+        try {
+            const response = await fetch(SPOTIFY_API_URL);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.tracks || data.tracks.length === 0) {
+                container.innerHTML = `
+                    <div class="spotify-empty">
+                        <i class="fa-brands fa-spotify"></i>
+                        <span>${translations[currentLang]['spotify-empty'] || 'No recent tracks found'}</span>
+                    </div>`;
+                return;
+            }
+
+            // Build track cards
+            container.innerHTML = data.tracks.map(track => {
+                const timeAgo = getTimeAgo(track.playedAt);
+                const duration = formatDuration(track.duration);
+
+                return `
+                    <a href="${track.url}" target="_blank" rel="noopener noreferrer" class="spotify-card">
+                        <div class="spotify-album-art">
+                            <img src="${track.albumArt}" alt="${track.album}" loading="lazy">
+                            <div class="spotify-play-overlay">
+                                <i class="fa-solid fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="spotify-track-name" title="${track.name}">${track.name}</div>
+                        <div class="spotify-artist-name" title="${track.artist}">${track.artist}</div>
+                        <div class="spotify-track-meta">
+                            <div class="spotify-track-time">
+                                <i class="fa-solid fa-clock"></i>
+                                <span>${timeAgo}</span>
+                            </div>
+                            <div class="spotify-eq">
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                                <div class="eq-bar"></div>
+                            </div>
+                        </div>
+                    </a>`;
+            }).join('');
+
+            // Re-observe new cards for scroll reveal
+            container.querySelectorAll('.spotify-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                observer.observe(el);
+            });
+
+        } catch (error) {
+            console.warn('Spotify fetch error:', error.message);
+            // Hata durumunda skeleton'ları kaldır, güzel bir fallback göster
+            if (container) {
+                container.innerHTML = `
+                    <div class="spotify-empty">
+                        <i class="fa-brands fa-spotify"></i>
+                        <span>${translations[currentLang]['spotify-empty'] || 'Could not load tracks'}</span>
+                    </div>`;
+            }
+        }
+    }
+
+    // Utility: Time ago formatter
+    function getTimeAgo(dateString) {
+        const now = new Date();
+        const played = new Date(dateString);
+        const diffMs = now - played;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        const ago = translations[currentLang]?.['spotify-ago'] || 'ago';
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ${ago}`;
+        if (diffHours < 24) return `${diffHours}h ${ago}`;
+        return `${diffDays}d ${ago}`;
+    }
+
+    // Utility: Format milliseconds to mm:ss
+    function formatDuration(ms) {
+        const mins = Math.floor(ms / 60000);
+        const secs = Math.floor((ms % 60000) / 1000);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
 });
 
 
