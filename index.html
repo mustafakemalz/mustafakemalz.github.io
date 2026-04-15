@@ -320,22 +320,44 @@
             <h2 class="section-title"><span data-lang="spotify-title">RECENTLY</span> <span class="accent"
                     data-lang="spotify-subtitle">PLAYED</span></h2>
 
-            <div class="spotify-box">
-                <div class="spotify-box-header">
-                    <div class="spotify-brand">
-                        <i class="fa-brands fa-spotify"></i>
-                        <span data-lang="spotify-source">Recently Listened Songs</span>
+            <div class="widgets-grid">
+                <!-- Spotify Box -->
+                <div class="spotify-box">
+                    <div class="spotify-box-header">
+                        <div class="spotify-brand">
+                            <i class="fa-brands fa-spotify"></i>
+                            <span data-lang="spotify-source">Recently Listened Songs</span>
+                        </div>
+                    </div>
+
+                    <div class="spotify-tracks" id="spotify-tracks">
+                        <!-- Skeleton Loading -->
+                        <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                        <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                        <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                        <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
                     </div>
                 </div>
 
-                <div class="spotify-tracks" id="spotify-tracks">
-                    <!-- Skeleton Loading -->
-                    <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                    <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                    <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                    <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                    <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                    <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                <!-- GitHub Box -->
+                <div class="github-box">
+                    <div class="github-box-header">
+                        <div class="github-brand">
+                            <i class="fa-brands fa-github"></i>
+                            <span data-lang="github-title">Recent Repositories</span>
+                        </div>
+                        <a href="https://github.com/mustafakemalz" target="_blank" class="github-profile-link">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="github-repos" id="github-repos">
+                        <!-- Skeleton Loading -->
+                        <div class="github-row skeleton-row"><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                        <div class="github-row skeleton-row"><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                        <div class="github-row skeleton-row"><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                        <div class="github-row skeleton-row"><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                    </div>
                 </div>
             </div>
         </section>
