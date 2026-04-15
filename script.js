@@ -97,6 +97,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     requestAnimationFrame(raf);
 
+    // --- SMOOTH SCROLL FOR NAV LINKS ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            const targetId = anchor.getAttribute('href');
+            const targetEl = document.querySelector(targetId);
+            if (targetEl) {
+                e.preventDefault();
+                lenis.scrollTo(targetEl, {
+                    offset: -80,          // navbar yüksekliği kadar offset
+                    duration: 1.2,        // saniye cinsinden süre
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) // expo easing
+                });
+            }
+        });
+    });
+
     // --- HAMBURGER MENU ---
     const hamburgerBtn = document.getElementById('hamburger-btn');
     const navRight = document.querySelector('.nav-right');
