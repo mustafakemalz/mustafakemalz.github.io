@@ -472,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- SPOTIFY RECENTLY PLAYED FETCH ---
     // Vercel API URL'ini buraya yaz (deploy edince Vercel domain'in olacak)
-    const SPOTIFY_API_URL = 'https://mustafakemalz-github-dorh2i8fl-mustafakemalzs-projects.vercel.app/api/spotify';
+    const SPOTIFY_API_URL = 'https://mustafakemalz-spotify-api.vercel.app/api/spotify';
 
     async function fetchSpotifyTracks() {
         const container = document.getElementById('spotify-tracks');
