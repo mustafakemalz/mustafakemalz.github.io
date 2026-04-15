@@ -312,9 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Her 5 saniyede bir güncelle (EKSİK OLAN KISIM BU OLABİLİR)
     setInterval(updateDiscordStatus, 5000);
 
-    // --- SPOTIFY RECENTLY PLAYED ---
-    fetchSpotifyTracks();
-
 
     // --- 3. DİĞER EFEKTLER ---
     const cursor = document.querySelector('.cursor');
@@ -570,6 +567,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const secs = Math.floor((ms % 60000) / 1000);
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
+
+    // --- SPOTIFY ÇAĞRISI (fonksiyon tanımlandıktan sonra) ---
+    fetchSpotifyTracks();
 });
 
 
