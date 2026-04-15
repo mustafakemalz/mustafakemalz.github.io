@@ -493,38 +493,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Build track cards
+            // Build compact track rows
             container.innerHTML = data.tracks.map(track => {
-                const timeAgo = getTimeAgo(track.playedAt);
-                const duration = formatDuration(track.duration);
-
                 return `
-                    <a href="${track.url}" target="_blank" rel="noopener noreferrer" class="spotify-card">
-                        <div class="spotify-album-art">
-                            <img src="${track.albumArt}" alt="${track.album}" loading="lazy">
-                            <div class="spotify-play-overlay">
-                                <i class="fa-solid fa-play"></i>
-                            </div>
+                    <a href="${track.url}" target="_blank" rel="noopener noreferrer" class="spotify-row">
+                        <div class="spotify-row-art">
+                            <img src="${track.albumArtSmall || track.albumArt}" alt="${track.album}" loading="lazy">
                         </div>
-                        <div class="spotify-track-name" title="${track.name}">${track.name}</div>
-                        <div class="spotify-artist-name" title="${track.artist}">${track.artist}</div>
-                        <div class="spotify-track-meta">
-                            <div class="spotify-track-time">
-                                <i class="fa-solid fa-clock"></i>
-                                <span>${timeAgo}</span>
-                            </div>
-                            <div class="spotify-eq">
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
-                                <div class="eq-bar"></div>
-                            </div>
+                        <div class="spotify-row-info">
+                            <div class="spotify-row-name">${track.name}</div>
+                            <div class="spotify-row-artist">${track.artist}</div>
                         </div>
                     </a>`;
             }).join('');
 
-            // Re-observe new cards for scroll reveal
-            container.querySelectorAll('.spotify-card').forEach(el => {
+            // Re-observe new rows for scroll reveal
+            container.querySelectorAll('.spotify-row').forEach(el => {
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(20px)';
                 el.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
