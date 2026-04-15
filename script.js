@@ -47,7 +47,8 @@ const translations = {
         "spotify-source": "Synced from Spotify",
         "spotify-open": "OPEN SPOTIFY",
         "spotify-ago": "ago",
-        "spotify-empty": "No recent tracks found"
+        "spotify-empty": "No recent tracks found",
+        "github-title": "Recent Repositories"
     },
     tr: {
         "nav-skills": "YETENEKLER",
@@ -94,7 +95,8 @@ const translations = {
         "spotify-source": "Spotify'dan senkronize",
         "spotify-open": "SPOTİFY'I AÇ",
         "spotify-ago": "önce",
-        "spotify-empty": "Son dinlenen şarkı bulunamadı"
+        "spotify-empty": "Son dinlenen şarkı bulunamadı",
+        "github-title": "Son Repolar"
     }
 };
 
@@ -554,6 +556,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- SPOTIFY ÇAĞRISI (fonksiyon tanımlandıktan sonra) ---
     fetchSpotifyTracks();
+
+    // --- GITHUB REPOS ÇAĞRISI ---
+    async function fetchGithubRepos() {
+        const container = document.getElementById('github-repos');
+        if (!container) return;
+
+        try {
+            const response = await fetch('https://api.github.com/users/mustafakemalz/repos?sort=updated&per_page=4');
+            if (!response.ok) throw new Error('GitHub API Error');
+
+            const repos = await response.json();
+
+            if (!repos || repos.length === 0) {
+                container.innerHTML = `
+                    <div class="spotify-empty">
+                        <i class="fa-brands fa-github"></i>
+                        <span>No public repos found</span>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = repos.map(repo => {
+                const isFork = repo.fork ? ' (Fork)' : '';
+                return `
+                    <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="github-row">
+                        <div class="github-row-icon">
+                            <i class="fa-solid fa-code-branch"></i>
+                        </div>
+                        <div class="github-row-info">
+                            <div class="github-row-name">${repo.name}${isFork}</div>
+                            <div class="github-row-desc">${repo.description || 'No description provided'}</div>
+                        </div>
+                    </a>`;
+            }).join('');
+
+            // Scroll reveal animation for github rows
+            container.querySelectorAll('.github-row').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                observer.observe(el);
+            });
+
+        } catch (error) {
+            console.warn('GitHub fetch error:', error.message);
+            if (container) {
+                container.innerHTML = `
+                    <div class="spotify-empty">
+                        <i class="fa-brands fa-github"></i>
+                        <span>Failed to load repositories</span>
+                    </div>`;
+            }
+        }
+    }
+
+    fetchGithubRepos();
 });
 
 
