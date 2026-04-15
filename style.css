@@ -1319,6 +1319,11 @@ section {
     .spotify-artist-name {
         font-size: 0.65rem;
     }
+
+    /* Mobilde sadece ilk 4 şarkıyı göster */
+    .spotify-card:nth-child(n+5) {
+        display: none;
+    }
 }
 
 /* --- CONTACT FORM --- */
