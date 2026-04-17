@@ -12,6 +12,379 @@
     --noise-opacity: 0.03;
 }
 
+/* --- LIGHT THEME --- */
+[data-theme="light"] {
+    --bg-color: #f5f5f5;
+    --text-color: #111111;
+    --card-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --accent-color: #111111;
+    --accent-text: #111111;
+    --sub-text: #777;
+    --nav-bg: rgba(255, 255, 255, 0.5);
+    --noise-opacity: 0.015;
+}
+
+[data-theme="light"] body {
+    background-color: var(--bg-color);
+    background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(200, 200, 200, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(210, 210, 210, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(220, 220, 220, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 30%, rgba(190, 190, 190, 0.2) 0%, transparent 60%);
+}
+
+[data-theme="light"] body::before {
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0.02) 0%,
+        transparent 70%
+    );
+}
+
+/* Light Glass Grid */
+[data-theme="light"] .grid-bg {
+    background-image: radial-gradient(
+        rgba(0, 0, 0, 0.06) 1px,
+        transparent 1px
+    );
+}
+
+/* Light Orbs */
+[data-theme="light"] .orb-1 {
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, transparent 60%);
+}
+
+[data-theme="light"] .orb-2 {
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.02) 0%, transparent 60%);
+}
+
+/* Light Nav */
+[data-theme="light"] nav {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] nav::after {
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.3) 0%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.1) 100%);
+}
+
+[data-theme="light"] nav.scrolled {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] nav:hover {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.1),
+        0 4px 12px rgba(0, 0, 0, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] nav::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(0, 0, 0, 0.04),
+        transparent);
+}
+
+/* Light Tech Cards */
+[data-theme="light"] .tech-card {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(20px) saturate(120%);
+    -webkit-backdrop-filter: blur(20px) saturate(120%);
+}
+
+[data-theme="light"] .tech-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+/* Light Project Cards */
+[data-theme="light"] .project-card {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.06),
+        inset 0 0 20px rgba(255, 255, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px) brightness(1.02);
+    -webkit-backdrop-filter: blur(5px) brightness(1.02);
+}
+
+/* Light Discord Widget */
+[data-theme="light"] .discord-card {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.08),
+        inset 0 0 20px rgba(255, 255, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .discord-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .discord-card::before {
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(0, 0, 0, 0.03),
+        transparent);
+}
+
+[data-theme="light"] #d-username {
+    color: #111;
+}
+
+[data-theme="light"] #d-activity-text {
+    color: #666;
+}
+
+[data-theme="light"] .d-custom-status {
+    color: #666;
+}
+
+[data-theme="light"] .d-badges i {
+    color: #555;
+}
+
+[data-theme="light"] .d-status-dot {
+    border-color: #f5f5f5;
+}
+
+[data-theme="light"] #d-avatar {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Light Widgets */
+[data-theme="light"] .spotify-box,
+[data-theme="light"] .github-box {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .spotify-box-header,
+[data-theme="light"] .github-box-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .spotify-brand,
+[data-theme="light"] .github-brand {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .github-brand i {
+    color: #333;
+}
+
+[data-theme="light"] .spotify-profile-link,
+[data-theme="light"] .github-profile-link {
+    color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .spotify-row:hover,
+[data-theme="light"] .github-row:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .spotify-row-art,
+[data-theme="light"] .github-row-icon {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .github-row-icon i {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+/* Light Skeleton */
+[data-theme="light"] .skeleton-circle,
+[data-theme="light"] .skeleton-row .skeleton-title,
+[data-theme="light"] .skeleton-row .skeleton-artist {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+/* Light Hero Discord Status */
+[data-theme="light"] .hero-discord-status {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Light CTA Button */
+[data-theme="light"] .cta-button {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+/* Light Submit Button Hover */
+[data-theme="light"] .submit-btn:hover {
+    background: var(--accent-color);
+    color: #fff;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Light Form */
+[data-theme="light"] input:-webkit-autofill,
+[data-theme="light"] input:-webkit-autofill:hover,
+[data-theme="light"] input:-webkit-autofill:focus,
+[data-theme="light"] input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--bg-color) inset !important;
+    -webkit-text-fill-color: var(--text-color) !important;
+}
+
+/* Light Footer */
+[data-theme="light"] footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Light YT Button */
+[data-theme="light"] .yt-btn {
+    background: #111;
+    color: #fff;
+}
+
+[data-theme="light"] .yt-btn:hover {
+    background: #333;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Light Stat Item */
+[data-theme="light"] .stat-item {
+    color: #111;
+}
+
+/* Light Stream Stats */
+[data-theme="light"] .stream-stats {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+/* Light Gallery */
+[data-theme="light"] .gallery-item .image-wrapper {
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .gallery-item img {
+    filter: grayscale(100%) brightness(1.05);
+}
+
+/* Light Selection */
+[data-theme="light"] ::selection {
+    background-color: #111;
+    color: #fff;
+}
+
+[data-theme="light"] ::-moz-selection {
+    background-color: #111;
+    color: #fff;
+}
+
+/* Light Preloader */
+[data-theme="light"] #preloader {
+    background-color: #f5f5f5;
+}
+
+[data-theme="light"] .loader-bar {
+    background: #e0e0e0;
+    border: 1px solid #ccc;
+}
+
+/* Light Job Techs */
+[data-theme="light"] .job-techs span {
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--border-color);
+}
+
+/* Light Timeline */
+[data-theme="light"] .timeline-item::before {
+    background: var(--bg-color);
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Light Profile Image */
+[data-theme="light"] .hero-image .profile-normal {
+    filter: grayscale(100%) brightness(1.05);
+}
+
+/* Light mobile nav menu */
+@media (max-width: 768px) {
+    [data-theme="light"] .nav-right {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    [data-theme="light"] .nav-links a:hover {
+        background: rgba(0, 0, 0, 0.04);
+    }
+
+    [data-theme="light"] .control-btn {
+        background: rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+}
+
+/* --- Theme Toggle Button --- */
+.theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+    transform: rotate(180deg);
+}
+
+.theme-toggle i {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dark mode (default): show moon, hide sun */
+.theme-toggle .fa-sun {
+    display: none;
+}
+
+.theme-toggle .fa-moon {
+    display: inline-block;
+}
+
+/* Light mode: show sun, hide moon */
+[data-theme="light"] .theme-toggle .fa-moon {
+    display: none;
+}
+
+[data-theme="light"] .theme-toggle .fa-sun {
+    display: inline-block;
+}
+
 
 
 * {
@@ -49,7 +422,7 @@ body {
     color: var(--text-color);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
-    transition: color 0.3s ease;
+    transition: color 0.4s ease, background-color 0.4s ease;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
