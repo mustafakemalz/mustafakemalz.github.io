@@ -178,6 +178,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- THEME TOGGLE ---
+    const themeBtn = document.getElementById('theme-btn');
+
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        });
+    }
+
     function updateLanguage(lang) {
         document.querySelectorAll('[data-lang]').forEach(el => {
             const key = el.getAttribute('data-lang');
