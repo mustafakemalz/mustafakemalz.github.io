@@ -241,6 +241,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Durum Noktası Rengi
             if (statusDot) statusDot.className = `d-status-dot ${discordData.discord_status}`;
 
+            // Hero Discord Status
+            const heroStatusDot = document.getElementById('hero-discord-dot');
+            const heroStatusText = document.getElementById('hero-discord-text');
+            if (heroStatusDot && heroStatusText) {
+                heroStatusDot.className = `d-status-dot ${discordData.discord_status}`;
+                heroStatusText.textContent = discordData.discord_status.toUpperCase();
+            }
+
             // --- CUSTOM STATUS (Özel Durum) ---
             const customStatus = discordData.activities.find(act => act.type === 4);
             if (customStatus && customStatus.state && customStatusEl) {
@@ -320,14 +328,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const follower = document.querySelector('.cursor-follower');
 
     if (cursor && follower) {
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let followerX = mouseX - 16, followerY = mouseY - 16;
+
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            setTimeout(() => {
-                follower.style.left = e.clientX - 16 + 'px';
-                follower.style.top = e.clientY - 16 + 'px';
-            }, 50);
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Ana imleç anında takip etsin (Gecikmesiz)
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
         });
+
+        function renderCursor() {
+            // Follower için Lerp (Linear Interpolation) ile yumuşatma
+            followerX += (mouseX - 16 - followerX) * 0.15; 
+            followerY += (mouseY - 16 - followerY) * 0.15;
+
+            follower.style.left = followerX + 'px';
+            follower.style.top = followerY + 'px';
+
+            requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
 
         const links = document.querySelectorAll('a, button, .tech-card, .project-card, .submit-btn, .gallery-item');
         links.forEach(link => {
@@ -778,3 +801,30 @@ function setupMagnetic() {
         });
     });
 }
+
+// --- LOCAL TIME LOGIC ---
+function startLocalTimeClock() {
+    const timeElement = document.getElementById('sidebar-local-time');
+    if (!timeElement) return;
+
+    function updateTime() {
+        const now = new Date();
+        const options = { 
+            timeZone: 'Europe/Istanbul',
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: false 
+        };
+        const timeString = now.toLocaleTimeString('tr-TR', options);
+        timeElement.textContent = timeString;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+}
+
+// Initialize clock on load
+document.addEventListener('DOMContentLoaded', () => {
+    startLocalTimeClock();
+});
+
