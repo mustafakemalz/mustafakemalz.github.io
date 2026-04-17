@@ -74,6 +74,11 @@
     </div>
     <div class="grain-overlay"></div>
 
+    <!-- Animated Perspective Grid -->
+    <div class="grid-bg">
+        <div class="grid-plane"></div>
+    </div>
+
     <div class="sticky-left">
         <div class="social-icons">
             <a href="https://github.com/mustafakemalz" target="_blank" rel="noopener noreferrer" title="GitHub">
@@ -89,6 +94,16 @@
             </a>
         </div>
         <div class="sidebar-line"></div>
+        <div class="sidebar-info">
+            <div class="sidebar-info-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>ADANA, TR</span>
+            </div>
+            <div class="sidebar-info-item">
+                <i class="fa-regular fa-clock"></i>
+                <span id="sidebar-local-time">--:--</span>
+            </div>
+        </div>
     </div>
 
     <nav>
@@ -121,7 +136,13 @@
     <main>
         <section class="hero">
             <div class="hero-content">
-                <div class="status-badge">ENGINEERING PORTFOLIO</div>
+                <div class="hero-top-badges">
+                    <div class="status-badge">ENGINEERING PORTFOLIO</div>
+                    <div class="hero-discord-status">
+                        <div id="hero-discord-dot" class="d-status-dot offline"></div>
+                        <span id="hero-discord-text">OFFLINE</span>
+                    </div>
+                </div>
                 <h1>
                     <span class="glitch-text" data-value="MUSTAFA">MUSTAFA</span><br>
                     <span class="glitch-text outline" data-value="KEMAL">KEMAL</span>
@@ -134,18 +155,15 @@
 
 
             <div class="hero-image">
-                <img src="assets/profile.png" alt="Mustafa Kemal" onerror="this.style.display='none'">
+                <img src="assets/profile.png" alt="Mustafa Kemal" class="profile-normal"
+                    onerror="this.style.display='none'">
+                <img src="assets/pixel_profile.png" alt="Mustafa Kemal Pixel Art" class="profile-pixel"
+                    onerror="this.style.display='none'">
             </div>
+
         </section>
 
-        <div class="ticker-wrap">
-            <div class="ticker">
-                <span>ELECTRICAL ENGINEERING • EMBEDDED SYSTEMS • IOT SOLUTIONS • PCB DESIGN • AUTOMATION • SIGNAL
-                    PROCESSING • </span>
-                <span>ELECTRICAL ENGINEERING • EMBEDDED SYSTEMS • IOT SOLUTIONS • PCB DESIGN • AUTOMATION • SIGNAL
-                    PROCESSING • </span>
-            </div>
-        </div>
+
 
         <section id="tech" class="tech-section">
             <div class="section-label">ENGINEERING_TOOLKIT</div>
@@ -332,10 +350,34 @@
 
                     <div class="spotify-tracks" id="spotify-tracks">
                         <!-- Skeleton Loading -->
-                        <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                        <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                        <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                        <div class="spotify-row skeleton-row"><div class="skeleton-circle"></div><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                        <div class="spotify-row skeleton-row">
+                            <div class="skeleton-circle"></div>
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="spotify-row skeleton-row">
+                            <div class="skeleton-circle"></div>
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="spotify-row skeleton-row">
+                            <div class="skeleton-circle"></div>
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="spotify-row skeleton-row">
+                            <div class="skeleton-circle"></div>
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -350,13 +392,33 @@
                             <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         </a>
                     </div>
-                    
+
                     <div class="github-repos" id="github-repos">
                         <!-- Skeleton Loading -->
-                        <div class="github-row skeleton-row"><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                        <div class="github-row skeleton-row"><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                        <div class="github-row skeleton-row"><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
-                        <div class="github-row skeleton-row"><div class="skeleton-info"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-artist"></div></div></div>
+                        <div class="github-row skeleton-row">
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="github-row skeleton-row">
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="github-row skeleton-row">
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="github-row skeleton-row">
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -438,7 +500,7 @@
         </div>
     </footer>
 
-    <a href="https://discord.com/invite/AY5h6NwVGp" target="_blank" class="discord-card" id="discord-widget">
+    <a href="https://discord.com/users/465079638088089608" target="_blank" class="discord-card" id="discord-widget">
         <div class="d-avatar-wrapper">
             <img id="d-avatar"
                 src="https://cdn.discordapp.com/avatars/465079638088089608/4d1c60a280d4c5c824a85bbcb29625e1.webp"
