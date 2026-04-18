@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-            
+
             // Ana imleç anında takip etsin (Gecikmesiz)
             cursor.style.left = mouseX + 'px';
             cursor.style.top = mouseY + 'px';
@@ -356,8 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function renderCursor() {
             // Follower için Lerp (Linear Interpolation) ile yumuşatma
-            followerX += (mouseX - 16 - followerX) * 0.15; 
-            followerY += (mouseY - 16 - followerY) * 0.15;
+            followerX += (mouseX - 16 - followerX) * 0.02;
+            followerY += (mouseY - 16 - followerY) * 0.02;
 
             follower.style.left = followerX + 'px';
             follower.style.top = followerY + 'px';
@@ -823,11 +823,11 @@ function startLocalTimeClock() {
 
     function updateTime() {
         const now = new Date();
-        const options = { 
+        const options = {
             timeZone: 'Europe/Istanbul',
-            hour: '2-digit', 
+            hour: '2-digit',
             minute: '2-digit',
-            hour12: false 
+            hour12: false
         };
         const timeString = now.toLocaleTimeString('tr-TR', options);
         timeElement.textContent = timeString;
@@ -841,4 +841,4 @@ function startLocalTimeClock() {
 document.addEventListener('DOMContentLoaded', () => {
     startLocalTimeClock();
 });
-
+
