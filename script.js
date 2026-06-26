@@ -356,8 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function renderCursor() {
             // Follower için Lerp (Linear Interpolation) ile yumuşatma
-            followerX += (mouseX - 16 - followerX) * 0.02;
-            followerY += (mouseY - 16 - followerY) * 0.02;
+            followerX += (mouseX - 16 - followerX) * 0.12;
+            followerY += (mouseY - 16 - followerY) * 0.12;
 
             follower.style.left = followerX + 'px';
             follower.style.top = followerY + 'px';
@@ -458,31 +458,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Preloader Logic
-    const loaderText = document.getElementById('loader-text');
     const preloader = document.getElementById('preloader');
 
     if (preloader) {
         document.body.classList.add('loading-active');
-        const messages = [
-            "> INITIALIZING SYSTEM...",
-            "> LOADING MODULES...",
-            "> ESTABLISHING CONNECTION...",
-            "> ACCESS GRANTED"
-        ];
-        let step = 0;
-        const textInterval = setInterval(() => {
-            if (step < messages.length && loaderText) {
-                loaderText.textContent = messages[step];
-                step++;
-            } else {
-                clearInterval(textInterval);
-            }
-        }, 600);
+        const preloaderName = document.getElementById('preloader-name');
 
+        // Start the name reveal animation after a brief pause
+        setTimeout(() => {
+            if (preloaderName) preloaderName.classList.add('revealed');
+        }, 300);
+
+        // Fade out preloader after animation completes
         setTimeout(() => {
             preloader.classList.add('loaded');
             document.body.classList.remove('loading-active');
-            setTimeout(() => { preloader.style.display = 'none'; }, 500);
+            setTimeout(() => { preloader.style.display = 'none'; }, 600);
         }, 2800);
     }
 
