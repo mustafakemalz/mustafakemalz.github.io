@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mustafa Kemal | Workstation Setup</title>
+
+    <!-- SEO & Metals -->
+    <meta name="description" content="Mustafa Kemal's Workstation, Hardware Specifications, and Desktop Setup.">
+    <meta property="og:title" content="Mustafa Kemal | Workstation Setup">
+    <meta property="og:description" content="Hardware specs and setup gallery.">
+    <meta property="og:image" content="../assets/logo.svg">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Background Elements -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div class="ambient-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    <div class="grain-overlay"></div>
+
+    <div class="grid-bg">
+        <div class="grid-plane"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav>
+        <a href="../" class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 80V20L50 50L80 20V80" />
+            </svg>
+        </a>
+
+        <div class="nav-controls">
+            <button id="theme-btn" class="theme-toggle" aria-label="Toggle Theme">
+                <i class="fa-solid fa-moon"></i>
+                <i class="fa-solid fa-sun"></i>
+            </button>
+            <button id="lang-btn" class="control-btn">EN / TR</button>
+            <a href="../" class="control-btn back-btn" data-lang="back-home">
+                <i class="fa-solid fa-arrow-left"></i> BACK
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="system-container">
+        <!-- Showcase & Spec Grid -->
+        <div class="showcase-grid">
+            <!-- Left Column: Kick stream visual card -->
+            <a href="https://kick.com/muskz" target="_blank" rel="noopener noreferrer" class="kick-showcase-card reveal">
+                <!-- Status Badge Overlay -->
+                <div class="stream-badge-overlay">
+                    <span class="pulse-dot"></span>
+                    <span id="kick-status-text" data-lang="status-standby">SİSTEM BEKLEMEDE</span>
+                </div>
+
+                <!-- Hover Overlay -->
+                <div class="kick-hover-overlay">
+                    <div class="kick-logo-wrapper">
+                        <!-- Custom SVG Kick Logo -->
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="#53fc18" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3H9V7H11V5H13V3H19V9H17V11H15V13H17V15H19V21H13V19H11V17H9V21H3V3Z"/>
+                        </svg>
+                    </div>
+                    <span class="hover-action-text" data-lang="watch-on-kick">WATCH ON KICK.COM</span>
+                </div>
+
+                <!-- Setup Image -->
+                <div class="image-wrapper">
+                    <img src="../assets/system_setup.jpg" alt="Mustafa Kemal Workstation Setup">
+                </div>
+
+                <!-- Caption Footer -->
+                <div class="image-showcase-caption">
+                    <div class="kick-link-tag">KICK.COM/MUSKZ <i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                </div>
+            </a>
+
+            <!-- Right Column: Specs Categories -->
+            <div class="specs-wrapper">
+                <!-- Category: Core Components -->
+                <div class="specs-category reveal">
+                    <div class="category-header" data-lang="cat-core">CORE COMPONENTS</div>
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-cpu">İŞLEMCİ (CPU)</span>
+                                <span class="spec-value">AMD Ryzen 7 7500X3D</span>
+                                <span class="spec-details">Gaming & Workstation Processor</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-vr-cardboard"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-gpu">EKRAN KARTI (GPU)</span>
+                                <span class="spec-value">AMD Radeon RX 9060 XT</span>
+                                <span class="spec-details">High Performance Graphics Card</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-memory"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-ram">BELLEK (RAM)</span>
+                                <span class="spec-value">32 GB RAM</span>
+                                <span class="spec-details">DDR5 High Speed Memory</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-folder-open"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-mobo">ANAKART</span>
+                                <span class="spec-value">MSI PRO B650M-E 6800MHz</span>
+                                <span class="spec-details">OC M.2 AM5 mATX</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-hard-drive"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-storage">DEPOLAMA</span>
+                                <span class="spec-value">Kingston 1TB NV3 NVMe</span>
+                                <span class="spec-details">Gen4 (6000MB/s Read - 4000MB/s Write)</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-plug"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-case">KASA & GÜÇ KAYNAĞI</span>
+                                <span class="spec-value">Cougar MX220 RGB 650W</span>
+                                <span class="spec-details">80+ Siyah Mesh USB 3.2 Mid Tower</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category: Peripherals -->
+                <div class="specs-category reveal">
+                    <div class="category-header" data-lang="cat-peripherals">PERIPHERALS</div>
+                    <div class="specs-grid">
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-desktop"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-monitor1">I. EKRAN</span>
+                                <span class="spec-value">Dell Alienware AW2525HM</span>
+                                <span class="spec-details">24.5" 320Hz 0.5ms Full HD</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-desktop"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-monitor2">II. EKRAN</span>
+                                <span class="spec-value">Samsung T450</span>
+                                <span class="spec-details">24" 75Hz 5ms FHD IPS LED</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-keyboard"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-keyboard">KLAVYE</span>
+                                <span class="spec-value">Wraith W60 Ciela</span>
+                                <span class="spec-details">Mechanical Gaming Keyboard</span>
+                            </div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-icon"><i class="fa-solid fa-mouse"></i></div>
+                            <div class="spec-info">
+                                <span class="spec-label" data-lang="spec-mouse">MOUSE</span>
+                                <span class="spec-value">ATK Mad R 8K</span>
+                                <span class="spec-details">Ultra Lightweight 8K Polling</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="copyright">© <span id="year"></span> Mustafa Kemal. <span data-lang="footer-rights">All
+                        rights reserved.</span></div>
+                <div class="system-status"><span class="status-dot"></span>SYSTEM ONLINE</div>
+            </div>
+
+            <div class="footer-right">
+                <a href="https://github.com/mustafakemalz" target="_blank">GITHUB</a>
+                <a href="https://www.youtube.com/@mustafakemalz" target="_blank">YOUTUBE</a>
+                <a href="https://www.linkedin.com/in/mustafa-kemal-göçer-41409b255/" target="_blank">LINKEDIN</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

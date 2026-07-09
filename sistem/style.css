@@ -1,0 +1,521 @@
+/* --- SYSTEM SPECIFICATIONS STYLES --- */
+
+/* Page layout container */
+.system-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 120px auto 60px auto;
+    padding: 0 40px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Hero Badge */
+.system-hero {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.system-hero-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--sub-text);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.system-hero h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 10px;
+    line-height: 1;
+}
+
+/* Nav back button specific styling */
+nav .nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+nav .back-btn {
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+}
+
+nav .back-btn i {
+    font-size: 0.7rem;
+}
+
+/* Main Grid: Photo on left, Specs on right */
+.showcase-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1.9fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Kick Showcase Card */
+.kick-showcase-card {
+    display: block;
+    position: relative;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 28px;
+    padding: 24px;
+    box-shadow: 
+        0 40px 80px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kick-showcase-card:hover {
+    border-color: rgba(83, 252, 24, 0.3); /* Kick Neon Green glow outline */
+    box-shadow: 
+        0 50px 100px rgba(83, 252, 24, 0.1),
+        0 20px 50px rgba(0, 0, 0, 0.6),
+        inset 0 0 0 1px rgba(83, 252, 24, 0.2);
+    transform: translateY(-4px) scale(1.01);
+}
+
+.kick-showcase-card .image-wrapper {
+    width: 100%;
+    aspect-ratio: 16/11;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+.kick-showcase-card .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kick-showcase-card:hover .image-wrapper img {
+    transform: scale(1.03);
+}
+
+/* Stream Status Badge Overlay */
+.stream-badge-overlay {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #fff;
+    transition: all 0.4s ease;
+}
+
+.kick-showcase-card.live-mode .stream-badge-overlay {
+    background: rgba(83, 252, 24, 0.1);
+    border-color: rgba(83, 252, 24, 0.4);
+    box-shadow: 0 10px 25px rgba(83, 252, 24, 0.2);
+    color: #53fc18;
+}
+
+/* Pulse indicator dot */
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #888;
+    border-radius: 50%;
+    display: inline-block;
+    transition: all 0.4s ease;
+}
+
+.kick-showcase-card.live-mode .pulse-dot {
+    background-color: #53fc18;
+    animation: badgePulse 1.5s infinite alternate;
+}
+
+.kick-showcase-card.offline-mode .pulse-dot {
+    background-color: #ffb700; /* Amber for standby */
+    animation: standbyPulse 2s infinite alternate;
+}
+
+@keyframes badgePulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(83, 252, 24, 0.7);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 8px 4px rgba(83, 252, 24, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(83, 252, 24, 0);
+    }
+}
+
+@keyframes standbyPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 183, 0, 0.4);
+    }
+    100% {
+        transform: scale(1.1);
+        box-shadow: 0 0 6px 2px rgba(255, 183, 0, 0.1);
+    }
+}
+
+/* Hover Overlay Styles */
+.kick-hover-overlay {
+    position: absolute;
+    inset: 24px;
+    bottom: 68px; /* Safe area for captions */
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 15;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kick-showcase-card:hover .kick-hover-overlay {
+    opacity: 1;
+}
+
+.kick-logo-wrapper {
+    background: rgba(83, 252, 24, 0.1);
+    border: 1px solid rgba(83, 252, 24, 0.2);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 15px 30px rgba(83, 252, 24, 0.15);
+    transform: scale(0.8);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kick-showcase-card:hover .kick-logo-wrapper {
+    transform: scale(1);
+}
+
+.hover-action-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #53fc18;
+    text-shadow: 0 0 10px rgba(83, 252, 24, 0.4);
+}
+
+.image-showcase-caption {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.kick-link-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--sub-text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.3s ease;
+}
+
+.kick-showcase-card:hover .kick-link-tag {
+    color: #53fc18;
+}
+
+/* Specs Layout */
+.specs-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.specs-category {
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.specs-category .category-header {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--sub-text);
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+/* Spec Card Styles */
+.spec-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 15px 20px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.spec-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.spec-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--accent-color);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.spec-card:hover::before {
+    opacity: 0.8;
+}
+
+.spec-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.spec-card:hover .spec-icon {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    transform: scale(1.05);
+}
+
+.spec-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.spec-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--sub-text);
+    text-transform: uppercase;
+}
+
+.spec-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.spec-details {
+    font-size: 0.7rem;
+    color: var(--sub-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- LIGHT THEME COMPATIBILITY --- */
+[data-theme="light"] .kick-showcase-card {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.06),
+        inset 0 0 20px rgba(255, 255, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .kick-showcase-card:hover {
+    border-color: rgba(83, 252, 24, 0.8);
+    box-shadow: 
+        0 30px 60px rgba(83, 252, 24, 0.15),
+        0 15px 35px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .kick-showcase-card .image-wrapper {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .stream-badge-overlay {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.08);
+    color: #333;
+}
+
+[data-theme="light"] .kick-showcase-card.live-mode .stream-badge-overlay {
+    background: rgba(83, 252, 24, 0.15);
+    border-color: rgba(83, 252, 24, 0.5);
+    color: #1a8f00;
+}
+
+[data-theme="light"] .specs-category {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .spec-card {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .spec-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--accent-color);
+}
+
+[data-theme="light"] .spec-icon {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .system-hero-badge {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.02);
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 992px) {
+    .showcase-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .system-container {
+        padding: 0 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    .system-container {
+        margin-top: 100px;
+        padding: 0 15px;
+    }
+    
+    .system-hero h1 {
+        font-size: 2.8rem;
+    }
+    
+    .stream-badge-overlay {
+        top: 30px;
+        left: 30px;
+        padding: 6px 12px;
+        font-size: 0.6rem;
+    }
+    
+    .kick-showcase-card {
+        padding: 16px;
+        border-radius: 20px;
+    }
+    
+    .kick-showcase-card .image-wrapper {
+        border-radius: 12px;
+        aspect-ratio: 16/11;
+    }
+    
+    .kick-hover-overlay {
+        inset: 16px;
+        bottom: 60px;
+        border-radius: 12px;
+    }
+    
+    .kick-logo-wrapper {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .kick-logo-wrapper svg {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .hover-action-text {
+        font-size: 0.75rem;
+    }
+    
+    nav {
+        padding: 10px 20px;
+        gap: 20px;
+    }
+    
+    .specs-category {
+        padding: 20px;
+    }
+    
+    .specs-grid {
+        grid-template-columns: 1fr;
+    }
+}
