@@ -4,6 +4,7 @@ const DISCORD_ID = "465079638088089608"; // Senin Gerçek ID'n
 const translations = {
     en: {
         "nav-skills": "SKILLS",
+        "nav-system": "SYSTEM",
         "nav-edu": "EXPERIENCE",
         "nav-projects": "PROJECTS",
         "nav-contact": "CONTACT",
@@ -52,6 +53,7 @@ const translations = {
     },
     tr: {
         "nav-skills": "YETENEKLER",
+        "nav-system": "SİSTEM",
         "nav-edu": "DENEYİM",
         "nav-projects": "PROJELER",
         "nav-contact": "İLETİŞİM",
@@ -180,14 +182,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- THEME TOGGLE ---
     const themeBtn = document.getElementById('theme-btn');
+    
+    // Load theme from localStorage
+    const savedTheme = localStorage.getItem('site-theme');
+    if (savedTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+    }
 
     if (themeBtn) {
         themeBtn.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             if (currentTheme === 'light') {
                 document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('site-theme', 'dark');
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('site-theme', 'light');
             }
         });
     }
@@ -457,24 +469,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Preloader Logic
+    // Preloader Logic — Curtain Reveal
     const preloader = document.getElementById('preloader');
 
     if (preloader) {
         document.body.classList.add('loading-active');
         const preloaderName = document.getElementById('preloader-name');
 
-        // Start the name reveal animation after a brief pause
+        // Step 1: Start the name reveal animation after a brief pause
         setTimeout(() => {
             if (preloaderName) preloaderName.classList.add('revealed');
         }, 300);
 
-        // Fade out preloader after animation completes
+        // Step 2: Name shrinks and fades out
+        setTimeout(() => {
+            preloader.classList.add('name-exit');
+        }, 2600);
+
+        // Step 3: Curtain slides up, revealing the site
+        setTimeout(() => {
+            preloader.classList.add('curtain-up');
+            document.body.classList.remove('loading-active');
+            document.body.classList.add('site-revealed');
+        }, 3100);
+
+        // Step 4: Clean up after curtain animation finishes
         setTimeout(() => {
             preloader.classList.add('loaded');
-            document.body.classList.remove('loading-active');
-            setTimeout(() => { preloader.style.display = 'none'; }, 600);
-        }, 2800);
+            preloader.style.display = 'none';
+        }, 4400);
     }
 
 
