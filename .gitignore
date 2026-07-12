@@ -1,4 +1,28 @@
-.vercel
-.env.vercel
-.env.spotify
+# Environment variables (CRITICAL - contains secrets)
+.env
+.env.*
+.env.local
 .env.production
+.env.spotify
+.env.vercel
+
+# Spotify token script (contains credentials)
+get-spotify-token.js
+
+# Build output
+dist/
+
+# Vercel
+.vercel
+
+# Dependencies
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
