@@ -243,7 +243,7 @@ export const Home: React.FC = () => {
                   <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
                 </svg>
               </a>
-              <a href="mailto:contact@mustafakemalz.github.io" aria-label="Send email">
+              <a href="mailto:mustafakemalgocer@gmail.com" aria-label="Send email">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
