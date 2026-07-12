@@ -150,7 +150,7 @@ export const Home: React.FC = () => {
         <div className="hero-parallax-wrap" ref={heroWrapRef}>
           <div className="header-avatar">
             <img
-              src="assets/profile.png"
+              src="assets/profile.webp"
               alt="Mustafa Kemal Göçer"
               onError={(e) => (e.currentTarget.style.display = 'none')}
             />
@@ -525,7 +525,7 @@ export const Home: React.FC = () => {
               <div className="channel-card-header">
                 <div className="channel-avatar">
                   <img
-                    src="assets/profile.png"
+                    src="assets/profile.webp"
                     alt="Mustafa Kemal Göçer"
                     onError={(e) => (e.currentTarget.style.display = 'none')}
                   />
@@ -633,7 +633,7 @@ export const Home: React.FC = () => {
         <div className="gallery-grid reveal-stagger">
           <div className="gallery-item">
             <img
-              src="assets/photo1.jpg"
+              src="assets/photo1.webp"
               alt="Engineering Lab"
               onError={(e) =>
                 handleImageError(
@@ -648,7 +648,7 @@ export const Home: React.FC = () => {
           </div>
           <div className="gallery-item">
             <img
-              src="assets/photo2.jpg"
+              src="assets/photo2.webp"
               alt="Simulation"
               onError={(e) =>
                 handleImageError(
@@ -678,7 +678,7 @@ export const Home: React.FC = () => {
           </div>
           <div className="gallery-item">
             <img
-              src="assets/photo4.jpg"
+              src="assets/photo4.webp"
               alt="Field Work"
               onError={(e) =>
                 handleImageError(

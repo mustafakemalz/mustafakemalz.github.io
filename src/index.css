@@ -935,7 +935,7 @@ ul, ol {
 .project-visual--faceitoverlay .project-visual-media {
     background-image:
         linear-gradient(180deg, rgba(5, 8, 20, 0.28), rgba(5, 8, 20, 0.56)),
-        url("/assets/faceitoverlay.png");
+        url("/assets/faceitoverlay.webp");
     filter: blur(10px) saturate(1.12) brightness(0.72);
     opacity: 0.9;
 }
