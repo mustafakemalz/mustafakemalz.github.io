@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Selam bu benim ilk web site deneyimim umarım beğenirsin burayi inceliyorsan instagramdan takip etmeyi unutma @jpeg.muskz :D kendine iyi bak. -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mustafa Kemal | Electrical-Electronics Engineer</title>
+
+    <!-- SEO & Metals -->
+    <meta name="description"
+        content="Mustafa Kemal - Electrical & Electronics Engineer specializing in Embedded Systems, IoT, and Industrial Automation.">
+    <meta property="og:title" content="Mustafa Kemal | Engineering Portfolio">
+    <meta property="og:description" content="Embedded Systems, IoT Solutions, and Industrial Automation Portfolio.">
+    <meta property="og:image" content="assets/logo.svg">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Liquid Glass SVG Filter -->
+    <svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+        <defs>
+            <filter id="liquid-glass" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+                <!-- Blur the background for frosted glass base -->
+                <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blurred" />
+
+                <!-- Specular lighting for glass shine/refraction -->
+                <feSpecularLighting in="blurred" surfaceScale="5" specularConstant="0.8" specularExponent="30"
+                    lighting-color="#ffffff" result="specular">
+                    <fePointLight x="200" y="-50" z="200" />
+                </feSpecularLighting>
+                <feComposite in="specular" in2="SourceGraphic" operator="in" result="specular-shape" />
+
+                <!-- Combine: blurred bg + specular highlight -->
+                <feBlend in="blurred" in2="specular-shape" mode="screen" result="glass" />
+            </filter>
+
+            <!-- Simpler filter for better performance -->
+            <filter id="liquid-glass-lite" x="-10%" y="-10%" width="120%" height="120%"
+                color-interpolation-filters="sRGB">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+                <feSpecularLighting in="blur" surfaceScale="3" specularConstant="0.6" specularExponent="20"
+                    lighting-color="#ffffff" result="spec">
+                    <fePointLight x="150" y="-30" z="150" />
+                </feSpecularLighting>
+                <feComposite in="spec" in2="SourceGraphic" operator="in" result="spec-cut" />
+                <feBlend in="blur" in2="spec-cut" mode="screen" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div id="preloader">
+        <div class="preloader-name-wrapper" id="preloader-name">
+            <span class="preloader-name-text">Mustafa Kemal Göçer</span>
+        </div>
+    </div>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    <div class="ambient-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+    <div class="grain-overlay"></div>
+
+    <!-- Animated Perspective Grid -->
+    <div class="grid-bg">
+        <div class="grid-plane"></div>
+    </div>
+
+    <div class="sticky-left">
+        <div class="social-icons">
+            <a href="https://github.com/mustafakemalz" target="_blank" rel="noopener noreferrer" title="GitHub">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCdpzXM5RAO0Z2FenGO-sDJQ" target="_blank" rel="noopener noreferrer"
+                title="YouTube">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255" target="_blank"
+                rel="noopener noreferrer" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+        </div>
+        <div class="sidebar-line"></div>
+        <div class="sidebar-info">
+            <div class="sidebar-info-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>ADANA, TR</span>
+            </div>
+            <div class="sidebar-info-item">
+                <i class="fa-regular fa-clock"></i>
+                <span id="sidebar-local-time">--:--</span>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 80V20L50 50L80 20V80" />
+            </svg>
+        </div>
+
+        <div class="nav-controls">
+            <button id="theme-btn" class="theme-toggle" aria-label="Toggle Theme">
+                <i class="fa-solid fa-moon"></i>
+                <i class="fa-solid fa-sun"></i>
+            </button>
+            <button id="lang-btn" class="control-btn">EN / TR</button>
+            <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#tech" data-lang="nav-skills">SKILLS</a>
+                <a href="#education" data-lang="nav-edu">EDUCATION</a>
+                <a href="#projects" data-lang="nav-projects">PROJECTS</a>
+                <a href="#contact" class="contact-link" data-lang="nav-contact">CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-top-badges">
+                    <div class="status-badge">ENGINEERING PORTFOLIO</div>
+                    <div class="hero-discord-status">
+                        <div id="hero-discord-dot" class="d-status-dot offline"></div>
+                        <span id="hero-discord-text">OFFLINE</span>
+                    </div>
+                </div>
+                <h1>
+                    <span class="glitch-text" data-value="MUSTAFA">MUSTAFA</span><br>
+                    <span class="glitch-text outline" data-value="KEMAL">KEMAL</span>
+                </h1>
+                <p class="tagline" data-lang="hero-title">ELECTRICAL & ELECTRONICS ENGINEER</p>
+                <p class="sub-tagline" data-lang="hero-desc">Bridging the gap between Hardware and Software. Focused on
+                    Embedded Systems, IoT Solutions, and Industrial Automation.</p><a href="#projects"
+                    class="cta-button" data-lang="hero-cta">VIEW PROJECTS</a>
+            </div>
+
+
+            <div class="hero-image">
+                <img src="assets/profile.png" alt="Mustafa Kemal" class="profile-normal"
+                    onerror="this.style.display='none'">
+                <img src="assets/pixel_profile.png" alt="Mustafa Kemal Pixel Art" class="profile-pixel"
+                    onerror="this.style.display='none'">
+            </div>
+
+        </section>
+
+
+
+        <section id="tech" class="tech-section">
+            <div class="section-label">ENGINEERING_TOOLKIT</div>
+            <h2 class="section-title"><span data-lang="tech-title">TECHNICAL</span> <span class="accent"
+                    data-lang="tech-subtitle">STACK</span>
+            </h2>
+
+            <div class="tech-container">
+                <div class="tech-category">
+                    <div class="category-header">EMBEDDED & CONTROL</div>
+                    <div class="tech-grid">
+                        <a href="https://isocpp.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>C</span> C / C++
+                        </a>
+                        <a href="https://www.python.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>PY</span> Python
+                        </a>
+                        <a href="https://go.dev/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>GO</span> GoLang
+                        </a>
+                        <a href="https://www.arduino.cc/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>A</span> Arduino/ESP32
+                        </a>
+                        <a href="https://www.mathworks.com/products/matlab.html" target="_blank"
+                            rel="noopener noreferrer" class="tech-card">
+                            <span>M</span> MATLAB
+                        </a>
+                        <a href="https://www.st.com/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>S</span> STM32
+                        </a>
+                    </div>
+                </div>
+
+                <div class="tech-category">
+                    <div class="category-header">SOFTWARE & WEB INTERFACE</div>
+                    <div class="tech-grid">
+                        <a href="https://tr.wikipedia.org/wiki/HTML5" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>H</span> HTML5
+                        </a> 
+                         <a href="https://tr.wikipedia.org/wiki/CSS" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>C</span> CSS3
+                        </a>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank"
+                            rel="noopener noreferrer" class="tech-card">
+                            <span>JS</span> JavaScript
+                        </a>
+                        <a href="https://nextjs.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>N</span> Next.JS
+                        </a>
+                        <a href="https://www.postgresql.org/" target="_blank" rel="noopener noreferrer"
+                            class="tech-card">
+                            <span>SQL</span> PostgreSQL
+                        </a>
+                        <a href="https://www.docker.com/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>D</span> Docker
+                        </a>
+                        <a href="https://git-scm.com/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>G</span> Git/GitHub
+                        </a>
+                        <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>T</span> TypeScript
+                        </a>
+                        <a href="https://reactjs.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>R</span> React
+                        </a>
+                        <a href="https://nextjs.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>N</span> Node.JS
+                        </a>
+                        <a href="https://vuejs.org/" target="_blank" rel="noopener noreferrer" class="tech-card">
+                            <span>V</span> Vue.JS
+                        </a>                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="edu-section">
+            <div class="section-label">SYSTEM_LOGS</div>
+            <h2 class="section-title"><span data-lang="edu-title">EXPERIENCE</span> <span class="accent"
+                    data-lang="edu-subtitle">& EDU.</span>
+            </h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <span class="timeline-date">2022 - 2026</span>
+                        <span class="timeline-badge">EDUCATION</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>ÇUKUROVA UNIVERSITY</h3>
+                        <h4 data-lang="edu-1-role">Electrical-Electronics Engineering (B.Sc.)</h4>
+                        <p data-lang="edu-1-desc">Senior Year Student (4th Grade). Specialized in Circuit Design, Power
+                            Systems, and Digital Signal Processing.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <span class="timeline-date">2025</span> <span class="timeline-badge"
+                            style="border-color: #fff; color: #fff;">WORK</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>ISKAR TECHNOLOGIES</h3>
+                        <h4 data-lang="edu-2-role">R&D Intern (PCB Design)</h4>
+                        <p data-lang="edu-2-desc">Prototype development and multilayer PCB design within the R&D
+                            department. Experience with Altium Designer.</p>
+                        <div class="job-techs">
+                            <span>ALTIUM</span> <span>PCB</span> <span>PROTOTYPING</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <span class="timeline-date">2024</span>
+                        <span class="timeline-badge" style="border-color: #fff; color: #fff;">WORK</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>STATU.CO</h3>
+                        <h4 data-lang="edu-3-role">Front-end Developer</h4>
+                        <p data-lang="edu-3-desc">Developed user interfaces for blockchain projects like gotabit.io
+                            using modern web technologies.</p>
+                        <div class="job-techs">
+                            <span>REACT</span> <span>TYPESCRIPT</span> <span>WEB3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects-section">
+            <div class="section-label">SELECTED_WORKS</div>
+            <h2 class="section-title"><span data-lang="proj-title">FEATURED</span> <span class="accent"
+                    data-lang="proj-subtitle">PROJECTS</span>
+            </h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-tags">NEXT.JS / OBS / WEBSOCKET</div>
+                    <h3>STREAMDORO</h3>
+                    <p>Pomodoro timer built for Study With Me streamers. Real-time OBS overlay, 3 themes, 6 languages.</p>
+                    <a href="https://streamdoro.app" target="_blank" rel="noopener noreferrer"
+                        class="project-link">LIVE DEMO →</a>
+                </div>
+                <div class="project-card">
+                    <div class="project-tags">REACT NATIVE / EXPO / TYPESCRIPT / SUPABASE</div>
+                    <h3>SHAREROUTE</h3>
+                    <p>Mobile route planning and sharing app. Currently in development.</p>
+                    <span class="timeline-badge">COMING SOON</span>
+                </div>
+                <div class="project-card">
+                    <div class="project-tags">REACT / API / OVERLAY</div>
+                    <h3>FACEIT OVERLAY</h3>
+                    <p>Add Faceit ranks as an OBS overlay and track player statistics.</p>
+                    <a href="https://faceitoverlay.vercel.app" target="_blank" rel="noopener noreferrer"
+                        class="project-link">LIVE DEMO →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="youtube" class="youtube-section">
+            <div class="section-label">MEDIA</div>
+            <h2 class="section-title"><span data-lang="yt-title">LATEST</span> <span class="accent"
+                    data-lang="yt-subtitle">STREAM</span></h2>
+
+            <div class="stream-grid">
+                <div class="video-wrapper">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/G23_wkSJ2so"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="stream-info">
+                    <h3 data-lang="yt-desc-title">STREAM & CHAT</h3>
+                    <p data-lang="yt-desc-text">Join me while I work on open source projects, design PCBs, and discuss
+                        embedded systems engineering. Live coding sessions every week.</p>
+                    <div class="stream-stats">
+                        <div class="stat-item">
+                            <i class="fa-solid fa-users"></i>
+                            <span>1.2K+</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-video"></i>
+                            <span>50+ VIDS</span>
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/@mustafakemalz" target="_blank" class="yt-btn">
+                        <i class="fa-brands fa-youtube"></i> <span data-lang="yt-btn">VISIT CHANNEL</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="spotify" class="spotify-section">
+            <div class="section-label">NOW_PLAYING</div>
+            <h2 class="section-title"><span data-lang="spotify-title">RECENTLY</span> <span class="accent"
+                    data-lang="spotify-subtitle">PLAYED</span></h2>
+
+            <div class="widgets-grid">
+                <!-- Spotify Box -->
+                <div class="spotify-box">
+                    <div class="spotify-box-header">
+                        <div class="spotify-brand">
+                            <i class="fa-brands fa-spotify"></i>
+                            <span data-lang="spotify-source">Recently Listened Songs</span>
+                        </div>
+                    </div>
+
+                    <div class="spotify-tracks" id="spotify-tracks">
+                        <!-- Skeleton Loading -->
+                        <div class="spotify-row skeleton-row">
+                            <div class="skeleton-circle"></div>
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="spotify-row skeleton-row">
+                            <div class="skeleton-circle"></div>
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="spotify-row skeleton-row">
+                            <div class="skeleton-circle"></div>
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="spotify-row skeleton-row">
+                            <div class="skeleton-circle"></div>
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GitHub Box -->
+                <div class="github-box">
+                    <div class="github-box-header">
+                        <div class="github-brand">
+                            <i class="fa-brands fa-github"></i>
+                            <span data-lang="github-title">Recent Repositories</span>
+                        </div>
+                        <a href="https://github.com/mustafakemalz" target="_blank" class="github-profile-link">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+
+                    <div class="github-repos" id="github-repos">
+                        <!-- Skeleton Loading -->
+                        <div class="github-row skeleton-row">
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="github-row skeleton-row">
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="github-row skeleton-row">
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                        <div class="github-row skeleton-row">
+                            <div class="skeleton-info">
+                                <div class="skeleton-line skeleton-title"></div>
+                                <div class="skeleton-line skeleton-artist"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <div class="section-label">OFF_SCREEN</div>
+            <h2 class="section-title"><span data-lang="gallery-title">LIFE</span> <span class="accent"
+                    data-lang="gallery-subtitle">STYLE</span></h2>
+            <div class="gallery-grid">
+                <div class="gallery-item item-1">
+                    <div class="image-wrapper"><img src="assets/photo1.jpg" alt="Lab/Setup"
+                            onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1740&auto=format&fit=crop'">
+                    </div>
+                    <span class="img-caption">ENGINEERING LAB</span>
+                </div>
+                <div class="gallery-item item-2">
+                    <div class="image-wrapper"><img src="assets/photo2.jpg" alt="Coding"
+                            onerror="this.src='https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1740&auto=format&fit=crop'">
+                    </div>
+                    <span class="img-caption">SIMULATION</span>
+                </div>
+                <div class="gallery-item item-3">
+                    <div class="image-wrapper"><img src="assets/photo3.gif" alt="Hardware"
+                            onerror="this.src='https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1740&auto=format&fit=crop'">
+                    </div>
+                    <span class="img-caption">HARDWARE</span>
+                </div>
+                <div class="gallery-item item-4">
+                    <div class="image-wrapper"><img src="assets/photo4.jpg" alt="Travel"
+                            onerror="this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1721&auto=format&fit=crop'">
+                    </div>
+                    <span class="img-caption">FIELD WORK</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="section-label">GET_IN_TOUCH</div>
+            <h2 class="section-title"><span data-lang="contact-title">CONTACT</span> <span class="accent"
+                    data-lang="contact-subtitle">ME</span></h2>
+            <div class="contact-container">
+                <form id="contact-form" action="https://formspree.io/f/xeeozdyd" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="name" id="name" required placeholder=" ">
+                        <label for="name" data-lang="form-name">NAME</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" id="email" required placeholder=" ">
+                        <label for="email" data-lang="form-email">EMAIL</label>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" id="message" required placeholder=" "></textarea>
+                        <label for="message" data-lang="form-msg">MESSAGE</label>
+                    </div>
+                    <button type="submit" class="submit-btn" id="form-btn">
+                        <span data-lang="form-btn">SEND MESSAGE</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                    <p id="form-status"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="copyright">© <span id="year"></span> Mustafa Kemal. <span data-lang="footer-rights">All
+                        rights reserved.</span></div>
+                <div class="system-status"><span class="status-dot"></span>SYSTEM ONLINE</div>
+            </div>
+
+            <div class="footer-right">
+                <a href="https://github.com/mustafakemalz" target="_blank">GITHUB</a>
+                <a href="https://www.youtube.com/@mustafakemalz" target="_blank">YOUTUBE</a>
+                <a href="https://www.linkedin.com/in/mustafa-kemal-göçer-41409b255/" target="_blank">LINKEDIN</a>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://discord.com/users/465079638088089608" target="_blank" class="discord-card" id="discord-widget">
+        <div class="d-avatar-wrapper">
+            <img id="d-avatar"
+                src="https://cdn.discordapp.com/avatars/465079638088089608/4d1c60a280d4c5c824a85bbcb29625e1.webp"
+                alt="Profile">
+            <div id="d-status-indicator" class="d-status-dot offline"></div>
+        </div>
+        <div class="d-info">
+            <div class="d-header">
+                <span id="d-username">Loading...</span>
+                <div class="d-badges" id="d-badges">
+                    <!-- Badges injected by JS -->
+                </div>
+            </div>
+            <div id="d-custom-status" class="d-custom-status hidden"></div>
+            <div class="d-activity">
+                <span id="d-activity-text">Connecting to Discord...</span>
+                <div id="spotify-wave" class="hidden">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </div>
+    </a>
+
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
+<!-- finito -->
