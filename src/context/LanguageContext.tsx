@@ -98,7 +98,25 @@ const translations: Record<Language, Record<string, string>> = {
     "footer-quote": "Building bridges between hardware and software.",
     "footer-rights": "All rights reserved",
     "last-updated-prefix": "Last updated:",
-    "back-home": "← Back to home"
+    "back-home": "← Back to home",
+    "sistem-hero-badge": "WORKSTATION",
+    "sistem-hero-title": "Specs & Setup",
+    "sistem-hero-desc": "Detailed hardware configuration of my development and streaming workspace.",
+    "status-standby": "SYSTEM STANDBY",
+    "status-online": "SYSTEM ONLINE",
+    "watch-on-kick": "WATCH ON KICK.COM",
+    "cat-core": "CORE COMPONENTS",
+    "cat-peripherals": "PERIPHERALS",
+    "spec-cpu": "PROCESSOR (CPU)",
+    "spec-gpu": "GRAPHICS CARD (GPU)",
+    "spec-ram": "MEMORY (RAM)",
+    "spec-mobo": "MOTHERBOARD",
+    "spec-storage": "STORAGE",
+    "spec-case": "CASE & POWER SUPPLY",
+    "spec-monitor1": "PRIMARY MONITOR",
+    "spec-monitor2": "SECONDARY MONITOR",
+    "spec-keyboard": "KEYBOARD",
+    "spec-mouse": "MOUSE"
   },
   tr: {
     "hero-greeting": "Merhaba, ben Mustafa Kemal.",
@@ -189,7 +207,25 @@ const translations: Record<Language, Record<string, string>> = {
     "footer-quote": "Donanım ve yazılım arasında köprüler kuruyorum.",
     "footer-rights": "Tüm hakları saklıdır",
     "last-updated-prefix": "Son güncelleme:",
-    "back-home": "← Ana sayfaya dön"
+    "back-home": "← Ana sayfaya dön",
+    "sistem-hero-badge": "ÇALIŞMA ALANI",
+    "sistem-hero-title": "Sistem Özellikleri",
+    "sistem-hero-desc": "Geliştirme ve yayın süreçlerinde kullandığım bilgisayar donanımı.",
+    "status-standby": "SİSTEM BEKLEMEDE",
+    "status-online": "SİSTEM ONLİNE",
+    "watch-on-kick": "KICK.COM'DA İZLE",
+    "cat-core": "İÇ DONANIM BİLEŞENLERİ",
+    "cat-peripherals": "ÇEVRE BİRİMLERİ",
+    "spec-cpu": "İŞLEMCİ (CPU)",
+    "spec-gpu": "EKRAN KARTI (GPU)",
+    "spec-ram": "BELLEK (RAM)",
+    "spec-mobo": "ANAKART",
+    "spec-storage": "DEPOLAMA",
+    "spec-case": "KASA & GÜÇ KAYNAĞI",
+    "spec-monitor1": "I. EKRAN",
+    "spec-monitor2": "II. EKRAN",
+    "spec-keyboard": "KLAVYE",
+    "spec-mouse": "MOUSE"
   }
 };
 
