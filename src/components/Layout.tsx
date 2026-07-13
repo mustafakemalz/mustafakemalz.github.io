@@ -108,6 +108,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Link to="/journey" onClick={closeMobileMenu} data-lang="nav-journey">
             {t('nav-journey')}
           </Link>
+          <Link to="/sistem" onClick={closeMobileMenu} data-lang="sistem-hero-badge">
+            {t('sistem-hero-badge')}
+          </Link>
           <a href="#stream" onClick={(e) => handleNavClick(e, '#stream')} data-lang="nav-stream">
             {t('nav-stream')}
           </a>
@@ -171,6 +174,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </a>
             <Link to="/journey" onClick={closeMobileMenu} data-lang="nav-journey">
               {t('nav-journey')}
+            </Link>
+            <Link to="/sistem" onClick={closeMobileMenu} data-lang="sistem-hero-badge">
+              {t('sistem-hero-badge')}
             </Link>
             <a href="#stream" onClick={(e) => handleNavClick(e, '#stream')} data-lang="nav-stream">
               {t('nav-stream')}

@@ -7,6 +7,7 @@ import { useGlobalScrollReveal } from './hooks/useGlobalScrollReveal';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Journey from './pages/Journey';
+import Sistem from './pages/Sistem';
 
 const AppContent: React.FC = () => {
   useGlobalScrollReveal();
@@ -63,6 +64,7 @@ const AppContent: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/journey" element={<Journey />} />
+        <Route path="/sistem" element={<Sistem />} />
       </Routes>
     </Layout>
   );
