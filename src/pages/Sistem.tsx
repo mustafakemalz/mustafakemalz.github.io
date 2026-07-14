@@ -55,16 +55,7 @@ export const Sistem: React.FC = () => {
             rel="noopener noreferrer"
             className={`kick-showcase-card reveal ${isLive ? 'live-mode' : 'offline-mode'}`}
           >
-            {/* Status Badge Overlay */}
-            <div className="stream-badge-overlay">
-              <span className="pulse-dot"></span>
-              {isLive && (
-                <span id="kick-status-text">
-                  {t('status-online')}
-                </span>
-              )}
-            </div>
-
+        
             {/* Hover Overlay */}
             <div className="kick-hover-overlay">
               <div className="kick-logo-wrapper">

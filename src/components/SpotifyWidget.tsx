@@ -19,7 +19,10 @@ export const SpotifyWidget: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  const SPOTIFY_API_URL = 'https://mustafakemalz-spotify-api.vercel.app/api/spotify';
+  const SPOTIFY_API_URL =
+    window.location.hostname === 'mustafakemalz.github.io'
+      ? 'https://mustafakemalz-spotify-api.vercel.app/api/spotify'
+      : '/api/spotify';
 
   useEffect(() => {
     const fetchTracks = async () => {
