@@ -48,6 +48,9 @@ export default async function handler(req, res) {
     // CORS headers — restrict to own domain
     const allowedOrigins = [
         'https://mustafakemalz.github.io',
+        'https://muskz.tech',
+        'http://localhost:5173',
+        'http://localhost:3000',
         'http://localhost:5500',
         'http://127.0.0.1:5500'
     ];
