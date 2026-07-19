@@ -288,12 +288,33 @@
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+}
+
+.spec-card[href] {
+    cursor: pointer;
 }
 
 .spec-card:hover {
     background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
+}
+
+.spec-external-icon {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--sub-text);
+    opacity: 0.3;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+}
+
+.spec-card:hover .spec-external-icon {
+    color: var(--accent-color);
+    opacity: 1;
+    transform: translate(2px, -2px);
 }
 
 .spec-card::before {

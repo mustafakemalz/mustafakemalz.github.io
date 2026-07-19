@@ -2,6 +2,90 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from '../context/LanguageContext';
 import './Sistem.css';
 
+interface SpecItem {
+  icon: string;
+  labelKey: string;
+  value: string;
+  details: string;
+  url?: string;
+}
+
+const coreSpecs: SpecItem[] = [
+  {
+    icon: 'fa-solid fa-microchip',
+    labelKey: 'spec-cpu',
+    value: 'AMD Ryzen 7 7500X3D',
+    details: 'Gaming & Workstation Processor',
+    url: 'https://www.amazon.com.tr/AMD-RYZEN-7500X3D-4-0GHZ-TRAY/dp/B0GVNKPX8L/ref=sr_1_1?sr=8-1'
+  },
+  {
+    icon: 'fa-solid fa-vr-cardboard',
+    labelKey: 'spec-gpu',
+    value: 'AMD Radeon RX 9060 XT',
+    details: 'High Performance Graphics Card',
+    url: 'https://www.amazon.com.tr/GIGABYTE-Radeon-GAMING-Ekran-Kart%C4%B1/dp/B0F7HTR8DQ/ref=sr_1_3?sr=8-3'
+  },
+  {
+    icon: 'fa-solid fa-memory',
+    labelKey: 'spec-ram',
+    value: '32 GB RAM',
+    details: 'DDR5 High Speed Memory',
+    url: 'https://www.amazon.com.tr/XPG-PC5-48000-288-Pins-Masa%C3%BCst%C3%BC-AX5U6000C3016G-DTLABRBK/dp/B0CCK6P1HR/ref=sr_1_1?__mk_tr_TR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&sr=8-1'
+  },
+  {
+    icon: 'fa-solid fa-folder-open',
+    labelKey: 'spec-mobo',
+    value: 'MSI PRO B650M-E 6800MHz',
+    details: 'OC M.2 AM5 mATX',
+    url: 'https://www.amazon.com.tr/MSI-PRO-B650M-6800MHZ-USB3-2/dp/B0DTHK5YS9/ref=sr_1_2?__mk_tr_TR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&sr=8-2'
+  },
+  {
+    icon: 'fa-solid fa-hard-drive',
+    labelKey: 'spec-storage',
+    value: 'Kingston 1TB NV3 NVMe',
+    details: 'Gen4 (6000MB/s Read - 4000MB/s Write)',
+    url: 'https://www.amazon.com.tr/Kingston-2280-NVMe-SNV3S-1000G/dp/B0DBR3DZWG/ref=sr_1_1?__mk_tr_TR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&sr=8-1'
+  },
+  {
+    icon: 'fa-solid fa-plug',
+    labelKey: 'spec-case',
+    value: 'Cougar MX220 RGB 650W',
+    details: '80+ Siyah Mesh USB 3.2 Mid Tower',
+    url: 'https://www.amazon.com.tr/Cougar-CGR-2AC8B-RGB-Mid-Tower-Temperli-Gaming/dp/B0GL3JK6QF/ref=sr_1_1?__mk_tr_TR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&sr=8-1'
+  }
+];
+
+const peripheralSpecs: SpecItem[] = [
+  {
+    icon: 'fa-solid fa-desktop',
+    labelKey: 'spec-monitor1',
+    value: 'Dell Alienware AW2525HM',
+    details: '24.5" 320Hz 0.5ms Full HD',
+    url: 'https://www.amazon.com.tr/Alienware-AW2525HM-Adaptive-Gaming-Monit%C3%B6r/dp/B0FH5NMXHK/ref=sr_1_4?__mk_tr_TR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&sr=8-4'
+  },
+  {
+    icon: 'fa-solid fa-desktop',
+    labelKey: 'spec-monitor2',
+    value: 'Samsung T450',
+    details: '24" 75Hz 5ms FHD IPS LED',
+    url: 'https://www.google.com/search?q=Samsung+T450'
+  },
+  {
+    icon: 'fa-solid fa-keyboard',
+    labelKey: 'spec-keyboard',
+    value: 'Wraith W60 Ciela',
+    details: 'Mechanical Gaming Keyboard',
+    url: 'https://wraithesports.com/products/wraith-w60?variant=49637256233153'
+  },
+  {
+    icon: 'fa-solid fa-mouse',
+    labelKey: 'spec-mouse',
+    value: 'ATK Mad R 8K',
+    details: 'Ultra Lightweight 8K Polling',
+    url: 'https://www.atk.store/products/vxe-mad-r-series-wireless-mouse?srsltid=AfmBOorHMQ3fFWkMaTD3tNLUiFmaFvO0gAqST8ppBzx7OmdhAlnDNiyg'
+  }
+];
+
 export const Sistem: React.FC = () => {
   const { t } = useTranslation();
   const [isLive, setIsLive] = useState(false);
@@ -32,6 +116,31 @@ export const Sistem: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const renderSpecCard = (spec: SpecItem) => {
+    const CardTag = spec.url ? 'a' : 'div';
+    const cardProps = spec.url
+      ? { href: spec.url, target: '_blank', rel: 'noopener noreferrer' }
+      : {};
+
+    return (
+      <CardTag key={spec.labelKey} className="spec-card" {...cardProps}>
+        <div className="spec-icon">
+          <i className={spec.icon}></i>
+        </div>
+        <div className="spec-info">
+          <span className="spec-label" data-lang={spec.labelKey}>
+            {t(spec.labelKey)}
+          </span>
+          <span className="spec-value">{spec.value}</span>
+          <span className="spec-details">{spec.details}</span>
+        </div>
+        {spec.url && (
+          <i className="fa-solid fa-arrow-up-right-from-square spec-external-icon"></i>
+        )}
+      </CardTag>
+    );
+  };
+
   return (
     <>
       <div className="system-container">
@@ -55,12 +164,11 @@ export const Sistem: React.FC = () => {
             rel="noopener noreferrer"
             className={`kick-showcase-card reveal ${isLive ? 'live-mode' : 'offline-mode'}`}
           >
-        
             {/* Hover Overlay */}
             <div className="kick-hover-overlay">
               <div className="kick-logo-wrapper">
                 <svg width="50" height="50" viewBox="0 0 24 24" fill="#53fc18" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 3H9V7H11V5H13V3H19V9H17V11H15V13H17V15H19V21H13V19H11V17H9V21H3V3Z"/>
+                  <path d="M3 3H9V7H11V5H13V3H19V9H17V11H15V13H17V15H19V21H13V19H11V17H9V21H3V3Z" />
                 </svg>
               </div>
               <span className="hover-action-text" data-lang="watch-on-kick">
@@ -89,83 +197,7 @@ export const Sistem: React.FC = () => {
                 {t('cat-core')}
               </div>
               <div className="specs-grid">
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-microchip"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-cpu">
-                      {t('spec-cpu')}
-                    </span>
-                    <span className="spec-value">AMD Ryzen 7 7500X3D</span>
-                    <span className="spec-details">Gaming & Workstation Processor</span>
-                  </div>
-                </div>
-
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-vr-cardboard"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-gpu">
-                      {t('spec-gpu')}
-                    </span>
-                    <span className="spec-value">AMD Radeon RX 9060 XT</span>
-                    <span className="spec-details">High Performance Graphics Card</span>
-                  </div>
-                </div>
-
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-memory"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-ram">
-                      {t('spec-ram')}
-                    </span>
-                    <span className="spec-value">32 GB RAM</span>
-                    <span className="spec-details">DDR5 High Speed Memory</span>
-                  </div>
-                </div>
-
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-folder-open"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-mobo">
-                      {t('spec-mobo')}
-                    </span>
-                    <span className="spec-value">MSI PRO B650M-E 6800MHz</span>
-                    <span className="spec-details">OC M.2 AM5 mATX</span>
-                  </div>
-                </div>
-
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-hard-drive"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-storage">
-                      {t('spec-storage')}
-                    </span>
-                    <span className="spec-value">Kingston 1TB NV3 NVMe</span>
-                    <span className="spec-details">Gen4 (6000MB/s Read - 4000MB/s Write)</span>
-                  </div>
-                </div>
-
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-plug"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-case">
-                      {t('spec-case')}
-                    </span>
-                    <span className="spec-value">Cougar MX220 RGB 650W</span>
-                    <span className="spec-details">80+ Siyah Mesh USB 3.2 Mid Tower</span>
-                  </div>
-                </div>
+                {coreSpecs.map(renderSpecCard)}
               </div>
             </div>
 
@@ -175,57 +207,7 @@ export const Sistem: React.FC = () => {
                 {t('cat-peripherals')}
               </div>
               <div className="specs-grid">
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-desktop"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-monitor1">
-                      {t('spec-monitor1')}
-                    </span>
-                    <span className="spec-value">Dell Alienware AW2525HM</span>
-                    <span className="spec-details">24.5" 320Hz 0.5ms Full HD</span>
-                  </div>
-                </div>
-
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-desktop"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-monitor2">
-                      {t('spec-monitor2')}
-                    </span>
-                    <span className="spec-value">Samsung T450</span>
-                    <span className="spec-details">24" 75Hz 5ms FHD IPS LED</span>
-                  </div>
-                </div>
-
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-keyboard"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-keyboard">
-                      {t('spec-keyboard')}
-                    </span>
-                    <span className="spec-value">Wraith W60 Ciela</span>
-                    <span className="spec-details">Mechanical Gaming Keyboard</span>
-                  </div>
-                </div>
-
-                <div className="spec-card">
-                  <div className="spec-icon">
-                    <i className="fa-solid fa-mouse"></i>
-                  </div>
-                  <div className="spec-info">
-                    <span className="spec-label" data-lang="spec-mouse">
-                      {t('spec-mouse')}
-                    </span>
-                    <span className="spec-value">ATK Mad R 8K</span>
-                    <span className="spec-details">Ultra Lightweight 8K Polling</span>
-                  </div>
-                </div>
+                {peripheralSpecs.map(renderSpecCard)}
               </div>
             </div>
           </div>
