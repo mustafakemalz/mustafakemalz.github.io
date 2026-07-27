@@ -57,6 +57,20 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     const isHomePage = location.pathname === '/';
 
+    // Handle scroll to top for Brand Logo / Home link
+    if (targetId === '#' || targetId === '' || targetId === '#top') {
+      if (isHomePage) {
+        if ((window as any).lenis) {
+          (window as any).lenis.scrollTo(0, { duration: 1.2 });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      } else {
+        navigate('/');
+      }
+      return;
+    }
+
     if (isHomePage) {
       const targetEl = document.querySelector(targetId);
       if (targetEl) {
@@ -216,7 +230,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       {/* ═══════════════ DISCORD WIDGET (Bottom-right) ═══════════════ */}
-      <DiscordWidget />
+      {!['/link', '/links', '/hub', '/linktree'].includes(location.pathname) && <DiscordWidget />}
     </>
   );
 };

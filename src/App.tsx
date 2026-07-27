@@ -8,6 +8,7 @@ import Layout from './components/Layout';
 import Home from './pages/Home';
 import Journey from './pages/Journey';
 import Sistem from './pages/Sistem';
+import LinkHub from './pages/LinkHub';
 
 const AppContent: React.FC = () => {
   useGlobalScrollReveal();
@@ -63,6 +64,10 @@ const AppContent: React.FC = () => {
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/link" element={<LinkHub />} />
+        <Route path="/links" element={<LinkHub />} />
+        <Route path="/hub" element={<LinkHub />} />
+        <Route path="/linktree" element={<LinkHub />} />
         <Route path="/journey" element={<Journey />} />
         <Route path="/sistem" element={<Sistem />} />
       </Routes>
