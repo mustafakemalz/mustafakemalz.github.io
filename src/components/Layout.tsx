@@ -230,7 +230,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       {/* ═══════════════ DISCORD WIDGET (Bottom-right) ═══════════════ */}
-      {!['/link', '/links', '/hub', '/linktree'].includes(location.pathname) && <DiscordWidget />}
+      {!['/link', '/links', '/hub', '/linktree', '/card', '/vcard'].includes(location.pathname) && (
+        <DiscordWidget />
+      )}
     </>
   );
 };
