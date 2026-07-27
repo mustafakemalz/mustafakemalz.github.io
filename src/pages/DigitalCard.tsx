@@ -101,8 +101,8 @@ END:VCARD`;
               <div className="card-back-stripe" />
 
               <div className="card-back-sig-bar">
-                <span className="card-back-sig-url">mustafakemalz.github.io/card</span>
-                <span className="card-back-sig-cvv">777</span>
+                <span className="card-back-sig-url">kafam biraz karışık</span>
+                <span className="card-back-sig-cvv">031</span>
               </div>
 
               <div className="card-back-info-wrap">
