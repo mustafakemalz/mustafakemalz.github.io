@@ -29,6 +29,15 @@ export const Home: React.FC = () => {
       window.history.replaceState({}, document.title);
 
       const timer = setTimeout(() => {
+        if (targetId === '#' || targetId === '' || targetId === '#top') {
+          if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(0, { duration: 1.2 });
+          } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+          return;
+        }
+
         const targetEl = document.querySelector(targetId);
         if (targetEl) {
           if ((window as any).lenis) {
