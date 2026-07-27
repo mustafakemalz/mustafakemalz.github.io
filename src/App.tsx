@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Journey from './pages/Journey';
 import Sistem from './pages/Sistem';
 import LinkHub from './pages/LinkHub';
+import DigitalCard from './pages/DigitalCard';
 
 const AppContent: React.FC = () => {
   useGlobalScrollReveal();
@@ -68,6 +69,8 @@ const AppContent: React.FC = () => {
         <Route path="/links" element={<LinkHub />} />
         <Route path="/hub" element={<LinkHub />} />
         <Route path="/linktree" element={<LinkHub />} />
+        <Route path="/card" element={<DigitalCard />} />
+        <Route path="/vcard" element={<DigitalCard />} />
         <Route path="/journey" element={<Journey />} />
         <Route path="/sistem" element={<Sistem />} />
       </Routes>
