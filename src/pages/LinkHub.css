@@ -149,3 +149,20 @@
   transform: rotate(45deg) translateX(2px) scale(1.08);
   box-shadow: 0 4px 12px var(--brand-glow, rgba(0, 0, 0, 0.3));
 }
+
+/* ════════ LIGHT THEME OVERRIDES FOR LINK HUB ════════ */
+[data-theme="light"] .hub-link-item {
+  background-color: rgba(0, 0, 0, 0.035);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #111214;
+}
+
+[data-theme="light"] .hub-link-item:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .hub-link-arrow {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: #4b5563;
+}
