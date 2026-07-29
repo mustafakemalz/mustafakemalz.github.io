@@ -10,6 +10,7 @@ import Journey from './pages/Journey';
 import Sistem from './pages/Sistem';
 import LinkHub from './pages/LinkHub';
 import DigitalCard from './pages/DigitalCard';
+import NotFound from './pages/NotFound';
 
 const AppContent: React.FC = () => {
   useGlobalScrollReveal();
@@ -73,6 +74,7 @@ const AppContent: React.FC = () => {
         <Route path="/vcard" element={<DigitalCard />} />
         <Route path="/journey" element={<Journey />} />
         <Route path="/sistem" element={<Sistem />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
   );

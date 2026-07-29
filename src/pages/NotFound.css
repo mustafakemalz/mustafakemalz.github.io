@@ -1,0 +1,114 @@
+.not-found-container {
+  min-height: calc(85vh - 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Ambient glow using site's Apple Blue accent tokens */
+.not-found-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, var(--accent-glow, rgba(10, 132, 255, 0.25)) 0%, rgba(10, 132, 255, 0.03) 50%, transparent 75%);
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.not-found-canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0 1.5rem 0;
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.not-found-canvas-wrapper canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.not-found-title {
+  font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--foreground-heading);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.not-found-desc {
+  font-size: clamp(0.95rem, 2vw, 1.125rem);
+  color: var(--foreground-muted);
+  max-width: 520px;
+  line-height: 1.65;
+  margin-bottom: 2.25rem;
+  font-weight: 400;
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Primary Button with precision baseline alignment */
+.not-found-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.6rem;
+  border-radius: var(--radius-pill, 980px);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--accent, #0a84ff);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px var(--accent-glow, rgba(10, 132, 255, 0.25));
+  text-decoration: none;
+  transition: all 0.4s var(--ease-apple, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.not-found-btn-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  display: block;
+  transform: translateY(0.5px);
+  transition: transform 0.3s var(--ease-apple, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.not-found-btn-primary span {
+  display: inline-block;
+  transform: translateY(-0.5px);
+}
+
+.not-found-btn-primary:hover {
+  background: var(--accent-hover, #2997ff);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--accent-glow, rgba(10, 132, 255, 0.4));
+  color: #ffffff;
+}
+
+.not-found-btn-primary:hover .not-found-btn-icon {
+  transform: translateY(0.5px) translateX(-3px);
+}
+
+.not-found-btn-primary:active {
+  transform: translateY(0);
+  scale: 0.98;
+}

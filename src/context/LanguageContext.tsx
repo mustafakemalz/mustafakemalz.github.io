@@ -116,7 +116,11 @@ const translations: Record<Language, Record<string, string>> = {
     "spec-monitor1": "PRIMARY MONITOR",
     "spec-monitor2": "SECONDARY MONITOR",
     "spec-keyboard": "KEYBOARD",
-    "spec-mouse": "MOUSE"
+    "spec-mouse": "MOUSE",
+    "not-found-badge": "ERROR 404 // ROUTE NOT FOUND",
+    "not-found-title": "Page Not Found",
+    "not-found-desc": "The page you are looking for might have been moved, renamed, or does not exist.",
+    "not-found-back": "Back to Home"
   },
   tr: {
     "hero-greeting": "Merhaba, ben Mustafa Kemal.",
@@ -225,7 +229,11 @@ const translations: Record<Language, Record<string, string>> = {
     "spec-monitor1": "I. EKRAN",
     "spec-monitor2": "II. EKRAN",
     "spec-keyboard": "KLAVYE",
-    "spec-mouse": "MOUSE"
+    "spec-mouse": "MOUSE",
+    "not-found-badge": "HATA 404 // SAYFA BULUNAMADI",
+    "not-found-title": "Aradığınız Sayfa Bulunamadı",
+    "not-found-desc": "Aradığınız sayfa kaldırılmış, adı değiştirilmiş veya hiç var olmamış olabilir.",
+    "not-found-back": "Ana Sayfaya Dön"
   }
 };
 
