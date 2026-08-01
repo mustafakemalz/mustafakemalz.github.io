@@ -12,6 +12,15 @@ import LinkHub from './pages/LinkHub';
 import DigitalCard from './pages/DigitalCard';
 import NotFound from './pages/NotFound';
 
+const ExternalRedirect: React.FC<{ url: string }> = ({ url }) => {
+  useEffect(() => {
+    window.location.href = url;
+  }, [url]);
+  return null;
+};
+
+const LINKEDIN_URL = "https://www.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255/";
+
 const AppContent: React.FC = () => {
   useGlobalScrollReveal();
   const { pathname } = useLocation();
@@ -74,6 +83,9 @@ const AppContent: React.FC = () => {
         <Route path="/vcard" element={<DigitalCard />} />
         <Route path="/journey" element={<Journey />} />
         <Route path="/sistem" element={<Sistem />} />
+        <Route path="/linkedin" element={<ExternalRedirect url={LINKEDIN_URL} />} />
+        <Route path="/in" element={<ExternalRedirect url={LINKEDIN_URL} />} />
+        <Route path="/li" element={<ExternalRedirect url={LINKEDIN_URL} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
