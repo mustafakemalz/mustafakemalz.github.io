@@ -96,19 +96,21 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       <div className="project-body">
         <div className="project-tags">{tags}</div>
         <h3>{title}</h3>
-        <p>{description}</p>
-        {comingSoon ? (
-          <span className="project-badge">Coming Soon</span>
-        ) : link ? (
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="project-link"
-          >
-            {linkText}
-          </a>
-        ) : null}
+        <p className="project-desc">{description}</p>
+        <div className="project-footer">
+          {comingSoon ? (
+            <span className="project-badge">Coming Soon</span>
+          ) : link ? (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-link"
+            >
+              {linkText}
+            </a>
+          ) : null}
+        </div>
       </div>
     </article>
   );

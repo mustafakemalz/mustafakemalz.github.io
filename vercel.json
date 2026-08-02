@@ -1,9 +1,4 @@
 {
-  "redirects": [
-    { "source": "/linkedin", "destination": "https://www.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255/", "permanent": true },
-    { "source": "/in", "destination": "https://www.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255/", "permanent": true },
-    { "source": "/li", "destination": "https://www.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255/", "permanent": true }
-  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }

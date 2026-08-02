@@ -41,7 +41,7 @@
     --transition-slow: 1.2s var(--ease-out-expo);
     --font: "Inter", "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
     --max-width: 1080px;
-    --section-padding: clamp(6rem, 14vw, 10rem);
+    --section-padding: clamp(5rem, 9vw, 7rem);
 }
 
 /* --- LIGHT THEME --- */
@@ -380,6 +380,7 @@ ul, ol {
     flex-direction: column;
     gap: 1.5rem;
     padding: var(--section-padding) 0;
+    scroll-margin-top: 80px;
 }
 
 .section-alt {
@@ -849,6 +850,28 @@ ul, ol {
     border: 1px solid var(--border);
 }
 
+.cv-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.125rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--foreground);
+    background: var(--muted-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    transition: all 0.3s var(--ease-apple);
+    text-decoration: none;
+}
+
+.cv-download-btn:hover {
+    background: var(--input-bg);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 /* ═══════════════════════════════════════════
    PROJECTS — Apple showcase cards
    ═══════════════════════════════════════════ */
@@ -975,6 +998,7 @@ ul, ol {
     padding: 1.1rem 1.15rem 1.25rem;
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
     gap: 0.55rem;
 }
 
@@ -1001,10 +1025,20 @@ ul, ol {
     color: var(--foreground-heading);
 }
 
-.project-card p {
+.project-card p,
+.project-desc {
     font-size: 0.875rem;
     color: var(--foreground-muted);
     line-height: 1.55;
+    flex: 1 1 auto;
+}
+
+.project-footer {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    min-height: 2rem;
 }
 
 .project-link {
@@ -1014,7 +1048,6 @@ ul, ol {
     font-size: 0.9375rem;
     font-weight: 500;
     color: var(--accent);
-    margin-top: 0.5rem;
     transition: opacity 0.5s var(--ease-apple), gap 0.5s var(--ease-apple);
 }
 
@@ -1034,7 +1067,6 @@ ul, ol {
     color: var(--foreground-muted);
     border: 1px solid var(--border);
     width: fit-content;
-    margin-top: 0.5rem;
 }
 
 /* ═══════════════════════════════════════════
