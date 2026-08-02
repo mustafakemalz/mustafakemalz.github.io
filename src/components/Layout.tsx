@@ -74,13 +74,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     if (isHomePage) {
       const targetEl = document.querySelector(targetId);
       if (targetEl) {
+        const navOffset = window.innerWidth <= 768 ? -64 : -72;
         if ((window as any).lenis) {
           (window as any).lenis.scrollTo(targetEl, {
-            offset: -72,
+            offset: navOffset,
             duration: 1.2,
           });
         } else {
-          const targetY = targetEl.getBoundingClientRect().top + window.scrollY - 72;
+          const targetY = targetEl.getBoundingClientRect().top + window.scrollY + navOffset;
           window.scrollTo({
             top: targetY,
             behavior: 'smooth',
@@ -230,7 +231,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       {/* ═══════════════ DISCORD WIDGET (Bottom-right) ═══════════════ */}
-      {!['/link', '/links', '/hub', '/linktree', '/card', '/vcard'].includes(location.pathname) && (
+      {!['/link', '/links', '/hub', '/linktree', '/card', '/vcard', '/cv', '/resume', '/ozgecmis', '/linkedin', '/in', '/li'].includes(location.pathname) && (
         <DiscordWidget />
       )}
     </>
