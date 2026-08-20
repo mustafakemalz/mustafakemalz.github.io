@@ -14,14 +14,7 @@ import CV from './pages/CV';
 import LinkedInRedirect from './pages/LinkedInRedirect';
 import NotFound from './pages/NotFound';
 
-const ExternalRedirect: React.FC<{ url: string }> = ({ url }) => {
-  useEffect(() => {
-    window.location.href = url;
-  }, [url]);
-  return null;
-};
 
-const LINKEDIN_URL = "https://www.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255/";
 
 const AppContent: React.FC = () => {
   useGlobalScrollReveal();
