@@ -850,28 +850,6 @@ ul, ol {
     border: 1px solid var(--border);
 }
 
-.cv-download-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1.125rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--foreground);
-    background: var(--muted-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-pill);
-    transition: all 0.3s var(--ease-apple);
-    text-decoration: none;
-}
-
-.cv-download-btn:hover {
-    background: var(--input-bg);
-    border-color: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 /* ═══════════════════════════════════════════
    PROJECTS — Apple showcase cards
    ═══════════════════════════════════════════ */
