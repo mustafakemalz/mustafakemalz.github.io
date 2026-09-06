@@ -267,29 +267,6 @@ export const Home: React.FC = () => {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
               </a>
-              <a
-                href="/assets/cv.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="CV / Resume"
-                title="CV / Resume"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="16" y1="13" x2="8" y2="13" />
-                  <line x1="16" y1="17" x2="8" y2="17" />
-                  <polyline points="10 9 9 9 8 9" />
-                </svg>
-              </a>
             </nav>
           </div>
         </div>
@@ -446,20 +423,9 @@ export const Home: React.FC = () => {
 
       {/* EXPERIENCE & EDUCATION */}
       <section id="experience" className="section reveal" aria-labelledby="experience-heading">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
-          <h2 id="experience-heading" className="section-title" data-lang="exp-title" style={{ margin: 0 }}>
-            {t('exp-title')}
-          </h2>
-          <a
-            href="/assets/cv.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary"
-            data-lang="cv-download"
-          >
-            <span>{t('cv-download')}</span>
-          </a>
-        </div>
+        <h2 id="experience-heading" className="section-title" data-lang="exp-title">
+          {t('exp-title')}
+        </h2>
         <div className="experience-list">
           <div className="experience-item">
             <div className="exp-header">
