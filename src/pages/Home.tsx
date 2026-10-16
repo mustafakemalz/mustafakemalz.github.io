@@ -298,8 +298,8 @@ export const Home: React.FC = () => {
         </p>
         <div className="stats-grid reveal-stagger">
           <StatCard count={4} suffix="+" label={t('stat-years')} />
-          <StatCard count={5} suffix="+" label={t('stat-projects')} />
-          <StatCard count={12} suffix="+" label={t('stat-tech')} />
+          <StatCard count={8} suffix="+" label={t('stat-projects')} />
+          <StatCard count={15} suffix="+" label={t('stat-tech')} />
         </div>
         <div className="badge-row">
           <span className="badge" data-lang="badge-1">
@@ -320,19 +320,22 @@ export const Home: React.FC = () => {
                 <i className="fa-solid fa-microchip"></i> STM32
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-microchip"></i> Arduino
+                <i className="fa-solid fa-microchip"></i> ESP32
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-microchip"></i> ESP32
+                <i className="fa-brands fa-raspberry-pi"></i> Raspberry Pi
               </span>
               <span className="skill-pill">
                 <i className="fa-solid fa-layer-group"></i> Altium Designer
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-wifi"></i> IoT
+                <i className="fa-solid fa-cube"></i> SolidWorks
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-bolt"></i> Power Systems
+                <i className="fa-solid fa-gears"></i> Automation Systems
+              </span>
+              <span className="skill-pill">
+                <i className="fa-solid fa-wifi"></i> IoT
               </span>
             </div>
           </div>
@@ -352,7 +355,33 @@ export const Home: React.FC = () => {
                 <i className="fa-solid fa-code"></i> TypeScript
               </span>
               <span className="skill-pill">
+                <i className="fa-solid fa-atom"></i> Electron
+              </span>
+              <span className="skill-pill">
+                <i className="fa-solid fa-usb"></i> USB HID / Reverse Eng
+              </span>
+              <span className="skill-pill">
                 <i className="fa-brands fa-github"></i> Open Source
+              </span>
+            </div>
+          </div>
+          <div className="skill-category">
+            <h3 data-lang="skill-cat-3">{t('skill-cat-3')}</h3>
+            <div className="skill-pills">
+              <span className="skill-pill">
+                <i className="fa-solid fa-brain"></i> Local AI / LLMs
+              </span>
+              <span className="skill-pill">
+                <i className="fa-solid fa-terminal"></i> Ollama
+              </span>
+              <span className="skill-pill">
+                <i className="fa-solid fa-wand-magic-sparkles"></i> AI Workflows
+              </span>
+              <span className="skill-pill">
+                <i className="fa-brands fa-discord"></i> Discord & Server Bots
+              </span>
+              <span className="skill-pill">
+                <i className="fa-solid fa-robot"></i> Automation Scripts
               </span>
             </div>
           </div>
@@ -388,7 +417,7 @@ export const Home: React.FC = () => {
           </div>
           <div className="service-card">
             <div className="service-icon">
-              <i className="fa-solid fa-wifi"></i>
+              <i className="fa-solid fa-gears"></i>
             </div>
             <span data-lang="svc-2">{t('svc-2')}</span>
           </div>
@@ -406,7 +435,7 @@ export const Home: React.FC = () => {
           </div>
           <div className="service-card">
             <div className="service-icon">
-              <i className="fa-solid fa-video"></i>
+              <i className="fa-solid fa-brain"></i>
             </div>
             <span data-lang="svc-5">{t('svc-5')}</span>
           </div>
@@ -427,6 +456,44 @@ export const Home: React.FC = () => {
           {t('exp-title')}
         </h2>
         <div className="experience-list">
+          <div className="experience-item">
+            <div className="exp-header">
+              <span className="exp-company">
+                <a
+                  href="https://elmantech.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="exp-company-link"
+                >
+                  ELMAN OTOMASYON
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7 17L17 7M17 7H7M17 7V17" />
+                  </svg>
+                </a>
+              </span>
+              <span className="exp-date">{language === 'tr' ? '2026 - GÜNÜMÜZ' : '2026 - PRESENT'}</span>
+            </div>
+            <div className="exp-role" data-lang="exp-0-role">
+              {t('exp-0-role')}
+            </div>
+            <p className="exp-desc" data-lang="exp-0-desc">
+              {t('exp-0-desc')}
+            </p>
+            <div className="exp-techs">
+              <span>AUTOMATION</span>
+              <span>R&D</span>
+              <span>ESP32</span>
+              <span>SOFTWARE</span>
+            </div>
+          </div>
           <div className="experience-item">
             <div className="exp-header">
               <span className="exp-company">ÇUKUROVA UNIVERSITY</span>
@@ -486,26 +553,35 @@ export const Home: React.FC = () => {
         <p className="section-text" data-lang="proj-text">
           {t('proj-text')}
         </p>
+
         <div className="projects-list">
+          <ProjectCard
+            title="OpenController"
+            tags="Electron · TypeScript · USB HID · Reverse Engineering"
+            description={t('proj-opencontroller-desc')}
+            link="https://github.com/mustafakemalz/opencontroller"
+            linkText="GitHub →"
+            visualClass="project-visual--opencontroller"
+          />
           <ProjectCard
             title="Streamdoro"
             tags="Next.js · OBS · WebSocket"
-            description="Pomodoro timer built for Study With Me streamers. Real-time OBS overlay, 3 themes, 6 languages."
+            description={t('proj-streamdoro-desc')}
             link="https://streamdoro.app"
             visualClass="project-visual--streamdoro"
           />
           <ProjectCard
-            title="ShareRoute"
-            tags="React Native · Expo · TypeScript · Supabase"
-            description="Mobile route planning and sharing app. Currently in development."
-            comingSoon={true}
-          />
-          <ProjectCard
             title="Fragstat"
             tags="React · API · Overlay"
-            description="Add Faceit ranks as an OBS overlay and track player statistics."
+            description={t('proj-fragstat-desc')}
             link="https://faceitoverlay.vercel.app"
             visualClass="project-visual--faceitoverlay"
+          />
+          <ProjectCard
+            title="ShareRoute"
+            tags="React Native · Expo · TypeScript · Supabase"
+            description={t('proj-shareroute-desc')}
+            comingSoon={true}
           />
         </div>
       </section>

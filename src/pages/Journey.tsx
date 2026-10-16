@@ -51,7 +51,10 @@ export const Journey: React.FC = () => {
     { year: '2024', titleKey: 'j-5-title', descKey: 'j-5-desc' },
     { year: '2025', titleKey: 'j-6-title', descKey: 'j-6-desc' },
     { year: '2025', titleKey: 'j-7-title', descKey: 'j-7-desc' },
-    { year: '∞', titleKey: 'j-8-title', descKey: 'j-8-desc', isFuture: true },
+    { year: '2026', titleKey: 'j-8-title', descKey: 'j-8-desc' },
+    { year: '2026', titleKey: 'j-9-title', descKey: 'j-9-desc' },
+    { year: '2026', titleKey: 'j-10-title', descKey: 'j-10-desc' },
+    { year: '∞', titleKey: 'j-11-title', descKey: 'j-11-desc', isFuture: true },
   ];
 
   return (
