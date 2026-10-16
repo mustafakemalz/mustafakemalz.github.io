@@ -808,6 +808,31 @@ ul, ol {
     text-transform: none;
 }
 
+.exp-company-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.exp-company-link:hover {
+    color: var(--accent);
+}
+
+.exp-company-link svg {
+    width: 0.75rem;
+    height: 0.75rem;
+    opacity: 0.7;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.exp-company-link:hover svg {
+    opacity: 1;
+    transform: translate(1px, -1px);
+}
+
 .exp-date {
     font-size: 0.8125rem;
     color: var(--foreground-muted);
@@ -855,9 +880,15 @@ ul, ol {
    ═══════════════════════════════════════════ */
 .projects-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
     align-items: stretch;
+}
+
+@media (max-width: 768px) {
+    .projects-list {
+        grid-template-columns: 1fr;
+    }
 }
 
 .project-card {
@@ -898,7 +929,7 @@ ul, ol {
 .project-visual {
     position: relative;
     width: 100%;
-    min-height: 96px;
+    min-height: 130px;
     background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--muted-bg) 100%);
     overflow: hidden;
 }
@@ -925,6 +956,14 @@ ul, ol {
     transform: translate3d(var(--card-media-x), var(--card-media-y), 0) scale(1.02);
 }
 
+.project-visual--opencontroller .project-visual-media {
+    background-image:
+        linear-gradient(180deg, rgba(5, 8, 20, 0.2), rgba(5, 8, 20, 0.5)),
+        url("/assets/opencontroller.png");
+    filter: blur(10px) saturate(1.15) brightness(0.72);
+    opacity: 0.9;
+}
+
 .project-visual--streamdoro .project-visual-media {
     background-image:
         linear-gradient(180deg, rgba(5, 8, 20, 0.18), rgba(5, 8, 20, 0.5)),
@@ -946,6 +985,10 @@ ul, ol {
     filter: saturate(1.08) brightness(0.9);
 }
 
+.project-card:hover .project-visual--opencontroller .project-visual-media {
+    filter: blur(0) saturate(1.08) brightness(0.92);
+}
+
 .project-card:hover .project-visual--streamdoro .project-visual-media {
     filter: blur(0) saturate(1.08) brightness(0.92);
 }
@@ -954,26 +997,8 @@ ul, ol {
     filter: blur(0) saturate(1.06) brightness(0.94);
 }
 
-.project-visual-inner {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 1rem;
-    font-size: clamp(0.85rem, 1.4vw, 1rem);
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--foreground-heading);
-    z-index: 1;
-    text-align: center;
-    word-break: break-word;
-    transform: translate3d(calc(var(--card-media-x) * 0.22), calc(var(--card-media-y) * 0.22), 0);
-    transition: transform 0.7s var(--ease-apple);
-}
-
 .project-body {
-    padding: 1.1rem 1.15rem 1.25rem;
+    padding: 1.15rem 1.2rem 1.25rem;
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
@@ -1008,15 +1033,16 @@ ul, ol {
     font-size: 0.875rem;
     color: var(--foreground-muted);
     line-height: 1.55;
-    flex: 1 1 auto;
+    flex-grow: 1;
+    margin-bottom: 0.5rem;
 }
 
 .project-footer {
     margin-top: auto;
-    padding-top: 0.5rem;
+    padding-top: 0.75rem;
     display: flex;
     align-items: center;
-    min-height: 2rem;
+    min-height: 2.25rem;
 }
 
 .project-link {

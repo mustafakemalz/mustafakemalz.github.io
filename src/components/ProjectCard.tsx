@@ -91,7 +91,6 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     >
       <div className={`project-visual ${visualClass}`}>
         <div className="project-visual-media" aria-hidden="true"></div>
-        <div className="project-visual-inner">{title}</div>
       </div>
       <div className="project-body">
         <div className="project-tags">{tags}</div>
