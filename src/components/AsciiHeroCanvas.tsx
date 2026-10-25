@@ -176,8 +176,8 @@ export const AsciiHeroCanvas: React.FC = () => {
         textMask = new Float32Array(total);
       }
 
-      const feather = W < 768 ? 64 : 92;
-      const minMask = W < 768 ? 0.14 : 0.04;
+      const feather = 36;
+      const minMask = 0.36;
 
       for (let y = 0; y < rows; y++) {
         const Y = y * ch + ch / 2;
@@ -360,14 +360,14 @@ export const AsciiHeroCanvas: React.FC = () => {
       const sx = kpx / cw;
       const sy = kpx / ch;
 
-      const g = lerp(cols * 0.24, 0, app) + dis * cols * 0.08;
+      const g = lerp(cols * 0.18, 0, app) + dis * cols * 0.08;
       const fl = prefersReducedMotion ? 0 : Math.sin(t * 0.85) * 0.65;
       const fr = prefersReducedMotion ? 0 : Math.sin(t * 0.85 + 2) * 0.65;
       const par = mx * 3.0;
 
-      // Asymmetric composition: shift hands focal point right-of-center on desktop so left-aligned hero text breathes cleanly
-      const centerXRatio = W >= 1024 ? 0.64 : W >= 720 ? 0.58 : 0.5;
-      const centerYRatio = W >= 768 ? 0.44 : 0.34;
+      // Balanced placement: keep both left and right hands clearly visible in the viewport at scrollY = 0
+      const centerXRatio = W >= 1024 ? 0.56 : 0.5;
+      const centerYRatio = W >= 768 ? 0.42 : 0.36;
       const ox = cols * centerXRatio - (HANDS_META.W / 2) * sx;
       const oy = rows * centerYRatio - (HANDS_META.H / 2) * sy + my * 2;
 
@@ -420,11 +420,12 @@ export const AsciiHeroCanvas: React.FC = () => {
           if (raw < 17 && dis === 0) continue;
 
           const X = x * cw + cw / 2;
-          let l = raw >= 17 ? Math.pow(raw / 255, 0.92) : 0;
+          const rawL = raw >= 17 ? Math.pow(raw / 255, 0.92) : 0;
+          let l = rawL;
 
-          // Smoothly attenuate ASCII luminance directly behind left-aligned hero typography
-          if (l > 0 && hasTextMask) {
-            l *= textMask[cellIdx];
+          // Smoothly attenuate ASCII luminance directly behind left-aligned hero typography without erasing characters
+          if (l > 0.06 && hasTextMask) {
+            l = Math.max(0.065, l * textMask[cellIdx]);
           }
 
           const on = l > 0.06 && (dis === 0 || hash(x, y, 5) >= dis);

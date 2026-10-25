@@ -406,6 +406,7 @@ ul, ol {
     letter-spacing: -0.035em;
     line-height: 1.04;
     color: var(--foreground-heading);
+    text-shadow: 0 2px 18px var(--bg), 0 0 8px var(--bg);
 }
 
 .hero-role {
@@ -414,6 +415,7 @@ ul, ol {
     font-weight: 400;
     color: var(--foreground-muted);
     letter-spacing: -0.01em;
+    text-shadow: 0 2px 18px var(--bg), 0 0 8px var(--bg);
 }
 
 .hero-lead {
@@ -422,6 +424,7 @@ ul, ol {
     color: var(--foreground);
     line-height: 1.65;
     max-width: 600px;
+    text-shadow: 0 2px 18px var(--bg), 0 0 8px var(--bg);
 }
 
 .hero-text-links {
