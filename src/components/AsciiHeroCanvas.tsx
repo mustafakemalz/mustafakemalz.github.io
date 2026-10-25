@@ -137,6 +137,25 @@ export const AsciiHeroCanvas: React.FC = () => {
       forceNextRender = true;
     };
 
+    let textBox = { x0: 0, y0: 0, x1: 0, y1: 0, active: false };
+
+    const updateTextBox = () => {
+      const infoEl = container.parentElement?.querySelector('.header-info');
+      if (!infoEl) {
+        textBox.active = false;
+        return;
+      }
+      const cRect = container.getBoundingClientRect();
+      const tRect = infoEl.getBoundingClientRect();
+      textBox = {
+        x0: tRect.left - cRect.left - 16,
+        y0: tRect.top - cRect.top - 12,
+        x1: tRect.right - cRect.left + 24,
+        y1: tRect.bottom - cRect.top + 12,
+        active: true,
+      };
+    };
+
     const handleResize = () => {
       if (!container || !canvas) return;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -157,6 +176,7 @@ export const AsciiHeroCanvas: React.FC = () => {
       off.width = cols;
       off.height = rows;
       o.imageSmoothingQuality = 'high';
+      updateTextBox();
       buildDotLayer();
       handleScroll();
     };
@@ -260,23 +280,24 @@ export const AsciiHeroCanvas: React.FC = () => {
 
       const isDark = themeRef.current !== 'light';
 
-      const app = lerp(0.32, 1, ease(cl(p / 0.62)));
+      const app = lerp(0.36, 1, ease(cl(p / 0.62)));
       const dis = ease(cl((p - 0.84) / 0.16)) * 0.9;
-      const touchVal = cl((p - 0.6) / 0.08) * (1 - cl((p - 0.84) / 0.1)) + touchImpulse * 0.8;
-      const touch = cl(touchVal, 0, 1);
 
-      const scaleFactor = W < 600 ? 1.25 : 1.45;
-      const kpx = Math.min((W / HANDS_META.W) * scaleFactor, (H * 0.65) / HANDS_META.H);
+      const scaleFactor = W < 600 ? 1.2 : 1.38;
+      const kpx = Math.min((W / HANDS_META.W) * scaleFactor, (H * 0.64) / HANDS_META.H);
       const sx = kpx / cw;
       const sy = kpx / ch;
 
-      const g = lerp(cols * 0.28, 0, app) + dis * cols * 0.08;
-      const fl = prefersReducedMotion ? 0 : Math.sin(t * 0.85) * 0.75;
-      const fr = prefersReducedMotion ? 0 : Math.sin(t * 0.85 + 2) * 0.75;
-      const par = mx * 3.5;
+      const g = lerp(cols * 0.24, 0, app) + dis * cols * 0.08;
+      const fl = prefersReducedMotion ? 0 : Math.sin(t * 0.85) * 0.65;
+      const fr = prefersReducedMotion ? 0 : Math.sin(t * 0.85 + 2) * 0.65;
+      const par = mx * 3.0;
 
-      const ox = cols / 2 - (HANDS_META.W / 2) * sx;
-      const oy = rows * 0.38 - (HANDS_META.H / 2) * sy + my * 2;
+      // Asymmetric composition: shift hands focal point right-of-center on desktop so left-aligned hero text breathes cleanly
+      const centerXRatio = W >= 900 ? 0.6 : W >= 680 ? 0.56 : 0.5;
+      const centerYRatio = W >= 768 ? 0.42 : 0.32;
+      const ox = cols * centerXRatio - (HANDS_META.W / 2) * sx;
+      const oy = rows * centerYRatio - (HANDS_META.H / 2) * sy + my * 2;
 
       o.globalCompositeOperation = 'source-over';
       o.fillStyle = '#000';
@@ -293,11 +314,6 @@ export const AsciiHeroCanvas: React.FC = () => {
 
       drawHalf(imgL, 0, -g, fl);
       drawHalf(imgR, HANDS_META.split, g, fr);
-
-      const sp = [
-        ox + par + ((HANDS_META.lt[0] + HANDS_META.rt[0]) / 2) * sx,
-        oy + ((HANDS_META.lt[1] + HANDS_META.rt[1]) / 2) * sy,
-      ];
 
       const imgData = o.getImageData(0, 0, cols, rows).data;
 
@@ -321,6 +337,7 @@ export const AsciiHeroCanvas: React.FC = () => {
 
       const t6 = Math.floor(t * 6);
       const t8 = Math.floor(t * 8);
+      const feather = 84;
 
       for (let y = 0; y < rows; y++) {
         const Y = y * ch + ch / 2;
@@ -330,11 +347,25 @@ export const AsciiHeroCanvas: React.FC = () => {
           // Fast skip for empty background cells when not dispersing
           if (raw < 17 && dis === 0) continue;
 
-          const l = raw >= 17 ? Math.pow(raw / 255, 0.9) : 0;
+          const X = x * cw + cw / 2;
+          let l = raw >= 17 ? Math.pow(raw / 255, 0.92) : 0;
+
+          // Smoothly attenuate ASCII luminance directly behind left-aligned hero typography
+          if (l > 0 && textBox.active) {
+            const dx = Math.max(textBox.x0 - X, 0, X - textBox.x1);
+            const dy = Math.max(textBox.y0 - Y, 0, Y - textBox.y1);
+            if (dx < feather && dy < feather) {
+              const dist = Math.hypot(dx, dy);
+              if (dist < feather) {
+                const mask = lerp(0.24, 1.0, ease(dist / feather));
+                l *= mask;
+              }
+            }
+          }
+
           const on = l > 0.06 && (dis === 0 || hash(x, y, 5) >= dis);
 
           if (on) {
-            const X = x * cw + cw / 2;
             const bucketIdx = Math.min(6, Math.floor(l * 7));
             const arr = LV[bucketIdx];
             const b = hash(x, y, 9) < 0.1 ? t6 : 0;
@@ -346,18 +377,17 @@ export const AsciiHeroCanvas: React.FC = () => {
             const h = (t * (6 + c * 14) + c * rows * 3) % (rows * 1.8);
             const d = y - h;
             if (d < 0 && d > -12) {
-              const rain = (1 + d / 12) * dis * 0.7;
-              const X = x * cw + cw / 2;
+              const rain = (1 + d / 12) * dis * 0.65;
               ctx.fillStyle = isDark
-                ? `rgba(180, 205, 230, ${rain * 0.8})`
-                : `rgba(30, 40, 70, ${rain * 0.5})`;
+                ? `rgba(216, 216, 220, ${rain * 0.65})`
+                : `rgba(44, 44, 48, ${rain * 0.45})`;
               ctx.fillText(hash(x, y, t8) < 0.5 ? '0' : '1', X, Y);
             }
           }
         }
       }
 
-      // Render active ASCII hand cells batched into 7 luminance buckets (only 7 fillStyle changes!)
+      // Render active ASCII hand cells batched into 7 monochrome luminance buckets
       for (let b = 0; b < 7; b++) {
         const xs = bucketsX[b];
         const count = xs.length;
@@ -366,48 +396,15 @@ export const AsciiHeroCanvas: React.FC = () => {
         const chars = bucketsChar[b];
         const midL = (b + 0.5) / 7;
         if (isDark) {
-          const v = Math.round(55 + midL * 195);
-          ctx.fillStyle = `rgb(${v}, ${v}, ${Math.min(255, v + 8)})`;
+          const v = Math.round(52 + midL * 168);
+          ctx.fillStyle = `rgb(${v}, ${v}, ${Math.min(255, v + 4)})`;
         } else {
-          const lightV = Math.round(180 - midL * 150);
-          ctx.fillStyle = `rgb(${lightV}, ${lightV}, ${lightV + 10})`;
+          const lightV = Math.round(188 - midL * 142);
+          ctx.fillStyle = `rgb(${lightV}, ${lightV}, ${lightV + 4})`;
         }
         for (let i = 0; i < count; i++) {
           ctx.fillText(chars[i], xs[i], ys[i]);
         }
-      }
-
-      // Spark ripple at fingertip touch point
-      const cx = sp[0] * cw;
-      const cy = sp[1] * ch;
-      const rr = (t * 130) % 320;
-
-      if (touch > 0) {
-        ctx.strokeStyle = isDark
-          ? `rgba(255, 255, 255, ${0.45 * touch * (1 - rr / 320)})`
-          : `rgba(10, 132, 255, ${0.35 * touch * (1 - rr / 320)})`;
-        ctx.lineWidth = 1.2;
-        ctx.setLineDash([2, 5]);
-        ctx.beginPath();
-        ctx.arc(cx, cy, rr, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-
-      // Soft ambient aura around touch point
-      const ga = 0.05 * app + 0.22 * touch;
-      if (ga > 0.01) {
-        const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, CS * 14);
-        if (isDark) {
-          gr.addColorStop(0, `rgba(255, 255, 255, ${ga})`);
-          gr.addColorStop(0.5, `rgba(10, 132, 255, ${ga * 0.35})`);
-          gr.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        } else {
-          gr.addColorStop(0, `rgba(10, 132, 255, ${ga * 0.4})`);
-          gr.addColorStop(1, 'rgba(10, 132, 255, 0)');
-        }
-        ctx.fillStyle = gr;
-        ctx.fillRect(0, 0, W, H);
       }
     };
 

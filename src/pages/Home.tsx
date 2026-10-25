@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from '../context/LanguageContext';
 import ProjectCard from '../components/ProjectCard';
-import SpotifyWidget from '../components/SpotifyWidget';
-import GithubWidget from '../components/GithubWidget';
 import AsciiHeroCanvas from '../components/AsciiHeroCanvas';
 import Icon from '../components/Icon';
 
@@ -23,7 +21,7 @@ const TECH_ROWS: TechItem[][] = [
   ],
   [
     { name: 'React', icon: 'react', color: '#61DAFB' },
-    { name: 'Next.js', icon: 'nextjs', color: '#F4F4F5' },
+    { name: 'Next.js', icon: 'nextjs', color: 'var(--foreground-heading)' },
     { name: 'Electron', icon: 'atom', color: '#47848F' },
     { name: 'Node.js', icon: 'node-js', color: '#5FA04E' },
     { name: 'Tailwind CSS', icon: 'tailwind', color: '#06B6D4' },
@@ -36,7 +34,7 @@ const TECH_ROWS: TechItem[][] = [
     { name: 'SolidWorks', icon: 'cube', color: '#DA291C' },
   ],
   [
-    { name: 'Ollama', icon: 'terminal', color: '#F4F4F5' },
+    { name: 'Ollama', icon: 'terminal', color: 'var(--foreground-heading)' },
     { name: 'Docker', icon: 'docker', color: '#2496ED' },
     { name: 'Git', icon: 'git', color: '#F05032' },
     { name: 'Linux', icon: 'linux', color: '#FCC624' },
@@ -337,38 +335,6 @@ export const Home: React.FC = () => {
             description={t('proj-shareroute-desc')}
             comingSoon={true}
           />
-        </div>
-      </section>
-
-      {/* ACTIVITY (Spotify & GitHub) */}
-      <section id="activity" className="section reveal" aria-labelledby="widgets-heading">
-        <div className="section-head">
-          <h2 id="widgets-heading" className="section-title" data-lang="spotify-title">
-            {t('spotify-title')}
-          </h2>
-        </div>
-        <div className="activity-ledger">
-          <div className="activity-col">
-            <div className="activity-col-header">
-              <span data-lang="spotify-source">{t('spotify-source')}</span>
-            </div>
-            <SpotifyWidget />
-          </div>
-
-          <div className="activity-col">
-            <div className="activity-col-header">
-              <span data-lang="github-title">{t('github-title')}</span>
-              <a
-                href="https://github.com/mustafakemalz"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="activity-ext-link"
-              >
-                github.com/mustafakemalz ↗
-              </a>
-            </div>
-            <GithubWidget />
-          </div>
         </div>
       </section>
 

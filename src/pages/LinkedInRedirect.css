@@ -1,143 +1,82 @@
+/* ═══════════════════════════════════════════
+   LINKEDIN REDIRECT (/linkedin, /in, /li)
+   Left-Aligned Editorial Redirect
+   ═══════════════════════════════════════════ */
+
 .li-page-container {
-  min-height: 85vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 100px 1.5rem 4rem;
+    min-height: 68vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: clamp(3.5rem, 8vw, 6rem) 0;
+    gap: 1.1rem;
+    max-width: 480px;
 }
 
-.li-card-wrap {
-  width: 100%;
-  max-width: 480px;
-  background: var(--bg-card);
-  border: 1px solid rgba(10, 102, 194, 0.3);
-  border-radius: 24px;
-  padding: 2.5rem 2rem;
-  text-align: center;
-  box-shadow: 0 20px 50px rgba(10, 102, 194, 0.15);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  backdrop-filter: blur(16px);
-  position: relative;
-  overflow: hidden;
-}
-
-.li-card-glow {
-  position: absolute;
-  top: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 200px;
-  background: rgba(10, 102, 194, 0.35);
-  filter: blur(60px);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.li-brand-icon-wrap {
-  width: 72px;
-  height: 72px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #0a66c2 0%, #004182 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  box-shadow: 0 8px 24px rgba(10, 102, 194, 0.4);
-  position: relative;
-  z-index: 1;
+.li-mono-tag {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--foreground-muted);
 }
 
 .li-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--foreground);
-  margin: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.li-desc {
-  font-size: 0.9375rem;
-  color: var(--foreground-muted);
-  line-height: 1.6;
-  margin: 0;
-  position: relative;
-  z-index: 1;
+    font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    color: var(--foreground-heading);
+    line-height: 1.2;
 }
 
 .li-progress-bar-bg {
-  width: 100%;
-  height: 4px;
-  background: var(--muted-bg);
-  border-radius: 2px;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    overflow: hidden;
+    margin: 0.5rem 0;
 }
 
 .li-progress-bar-fill {
-  height: 100%;
-  background: #0a66c2;
-  border-radius: 2px;
-  animation: liRedirectProgress 2s linear forwards;
+    height: 100%;
+    background: var(--foreground-heading);
+    animation: liRedirectProgress 1.8s linear forwards;
 }
 
 @keyframes liRedirectProgress {
-  from { width: 0%; }
-  to { width: 100%; }
+    from { width: 0%; }
+    to { width: 100%; }
 }
 
 .li-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
-  position: relative;
-  z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    padding-top: 0.25rem;
 }
 
-.li-btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.85rem;
-  border-radius: 14px;
-  background: #0a66c2;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  text-decoration: none;
-  transition: all 0.3s var(--ease-apple);
-  border: none;
-  box-shadow: 0 4px 16px rgba(10, 102, 194, 0.3);
+.li-link-primary {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--foreground-heading);
+    border-bottom: 1px solid var(--foreground-heading);
+    padding-bottom: 2px;
+    transition: opacity var(--transition-fast);
 }
 
-.li-btn-primary:hover {
-  background: #004182;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(10, 102, 194, 0.4);
+.li-link-primary:hover {
+    opacity: 0.7;
 }
 
-.li-btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 14px;
-  background: transparent;
-  color: var(--foreground-muted);
-  font-size: 0.875rem;
-  text-decoration: none;
-  transition: color 0.3s var(--ease-apple);
+.li-link-secondary {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--foreground-muted);
+    transition: color var(--transition-fast);
 }
 
-.li-btn-secondary:hover {
-  color: var(--foreground);
+.li-link-secondary:hover {
+    color: var(--foreground-heading);
 }

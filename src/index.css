@@ -598,156 +598,6 @@ ul, ol {
 }
 
 /* ═══════════════════════════════════════════
-   ACTIVITY (Spotify & GitHub — Flat Columns)
-   ═══════════════════════════════════════════ */
-.activity-ledger {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    border-top: 1px solid var(--border);
-    padding-top: 1.5rem;
-}
-
-@media (min-width: 720px) {
-    .activity-ledger {
-        grid-template-columns: 1fr 1fr;
-        gap: 3rem;
-    }
-}
-
-.activity-col {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    min-width: 0;
-}
-
-.activity-col-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding-bottom: 0.65rem;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--foreground-muted);
-}
-
-.activity-ext-link {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--foreground-muted-dim);
-    transition: color var(--transition-fast);
-}
-
-.activity-ext-link:hover {
-    color: var(--foreground-heading);
-}
-
-.widget-content {
-    display: flex;
-    flex-direction: column;
-}
-
-.spotify-row,
-.github-row {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--border);
-    color: inherit;
-    transition: opacity var(--transition-fast);
-}
-
-.spotify-row:hover,
-.github-row:hover {
-    opacity: 0.8;
-}
-
-.spotify-row-art,
-.github-row-icon {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 2px;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: var(--bg-elevated);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--foreground-muted);
-}
-
-.spotify-row-art img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.spotify-row-info,
-.github-row-info {
-    flex: 1;
-    min-width: 0;
-}
-
-.spotify-row-name,
-.github-row-name {
-    font-size: 0.875rem;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: var(--foreground-heading);
-}
-
-.spotify-row-artist,
-.github-row-desc {
-    font-size: 0.8rem;
-    color: var(--foreground-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.widget-empty {
-    padding: 1.25rem 0;
-    color: var(--foreground-muted-dim);
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-}
-
-.skeleton-row {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--border);
-}
-
-.skeleton-circle {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 2px;
-    background: var(--muted-bg);
-}
-
-.skeleton-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-
-.skeleton-line {
-    height: 0.55rem;
-    background: var(--muted-bg);
-}
-
-.skeleton-title { width: 55%; }
-.skeleton-artist { width: 35%; }
-
-/* ═══════════════════════════════════════════
    GALLERY — Clean Editorial Figures
    ═══════════════════════════════════════════ */
 .gallery-grid {
@@ -982,11 +832,13 @@ ul, ol {
    JOURNEY TIMELINE PAGE (/journey)
    ═══════════════════════════════════════════ */
 .journey-header-area {
-    padding: clamp(3rem, 7vw, 5rem) 0 2rem;
+    padding: clamp(3rem, 7vw, 5rem) 0 1rem;
     text-align: left;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.75rem;
+    max-width: 640px;
 }
 
 .journey-back-link {
@@ -994,20 +846,32 @@ ul, ol {
     font-size: 0.8rem;
     color: var(--foreground-muted);
     transition: color var(--transition-fast);
+    margin-bottom: 0.35rem;
 }
 
 .journey-back-link:hover {
     color: var(--foreground-heading);
 }
 
-.journey-timeline {
-    position: relative;
-    margin: 1rem 0 0;
-    border-top: 1px solid var(--border);
+.journey-page-title {
+    font-size: clamp(1.85rem, 4.5vw, 2.85rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--foreground-heading);
 }
 
-.journey-progress-track {
-    display: none;
+.journey-lead {
+    font-size: 0.975rem;
+    font-weight: 400;
+    color: var(--foreground-muted);
+    line-height: 1.65;
+}
+
+.journey-timeline {
+    position: relative;
+    margin: 0;
+    border-top: 1px solid var(--border);
 }
 
 .journey-item {
