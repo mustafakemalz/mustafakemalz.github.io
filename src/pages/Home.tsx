@@ -6,6 +6,7 @@ import StatCard from '../components/StatCard';
 import ProjectCard from '../components/ProjectCard';
 import SpotifyWidget from '../components/SpotifyWidget';
 import GithubWidget from '../components/GithubWidget';
+import AsciiHeroCanvas from '../components/AsciiHeroCanvas';
 
 export const Home: React.FC = () => {
   const { t, language } = useTranslation();
@@ -65,26 +66,39 @@ export const Home: React.FC = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const heroWrap = heroWrapRef.current;
-      const heroHeader = heroHeaderRef.current;
 
       if (heroWrap) {
         if (scrollY < window.innerHeight) {
           const progress = scrollY / window.innerHeight;
           heroWrap.style.transform = `translate3d(0, ${scrollY * 0.18}px, 0)`;
-          if (heroHeader) {
-            heroHeader.style.opacity = String(Math.max(0.3, 1 - progress * 0.7));
-          }
+          heroWrap.style.opacity = String(Math.max(0.15, 1 - progress * 0.85));
         } else {
           heroWrap.style.transform = `translate3d(0, ${window.innerHeight * 0.18}px, 0)`;
-          if (heroHeader) {
-            heroHeader.style.opacity = '0.3';
-          }
+          heroWrap.style.opacity = '0.15';
         }
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    let attachedLenis: any = null;
+    const bindLenis = () => {
+      const lenis = (window as any).lenis;
+      if (lenis && typeof lenis.on === 'function' && !attachedLenis) {
+        attachedLenis = lenis;
+        lenis.on('scroll', handleScroll);
+      }
+    };
+    bindLenis();
+    const lenisTimer = window.setTimeout(bindLenis, 50);
+
+    return () => {
+      window.clearTimeout(lenisTimer);
+      if (attachedLenis && typeof attachedLenis.off === 'function') {
+        attachedLenis.off('scroll', handleScroll);
+      }
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Form Submission
@@ -157,14 +171,8 @@ export const Home: React.FC = () => {
     <>
       {/* HEADER / HERO */}
       <header className="site-header reveal" ref={heroHeaderRef}>
+        <AsciiHeroCanvas />
         <div className="hero-parallax-wrap" ref={heroWrapRef}>
-          <div className="header-avatar">
-            <img
-              src="assets/profile.webp"
-              alt="Mustafa Kemal Göçer"
-              onError={(e) => (e.currentTarget.style.display = 'none')}
-            />
-          </div>
           <div className="header-info">
             <h1 data-lang="hero-greeting">{t('hero-greeting')}</h1>
             <p className="header-subtitle" data-lang="hero-title">

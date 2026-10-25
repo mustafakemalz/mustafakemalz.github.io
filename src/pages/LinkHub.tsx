@@ -72,7 +72,7 @@ export const LinkHub: React.FC = () => {
     {
       id: 'instagram',
       title: 'Instagram',
-      url: 'https://instagram.com/@muskscullz',
+      url: 'https://www.instagram.com/jpeg.muskz/',
       brandColor: '#f472b6',
       brandGlow: 'rgba(225, 48, 108, 0.35)',
       brandBorder: 'rgba(225, 48, 108, 0.45)',

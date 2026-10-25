@@ -6,17 +6,17 @@
 /* --- CSS VARIABLES (DARK — DEFAULT) --- */
 :root {
     color-scheme: dark;
-    --bg: #050507;
-    --bg-elevated: #0c0d11;
-    --bg-card: rgba(255, 255, 255, 0.045);
-    --bg-card-solid: #17181d;
-    --bg-glass: rgba(5, 5, 7, 0.72);
-    --foreground: #f5f5f7;
-    --foreground-heading: #f5f5f7;
-    --foreground-muted: #9a9aa0;
-    --foreground-muted-dim: rgba(154, 154, 160, 0.62);
-    --border: rgba(255, 255, 255, 0.085);
-    --border-hover: rgba(255, 255, 255, 0.15);
+    --bg: #141416;
+    --bg-elevated: #1a1a1e;
+    --bg-card: rgba(255, 255, 255, 0.035);
+    --bg-card-solid: #1c1c20;
+    --bg-glass: rgba(20, 20, 22, 0.78);
+    --foreground: #ececed;
+    --foreground-heading: #f4f4f5;
+    --foreground-muted: #8f8f96;
+    --foreground-muted-dim: rgba(143, 143, 150, 0.55);
+    --border: rgba(255, 255, 255, 0.075);
+    --border-hover: rgba(255, 255, 255, 0.13);
     --accent: #0a84ff;
     --accent-hover: #2997ff;
     --accent-soft: rgba(10, 132, 255, 0.14);
@@ -25,10 +25,10 @@
     --status-idle: #ffd60a;
     --status-dnd: #ff453a;
     --status-offline: #86868b;
-    --muted-bg: rgba(255, 255, 255, 0.055);
-    --input-bg: rgba(255, 255, 255, 0.055);
-    --shadow-sm: 0 2px 16px rgba(0, 0, 0, 0.34);
-    --shadow-lg: 0 18px 42px rgba(0, 0, 0, 0.46);
+    --muted-bg: rgba(255, 255, 255, 0.038);
+    --input-bg: rgba(255, 255, 255, 0.04);
+    --shadow-sm: 0 2px 14px rgba(0, 0, 0, 0.28);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.38);
     --shadow-glow: 0 0 40px rgba(10, 132, 255, 0.15);
     --radius: 20px;
     --radius-sm: 12px;
@@ -47,22 +47,22 @@
 /* --- LIGHT THEME --- */
 [data-theme="light"] {
     color-scheme: light;
-    --bg: #fbfbfc;
+    --bg: #f7f7f8;
     --bg-elevated: #ffffff;
-    --bg-card: rgba(255, 255, 255, 0.92);
+    --bg-card: rgba(255, 255, 255, 0.90);
     --bg-card-solid: #ffffff;
-    --bg-glass: rgba(255, 255, 255, 0.76);
-    --foreground: #111214;
+    --bg-glass: rgba(247, 247, 248, 0.82);
+    --foreground: #1c1c1f;
     --foreground-heading: #111214;
-    --foreground-muted: #64666d;
-    --foreground-muted-dim: rgba(100, 102, 109, 0.7);
-    --border: rgba(17, 18, 20, 0.08);
-    --border-hover: rgba(17, 18, 20, 0.14);
+    --foreground-muted: #6e6e78;
+    --foreground-muted-dim: rgba(110, 110, 120, 0.65);
+    --border: rgba(20, 20, 22, 0.075);
+    --border-hover: rgba(20, 20, 22, 0.13);
     --accent-glow: rgba(10, 132, 255, 0.12);
-    --muted-bg: rgba(17, 18, 20, 0.028);
-    --input-bg: rgba(17, 18, 20, 0.035);
-    --shadow-sm: 0 2px 12px rgba(17, 18, 20, 0.06);
-    --shadow-lg: 0 16px 40px rgba(17, 18, 20, 0.11);
+    --muted-bg: rgba(20, 20, 22, 0.03);
+    --input-bg: rgba(20, 20, 22, 0.035);
+    --shadow-sm: 0 2px 12px rgba(20, 20, 22, 0.05);
+    --shadow-lg: 0 14px 36px rgba(20, 20, 22, 0.08);
     --shadow-glow: 0 0 40px rgba(10, 132, 255, 0.08);
 }
 
@@ -79,6 +79,7 @@ html {
     scroll-behavior: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
 }
 
 body {
@@ -87,6 +88,7 @@ body {
     color: var(--foreground);
     line-height: 1.6;
     min-height: 100vh;
+    overflow-x: clip;
     transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
@@ -417,26 +419,60 @@ ul, ol {
    HERO
    ═══════════════════════════════════════════ */
 .site-header {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     align-items: center;
     text-align: center;
     padding: clamp(4rem, 10vw, 7rem) 0 clamp(3rem, 8vw, 5rem);
-    min-height: 70vh;
+    min-height: 75vh;
     justify-content: center;
-    will-change: transform, opacity;
-    transition: opacity 0.1s linear;
+}
+
+/* ASCII Canvas Background (Creation of Adam hands) */
+.hero-ascii-container {
+    position: absolute;
+    top: -2.5rem;
+    bottom: -2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-width: 100vw;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.hero-ascii-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.82;
+    -webkit-mask-image: radial-gradient(ellipse 75% 72% at 50% 46%, #000 40%, rgba(0, 0, 0, 0.65) 68%, transparent 98%);
+    mask-image: radial-gradient(ellipse 75% 72% at 50% 46%, #000 40%, rgba(0, 0, 0, 0.65) 68%, transparent 98%);
 }
 
 .hero-parallax-wrap {
-    will-change: transform;
-    transition: transform 0.1s linear;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+    will-change: transform, opacity;
 }
 
 .header-avatar {
     width: clamp(5rem, 12vw, 7rem);
     height: clamp(5rem, 12vw, 7rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .header-avatar img {
@@ -462,11 +498,14 @@ ul, ol {
 }
 
 .header-info h1 {
-    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    font-size: clamp(2rem, 7vw, 5rem);
     font-weight: 600;
     letter-spacing: -0.02em;
-    line-height: 1.05;
+    line-height: 1.08;
     color: var(--foreground-heading);
+    overflow-wrap: break-word;
+    word-break: break-word;
+    text-shadow: 0 2px 24px rgba(20, 20, 22, 0.75), 0 0 48px rgba(20, 20, 22, 0.5);
 }
 
 .header-subtitle {
@@ -475,6 +514,7 @@ ul, ol {
     line-height: 1.4;
     letter-spacing: -0.01em;
     color: var(--foreground-muted);
+    text-shadow: 0 1px 16px rgba(20, 20, 22, 0.7);
 }
 
 .hero-slogan {
@@ -482,6 +522,13 @@ ul, ol {
     color: var(--foreground-muted);
     max-width: 520px;
     line-height: 1.6;
+    text-shadow: 0 1px 16px rgba(20, 20, 22, 0.7);
+}
+
+[data-theme="light"] .header-info h1,
+[data-theme="light"] .header-subtitle,
+[data-theme="light"] .hero-slogan {
+    text-shadow: 0 2px 20px rgba(251, 251, 252, 0.85);
 }
 
 /* Status */
@@ -1920,7 +1967,7 @@ ul, ol {
 
 .discord-card.is-spotify {
     border-color: rgba(48, 209, 88, 0.55);
-    background: linear-gradient(180deg, rgba(10, 10, 12, 0.92), rgba(8, 8, 10, 0.86));
+    background: linear-gradient(180deg, rgba(20, 20, 22, 0.94), rgba(24, 24, 27, 0.9));
     box-shadow:
         0 0 0 1px rgba(48, 209, 88, 0.12) inset,
         0 0 0 1px rgba(48, 209, 88, 0.12),
