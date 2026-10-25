@@ -57,19 +57,6 @@ export const LinkHub: React.FC = () => {
       ),
     },
     {
-      id: 'youtube',
-      title: 'YouTube',
-      url: 'https://youtube.com/@muskz',
-      brandColor: '#ff4d4d',
-      brandGlow: 'rgba(255, 0, 0, 0.35)',
-      brandBorder: 'rgba(255, 0, 0, 0.45)',
-      iconSvg: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21.58 7.19a2.7 2.7 0 0 0-1.9-1.9C18 4.75 12 4.75 12 4.75s-6 0-7.68.54a2.7 2.7 0 0 0-1.9 1.9A28.3 28.3 0 0 0 1.88 12a28.3 28.3 0 0 0 .54 4.81 2.7 2.7 0 0 0 1.9 1.9c1.68.54 7.68.54 7.68.54s6 0 7.68-.54a2.7 2.7 0 0 0 1.9-1.9 28.3 28.3 0 0 0 .54-4.81 28.3 28.3 0 0 0-.54-4.81zM9.75 15.02V8.98L15 12l-5.25 3.02z" />
-        </svg>
-      ),
-    },
-    {
       id: 'instagram',
       title: 'Instagram',
       url: 'https://www.instagram.com/jpeg.muskz/',

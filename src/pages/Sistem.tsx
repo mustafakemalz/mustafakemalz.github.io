@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from '../context/LanguageContext';
+import Icon from '../components/Icon';
 import './Sistem.css';
 
 interface SpecItem {
@@ -125,7 +126,7 @@ export const Sistem: React.FC = () => {
     return (
       <CardTag key={spec.labelKey} className="spec-card" {...cardProps}>
         <div className="spec-icon">
-          <i className={spec.icon}></i>
+          <Icon name={spec.icon} />
         </div>
         <div className="spec-info">
           <span className="spec-label" data-lang={spec.labelKey}>
@@ -135,7 +136,7 @@ export const Sistem: React.FC = () => {
           <span className="spec-details">{spec.details}</span>
         </div>
         {spec.url && (
-          <i className="fa-solid fa-arrow-up-right-from-square spec-external-icon"></i>
+          <Icon name="arrow-up-right-from-square" className="spec-external-icon" />
         )}
       </CardTag>
     );
@@ -178,13 +179,13 @@ export const Sistem: React.FC = () => {
 
             {/* Setup Image */}
             <div className="image-wrapper">
-              <img src="/assets/system_setup.jpg" alt="Mustafa Kemal Workstation Setup" />
+              <img src="/assets/system_setup.jpg" alt="Mustafa Kemal Workstation Setup" loading="lazy" decoding="async" />
             </div>
 
             {/* Caption Footer */}
             <div className="image-showcase-caption">
               <div className="kick-link-tag">
-                KICK.COM/MUSKZ <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                KICK.COM/MUSKZ <Icon name="arrow-up-right-from-square" />
               </div>
             </div>
           </a>

@@ -3,6 +3,8 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import DiscordWidget from './DiscordWidget';
+import CommandMenu from './CommandMenu';
+import Icon from './Icon';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,21 +12,47 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { t, language, toggleLanguage } = useTranslation();
-  const { toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCommandOpen, setIsCommandOpen] = useState(false);
+  const [localTime, setLocalTime] = useState<string>('--:--');
 
-  // Handle navbar scroll background toggle
+  // Handle navbar scroll pill morph (inspired by barbecue/website Navbar.tsx)
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 24);
+      setIsScrolled(window.scrollY > 36);
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Live Adana/Istanbul local clock (inspired by tuna.one footer)
+  useEffect(() => {
+    const updateClock = () => {
+      try {
+        const formatted = new Intl.DateTimeFormat('tr-TR', {
+          timeZone: 'Europe/Istanbul',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        }).format(new Date());
+        setLocalTime(formatted);
+      } catch {
+        const d = new Date();
+        setLocalTime(
+          `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+        );
+      }
+    };
+    updateClock();
+    const timer = window.setInterval(updateClock, 15000);
+    return () => window.clearInterval(timer);
   }, []);
 
   // Handle mobile menu ESC key close
@@ -57,7 +85,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     const isHomePage = location.pathname === '/';
 
-    // Handle scroll to top for Brand Logo / Home link
     if (targetId === '#' || targetId === '' || targetId === '#top') {
       if (isHomePage) {
         if ((window as any).lenis) {
@@ -89,24 +116,27 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         }
       }
     } else {
-      // Navigate to home and pass target element via state
       navigate('/', { state: { scrollTo: targetId } });
     }
   };
 
   const currentYear = new Date().getFullYear();
+  const routeSegment = location.pathname === '/' ? '' : location.pathname.split('/')[1] || '';
 
   return (
     <>
-      {/* ═══════════════ STICKY NAVIGATION ═══════════════ */}
+      {/* ═══════════════ STICKY PILL NAVIGATION ═══════════════ */}
       <nav
         id="site-nav"
         className={`site-nav ${isScrolled ? 'is-scrolled' : ''}`}
         aria-label="Main navigation"
       >
-        <Link to="/" onClick={(e) => handleNavClick(e, '#')} className="nav-brand">
-          Mustafa Kemal
-        </Link>
+        <div className="nav-brand-wrap">
+          <Link to="/" onClick={(e) => handleNavClick(e, '#')} className="nav-brand">
+            Mustafa Kemal
+          </Link>
+          {routeSegment && <span className="nav-route-crumb">/{routeSegment}</span>}
+        </div>
         <div className="nav-links" id="nav-links">
           <a href="#about" onClick={(e) => handleNavClick(e, '#about')} data-lang="nav-about">
             {t('nav-about')}
@@ -123,22 +153,32 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Link to="/journey" onClick={closeMobileMenu} data-lang="nav-journey">
             {t('nav-journey')}
           </Link>
-          <a href="#stream" onClick={(e) => handleNavClick(e, '#stream')} data-lang="nav-stream">
-            {t('nav-stream')}
-          </a>
+          <Link to="/sistem" onClick={closeMobileMenu}>
+            {language === 'tr' ? 'Sistem' : 'Setup'}
+          </Link>
           <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} data-lang="nav-contact">
             {t('nav-contact')}
           </a>
         </div>
         <div className="nav-actions">
           <button
+            type="button"
+            id="cmd-btn"
+            className="cmd-trigger-btn"
+            onClick={() => setIsCommandOpen(true)}
+            aria-label="Open Command Menu (Ctrl+K)"
+            title="Command Menu (Ctrl+K)"
+          >
+            <Icon name="search" size={14} />
+            <kbd>⌘K</kbd>
+          </button>
+          <button
             id="theme-btn"
             className="control-btn"
             onClick={toggleTheme}
             aria-label="Toggle Theme"
           >
-            <i className="fa-solid fa-moon"></i>
-            <i className="fa-solid fa-sun"></i>
+            <Icon name={theme === 'light' ? 'sun' : 'moon'} />
           </button>
           <button
             id="lang-btn"
@@ -161,6 +201,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </button>
         </div>
       </nav>
+
+      {/* Command Palette Dialog (Ctrl+K) */}
+      <CommandMenu open={isCommandOpen} onOpenChange={setIsCommandOpen} />
 
       {/* Mobile Menu Overlay */}
       <div
@@ -187,9 +230,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Link to="/journey" onClick={closeMobileMenu} data-lang="nav-journey">
               {t('nav-journey')}
             </Link>
-            <a href="#stream" onClick={(e) => handleNavClick(e, '#stream')} data-lang="nav-stream">
-              {t('nav-stream')}
-            </a>
+            <Link to="/sistem" onClick={closeMobileMenu}>
+              {language === 'tr' ? 'Sistem' : 'Setup'}
+            </Link>
             <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} data-lang="nav-contact">
               {t('nav-contact')}
             </a>
@@ -199,11 +242,13 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* ═══════════════ MAIN CONTENT WRAPPER ═══════════════ */}
       <main className="site-wrapper">
-        {children}
+        <div key={location.pathname} className="route-transition-stage">
+          {children}
+        </div>
 
         {/* FOOTER */}
         <footer className="site-footer">
-          <div>
+          <div className="footer-left">
             <p className="footer-quote" data-lang="footer-quote">
               {t('footer-quote')}
             </p>
@@ -212,28 +257,38 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <span data-lang="footer-rights">{t('footer-rights')}</span>
             </p>
           </div>
+          <div className="footer-meta-bar">
+            <span className="footer-meta-col">
+              <small>{language === 'tr' ? 'konum' : 'based in'}</small>
+              <strong>adana, tr</strong>
+            </span>
+            <span className="footer-meta-col">
+              <small>{language === 'tr' ? 'yerel saat' : 'local time'}</small>
+              <strong>{localTime}</strong>
+            </span>
+          </div>
           <nav className="footer-links" aria-label="Footer links">
             <a href="https://github.com/mustafakemalz" target="_blank" rel="noopener noreferrer">
-              GITHUB
-            </a>
-            <a href="https://www.youtube.com/@mustafakemalz" target="_blank" rel="noopener noreferrer">
-              YOUTUBE
+              GITHUB ↗
             </a>
             <a
               href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"
               target="_blank"
               rel="noopener noreferrer"
             >
-              LINKEDIN
+              LINKEDIN ↗
+            </a>
+            <a href="https://www.instagram.com/jpeg.muskz/" target="_blank" rel="noopener noreferrer">
+              INSTAGRAM ↗
             </a>
           </nav>
         </footer>
       </main>
 
       {/* ═══════════════ DISCORD WIDGET (Bottom-right) ═══════════════ */}
-      {!['/link', '/links', '/hub', '/linktree', '/card', '/vcard', '/linkedin', '/in', '/li'].includes(location.pathname) && (
-        <DiscordWidget />
-      )}
+      {!['/link', '/links', '/hub', '/linktree', '/card', '/vcard', '/linkedin', '/in', '/li'].includes(
+        location.pathname
+      ) && <DiscordWidget />}
     </>
   );
 };

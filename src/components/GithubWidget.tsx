@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Icon from './Icon';
 
 interface Repo {
   name: string;
@@ -52,7 +53,7 @@ export const GithubWidget: React.FC = () => {
     return (
       <div className="widget-content">
         <div className="widget-empty">
-          <i className="fa-brands fa-github"></i>
+          <Icon name="github" />
           <span>Failed to load repositories</span>
         </div>
       </div>
@@ -70,7 +71,7 @@ export const GithubWidget: React.FC = () => {
           key={idx}
         >
           <div className="github-row-icon">
-            <i className="fa-solid fa-code-branch"></i>
+            <Icon name="code-branch" />
           </div>
           <div className="github-row-info">
             <div className="github-row-name">

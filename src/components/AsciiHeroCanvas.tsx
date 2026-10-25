@@ -31,9 +31,13 @@ export const AsciiHeroCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isVisibleRef = useRef<boolean>(true);
   const themeRef = useRef<string>(theme);
+  const rebuildDotsRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     themeRef.current = theme;
+    if (rebuildDotsRef.current) {
+      rebuildDotsRef.current();
+    }
   }, [theme]);
 
   useEffect(() => {
@@ -41,14 +45,19 @@ export const AsciiHeroCanvas: React.FC = () => {
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
     const off = document.createElement('canvas');
     const o = off.getContext('2d', { willReadFrequently: true });
     if (!o) return;
 
-    // Load hands images
+    // Pre-rendered static dot grid layer (eliminates ~12,000 fillRect calls per frame)
+    const dotLayer = document.createElement('canvas');
+    const dotCtx = dotLayer.getContext('2d');
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const imgL = new Image();
     const imgR = new Image();
     let isMounted = true;
@@ -56,6 +65,8 @@ export const AsciiHeroCanvas: React.FC = () => {
     let animationFrameId: number | null = null;
     let leftLoaded = false;
     let rightLoaded = false;
+    let forceNextRender = true;
+    let lastRenderTime = 0;
     let render: (now: number) => void;
 
     let W = 0;
@@ -74,9 +85,35 @@ export const AsciiHeroCanvas: React.FC = () => {
     let targetMy = 0;
     let touchImpulse = 0;
 
+    // Pre-allocated bucket arrays (7 luminance levels) to batch fillStyle state changes
+    const bucketsX: number[][] = Array.from({ length: 7 }, () => []);
+    const bucketsY: number[][] = Array.from({ length: 7 }, () => []);
+    const bucketsChar: string[][] = Array.from({ length: 7 }, () => []);
+
+    const buildDotLayer = () => {
+      if (!dotCtx || W <= 0 || H <= 0 || cols <= 0 || rows <= 0) return;
+      dotLayer.width = Math.round(W * dpr);
+      dotLayer.height = Math.round(H * dpr);
+      dotCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      dotCtx.clearRect(0, 0, W, H);
+      const isDark = themeRef.current !== 'light';
+      dotCtx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.075)' : 'rgba(0, 0, 0, 0.05)';
+      for (let y = 0; y < rows; y++) {
+        const Y = y * ch + ch / 2 - 0.6;
+        for (let x = 0; x < cols; x++) {
+          const X = x * cw + cw / 2 - 0.6;
+          dotCtx.fillRect(X, Y, 1.25, 1.25);
+        }
+      }
+      forceNextRender = true;
+    };
+
+    rebuildDotsRef.current = buildDotLayer;
+
     const startLoop = () => {
       if (!isMounted || isRunning || !isVisibleRef.current || !leftLoaded || !rightLoaded || !render) return;
       isRunning = true;
+      forceNextRender = true;
       animationFrameId = requestAnimationFrame(render);
     };
 
@@ -93,12 +130,11 @@ export const AsciiHeroCanvas: React.FC = () => {
       startLoop();
     };
 
-    // Track scroll within hero bounds
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const heroHeight = container.parentElement?.offsetHeight || window.innerHeight;
-      // Hands touch at ~50-65% scroll through hero, disperse as user leaves hero
       tp = cl(scrollY / (heroHeight * 0.75), 0, 1);
+      forceNextRender = true;
     };
 
     const handleResize = () => {
@@ -121,6 +157,7 @@ export const AsciiHeroCanvas: React.FC = () => {
       off.width = cols;
       off.height = rows;
       o.imageSmoothingQuality = 'high';
+      buildDotLayer();
       handleScroll();
     };
 
@@ -136,18 +173,6 @@ export const AsciiHeroCanvas: React.FC = () => {
     p = tp;
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    let attachedLenis: any = null;
-    const bindLenis = () => {
-      const lenis = (window as any).lenis;
-      if (lenis && typeof lenis.on === 'function' && !attachedLenis) {
-        attachedLenis = lenis;
-        lenis.on('scroll', handleScroll);
-      }
-    };
-    bindLenis();
-    const lenisTimer = window.setTimeout(bindLenis, 50);
-
-    // Smooth pointer parallax
     const handlePointerMove = (e: PointerEvent) => {
       const rawX = e.clientX / window.innerWidth - 0.5;
       const rawY = e.clientY / window.innerHeight - 0.5;
@@ -164,7 +189,6 @@ export const AsciiHeroCanvas: React.FC = () => {
     window.addEventListener('pointerleave', handlePointerReset, { passive: true });
     window.addEventListener('pointerup', handlePointerReset, { passive: true });
 
-    // Click/tap pulse wave interaction on hero
     const handlePointerDown = (e: PointerEvent) => {
       const rect = container.getBoundingClientRect();
       if (
@@ -174,12 +198,12 @@ export const AsciiHeroCanvas: React.FC = () => {
         e.clientX <= rect.right
       ) {
         touchImpulse = 1.0;
+        forceNextRender = true;
       }
     };
 
     window.addEventListener('pointerdown', handlePointerDown, { passive: true });
 
-    // Pause RAF completely when hero is scrolled out of viewport
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -203,18 +227,35 @@ export const AsciiHeroCanvas: React.FC = () => {
         return;
       }
 
-      animationFrameId = requestAnimationFrame(render);
+      if (!prefersReducedMotion) {
+        animationFrameId = requestAnimationFrame(render);
+      } else {
+        isRunning = false;
+      }
+
       if (!leftLoaded || !rightLoaded || cols <= 0 || rows <= 0 || W <= 0 || H <= 0) return;
 
-      const t = (now - t0) / 1000;
-      p += (tp - p) * 0.08;
+      // Adaptive frame rate: 60fps during active scroll/pointer/touch, ~15fps during calm idle breathing
+      const isActivelyInteracting =
+        forceNextRender ||
+        Math.abs(tp - p) > 0.002 ||
+        Math.abs(targetMx - mx) > 0.002 ||
+        Math.abs(targetMy - my) > 0.002 ||
+        touchImpulse > 0.01 ||
+        (p > 0.55 && p < 0.92);
 
-      // Smooth pointer lerp
-      mx += (targetMx - mx) * 0.08;
-      my += (targetMy - my) * 0.08;
+      const minInterval = isActivelyInteracting ? 15 : 64;
+      if (now - lastRenderTime < minInterval) return;
+      lastRenderTime = now;
+      forceNextRender = false;
+
+      const t = (now - t0) / 1000;
+      p += (tp - p) * 0.12;
+      mx += (targetMx - mx) * 0.12;
+      my += (targetMy - my) * 0.12;
 
       if (touchImpulse > 0) {
-        touchImpulse = Math.max(0, touchImpulse - 0.03);
+        touchImpulse = Math.max(0, touchImpulse - 0.035);
       }
 
       const isDark = themeRef.current !== 'light';
@@ -230,15 +271,13 @@ export const AsciiHeroCanvas: React.FC = () => {
       const sy = kpx / ch;
 
       const g = lerp(cols * 0.28, 0, app) + dis * cols * 0.08;
-      const fl = Math.sin(t * 0.85) * 0.75;
-      const fr = Math.sin(t * 0.85 + 2) * 0.75;
+      const fl = prefersReducedMotion ? 0 : Math.sin(t * 0.85) * 0.75;
+      const fr = prefersReducedMotion ? 0 : Math.sin(t * 0.85 + 2) * 0.75;
       const par = mx * 3.5;
 
       const ox = cols / 2 - (HANDS_META.W / 2) * sx;
-      // Position hands comfortably behind the hero greeting
       const oy = rows * 0.38 - (HANDS_META.H / 2) * sy + my * 2;
 
-      // Offscreen composite
       o.globalCompositeOperation = 'source-over';
       o.fillStyle = '#000';
       o.fillRect(0, 0, cols, rows);
@@ -262,58 +301,79 @@ export const AsciiHeroCanvas: React.FC = () => {
 
       const imgData = o.getImageData(0, 0, cols, rows).data;
 
-      // Draw onto visible canvas
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
 
-      ctx.font = `${CS - 1}px ui-monospace, Menlo, Consolas, "Cascadia Code", "Geist Mono", monospace`;
+      // Blit pre-rendered background dot matrix in 1 single GPU operation
+      if (dotLayer.width > 0 && dotLayer.height > 0) {
+        ctx.drawImage(dotLayer, 0, 0, W, H);
+      }
+
+      ctx.font = `${CS - 1}px "Geist Mono", ui-monospace, Menlo, Consolas, monospace`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          const X = x * cw + cw / 2;
-          const Y = y * ch + ch / 2;
-          const l = Math.pow(imgData[(y * cols + x) * 4] / 255, 0.9);
+      for (let b = 0; b < 7; b++) {
+        bucketsX[b].length = 0;
+        bucketsY[b].length = 0;
+        bucketsChar[b].length = 0;
+      }
 
-          const on = l > 0.06 && hash(x, y, 5) >= dis;
-          let rain = 0;
-          if (dis > 0) {
+      const t6 = Math.floor(t * 6);
+      const t8 = Math.floor(t * 8);
+
+      for (let y = 0; y < rows; y++) {
+        const Y = y * ch + ch / 2;
+        const rowOffset = y * cols;
+        for (let x = 0; x < cols; x++) {
+          const raw = imgData[(rowOffset + x) << 2];
+          // Fast skip for empty background cells when not dispersing
+          if (raw < 17 && dis === 0) continue;
+
+          const l = raw >= 17 ? Math.pow(raw / 255, 0.9) : 0;
+          const on = l > 0.06 && (dis === 0 || hash(x, y, 5) >= dis);
+
+          if (on) {
+            const X = x * cw + cw / 2;
+            const bucketIdx = Math.min(6, Math.floor(l * 7));
+            const arr = LV[bucketIdx];
+            const b = hash(x, y, 9) < 0.1 ? t6 : 0;
+            bucketsX[bucketIdx].push(X);
+            bucketsY[bucketIdx].push(Y);
+            bucketsChar[bucketIdx].push(arr[Math.floor(hash(x, y, b) * arr.length)]);
+          } else if (dis > 0) {
             const c = hash(x, 0, 3);
             const h = (t * (6 + c * 14) + c * rows * 3) % (rows * 1.8);
             const d = y - h;
-            if (d < 0 && d > -12) rain = (1 + d / 12) * dis * 0.7;
-          }
-
-          if (!on && !rain) {
-            // Ambient dot grid
-            ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.075)' : 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(X - 0.6, Y - 0.6, 1.25, 1.25);
-            continue;
-          }
-
-          if (on) {
-            const arr = LV[Math.min(6, Math.floor(l * 7))];
-            const b = hash(x, y, 9) < 0.1 ? Math.floor(t * 6) : 0;
-            const v = Math.round(50 + l * 200);
-
-            if (isDark) {
-              ctx.fillStyle = `rgb(${v}, ${v}, ${Math.min(255, v + 8)})`;
-            } else {
-              const lightV = Math.round(180 - l * 150);
-              ctx.fillStyle = `rgb(${lightV}, ${lightV}, ${lightV + 10})`;
+            if (d < 0 && d > -12) {
+              const rain = (1 + d / 12) * dis * 0.7;
+              const X = x * cw + cw / 2;
+              ctx.fillStyle = isDark
+                ? `rgba(180, 205, 230, ${rain * 0.8})`
+                : `rgba(30, 40, 70, ${rain * 0.5})`;
+              ctx.fillText(hash(x, y, t8) < 0.5 ? '0' : '1', X, Y);
             }
-
-            ctx.fillText(arr[Math.floor(hash(x, y, b) * arr.length)], X, Y);
-          } else {
-            // Matrix rain when dispersing
-            if (isDark) {
-              ctx.fillStyle = `rgba(180, 205, 230, ${rain * 0.8})`;
-            } else {
-              ctx.fillStyle = `rgba(30, 40, 70, ${rain * 0.5})`;
-            }
-            ctx.fillText(hash(x, y, Math.floor(t * 8)) < 0.5 ? '0' : '1', X, Y);
           }
+        }
+      }
+
+      // Render active ASCII hand cells batched into 7 luminance buckets (only 7 fillStyle changes!)
+      for (let b = 0; b < 7; b++) {
+        const xs = bucketsX[b];
+        const count = xs.length;
+        if (count === 0) continue;
+        const ys = bucketsY[b];
+        const chars = bucketsChar[b];
+        const midL = (b + 0.5) / 7;
+        if (isDark) {
+          const v = Math.round(55 + midL * 195);
+          ctx.fillStyle = `rgb(${v}, ${v}, ${Math.min(255, v + 8)})`;
+        } else {
+          const lightV = Math.round(180 - midL * 150);
+          ctx.fillStyle = `rgb(${lightV}, ${lightV}, ${lightV + 10})`;
+        }
+        for (let i = 0; i < count; i++) {
+          ctx.fillText(chars[i], xs[i], ys[i]);
         }
       }
 
@@ -369,18 +429,15 @@ export const AsciiHeroCanvas: React.FC = () => {
     return () => {
       isMounted = false;
       stopLoop();
+      rebuildDotsRef.current = null;
       imgL.onload = null;
       imgR.onload = null;
-      window.clearTimeout(lenisTimer);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerleave', handlePointerReset);
       window.removeEventListener('pointerup', handlePointerReset);
       window.removeEventListener('pointerdown', handlePointerDown);
-      if (attachedLenis && typeof attachedLenis.off === 'function') {
-        attachedLenis.off('scroll', handleScroll);
-      }
       observer.disconnect();
       resizeObserver.disconnect();
     };

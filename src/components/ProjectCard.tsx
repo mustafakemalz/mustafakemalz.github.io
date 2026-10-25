@@ -33,28 +33,32 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     card.style.setProperty('--card-media-y', '0px');
   };
 
-  const updateCard = (event: React.PointerEvent<HTMLDivElement>) => {
+  const updateCard = (clientX: number, clientY: number) => {
     const card = cardRef.current;
     if (!card) return;
 
     const rect = card.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
+    const px = clientX - rect.left;
+    const py = clientY - rect.top;
+    const x = px / rect.width;
+    const y = py / rect.height;
 
     const clampedX = Math.min(1, Math.max(0, x));
     const clampedY = Math.min(1, Math.max(0, y));
 
-    const tiltY = (clampedX - 0.5) * 12;
-    const tiltX = (0.5 - clampedY) * 10;
-    const shiftX = (clampedX - 0.5) * 12;
-    const shiftY = (clampedY - 0.5) * 12;
+    const tiltY = (clampedX - 0.5) * 9;
+    const tiltX = (0.5 - clampedY) * 7;
+    const shiftX = (clampedX - 0.5) * 9;
+    const shiftY = (clampedY - 0.5) * 9;
 
+    card.style.setProperty('--spot-x', `${px.toFixed(0)}px`);
+    card.style.setProperty('--spot-y', `${py.toFixed(0)}px`);
     card.style.setProperty('--card-tilt-x', `${tiltX.toFixed(2)}deg`);
     card.style.setProperty('--card-tilt-y', `${tiltY.toFixed(2)}deg`);
     card.style.setProperty('--card-shift-x', `${shiftX.toFixed(2)}px`);
     card.style.setProperty('--card-shift-y', `${shiftY.toFixed(2)}px`);
-    card.style.setProperty('--card-media-x', `${(-shiftX * 0.55).toFixed(2)}px`);
-    card.style.setProperty('--card-media-y', `${(-shiftY * 0.55).toFixed(2)}px`);
+    card.style.setProperty('--card-media-x', `${(-shiftX * 0.5).toFixed(2)}px`);
+    card.style.setProperty('--card-media-y', `${(-shiftY * 0.5).toFixed(2)}px`);
   };
 
   const handlePointerEnter = () => {
@@ -67,11 +71,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
     if (prefersReducedMotion || !canHover) return;
 
+    const { clientX, clientY } = event;
     if (frameId.current) {
       cancelAnimationFrame(frameId.current);
     }
 
-    frameId.current = requestAnimationFrame(() => updateCard(event));
+    frameId.current = requestAnimationFrame(() => updateCard(clientX, clientY));
   };
 
   const handlePointerLeave = () => {
@@ -83,7 +88,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <article
-      className="project-card"
+      className="project-card spotlight-surface"
       ref={cardRef}
       onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDiscordStatus } from '../hooks/useDiscordStatus';
+import Icon from './Icon';
 
 export const DiscordWidget: React.FC = () => {
   const statusData = useDiscordStatus();
@@ -46,7 +47,7 @@ export const DiscordWidget: React.FC = () => {
       id="discord-widget"
     >
       <div className="d-avatar-wrapper">
-        <img id="d-avatar" src={avatarUrl} alt="Profile" />
+        <img id="d-avatar" src={avatarUrl} alt="Profile" loading="lazy" decoding="async" />
         <div id="d-status-indicator" className={`d-status-dot ${status}`}></div>
       </div>
       <div className="d-info">
@@ -54,12 +55,12 @@ export const DiscordWidget: React.FC = () => {
           <span id="d-username">{username}</span>
           <div className="d-badges" id="d-badges">
             {badges.map((b, idx) => (
-              <i
+              <Icon
                 key={idx}
-                className={b.icon}
+                name={b.icon}
                 title={b.name}
                 style={{ color: b.color }}
-              ></i>
+              />
             ))}
           </div>
         </div>
@@ -74,7 +75,7 @@ export const DiscordWidget: React.FC = () => {
           <span id="d-activity-text">
             {isListeningToSpotify ? (
               <>
-                <i className="fa-brands fa-spotify" style={{ marginRight: '4px' }}></i>
+                <Icon name="spotify" style={{ marginRight: '4px' }} />
                 {activityText}
               </>
             ) : (

@@ -13,8 +13,6 @@ import DigitalCard from './pages/DigitalCard';
 import LinkedInRedirect from './pages/LinkedInRedirect';
 import NotFound from './pages/NotFound';
 
-
-
 const AppContent: React.FC = () => {
   useGlobalScrollReveal();
   const { pathname } = useLocation();
@@ -29,9 +27,12 @@ const AppContent: React.FC = () => {
 
   // Lenis Smooth Scroll Setup
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
     const lenisInstance = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
 
@@ -44,23 +45,9 @@ const AppContent: React.FC = () => {
     };
     rafId = requestAnimationFrame(raf);
 
-    let isScrollingTimeout: number;
-    const handleScroll = () => {
-      const iframe = document.querySelector('.video-embed iframe') as HTMLIFrameElement;
-      if (iframe) {
-        iframe.style.pointerEvents = 'none';
-        window.clearTimeout(isScrollingTimeout);
-        isScrollingTimeout = window.setTimeout(() => {
-          iframe.style.pointerEvents = 'auto';
-        }, 150);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
     return () => {
       cancelAnimationFrame(rafId);
       lenisInstance.destroy();
-      window.removeEventListener('scroll', handleScroll);
       (window as any).lenis = undefined;
     };
   }, []);

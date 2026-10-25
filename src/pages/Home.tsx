@@ -7,6 +7,8 @@ import ProjectCard from '../components/ProjectCard';
 import SpotifyWidget from '../components/SpotifyWidget';
 import GithubWidget from '../components/GithubWidget';
 import AsciiHeroCanvas from '../components/AsciiHeroCanvas';
+import Icon from '../components/Icon';
+import DecryptedText from '../components/DecryptedText';
 
 export const Home: React.FC = () => {
   const { t, language } = useTranslation();
@@ -22,11 +24,16 @@ export const Home: React.FC = () => {
   const [formStatusColor, setFormStatusColor] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Scroll to section passed from route navigation (e.g. from Journey page)
+  const handleSurfaceSpotlight = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty('--spot-x', `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty('--spot-y', `${e.clientY - rect.top}px`);
+  };
+
+  // Scroll to section passed from route navigation (e.g. from Journey page or Command Menu)
   useEffect(() => {
     if (location.state && (location.state as any).scrollTo) {
       const targetId = (location.state as any).scrollTo;
-      // Clear location state to prevent repeat scrolling on refresh
       window.history.replaceState({}, document.title);
 
       const timer = setTimeout(() => {
@@ -176,7 +183,7 @@ export const Home: React.FC = () => {
           <div className="header-info">
             <h1 data-lang="hero-greeting">{t('hero-greeting')}</h1>
             <p className="header-subtitle" data-lang="hero-title">
-              {t('hero-title')}
+              <DecryptedText text={t('hero-title')} />
             </p>
             <p className="hero-slogan" data-lang="hero-slogan">
               {t('hero-slogan')}
@@ -187,7 +194,7 @@ export const Home: React.FC = () => {
                 className="status-dot"
                 style={{ background: getDiscordDotColor() }}
               ></div>
-              <span id="hero-discord-text" data-lang="status-text">
+              <span id="hero-discord-text" className="shiny-status-text" data-lang="status-text">
                 {t('status-text')}
               </span>
             </div>
@@ -200,25 +207,6 @@ export const Home: React.FC = () => {
               >
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                </svg>
-              </a>
-              <a
-                href="https://www.youtube.com/@mustafakemalz"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
-                  <path d="m10 15 5-3-5-3z" />
                 </svg>
               </a>
               <a
@@ -242,7 +230,7 @@ export const Home: React.FC = () => {
                 </svg>
               </a>
               <a
-                href="https://www.instagram.com/jpeg.muskz"
+                href="https://www.instagram.com/jpeg.muskz/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -276,12 +264,19 @@ export const Home: React.FC = () => {
                 </svg>
               </a>
             </nav>
+            <div className="hero-meta-strip" aria-hidden="true">
+              <span>00 / hero</span>
+              <span className="hero-meta-sep">·</span>
+              <span>adana, tr</span>
+              <span className="hero-meta-sep">·</span>
+              <span>{language === 'tr' ? 'fareyi hareket ettir / kaydır' : 'move cursor / scroll'}</span>
+            </div>
           </div>
         </div>
       </header>
 
       {/* TL;DR CARD */}
-      <section className="tldr-card reveal" aria-labelledby="tldr-heading">
+      <section className="tldr-card spotlight-surface reveal" aria-labelledby="tldr-heading" onMouseMove={handleSurfaceSpotlight}>
         <h2 id="tldr-heading" className="hidden">Quick Summary</h2>
         <p>
           <strong>TL;DR:</strong>{' '}
@@ -298,6 +293,7 @@ export const Home: React.FC = () => {
 
       {/* ABOUT ME */}
       <section id="about" className="section reveal" aria-labelledby="about-heading">
+        <span className="section-idx">01 / {language === 'tr' ? 'hakkımda' : 'about'}</span>
         <h2 id="about-heading" className="section-title" data-lang="about-title">
           {t('about-title')}
         </h2>
@@ -325,25 +321,25 @@ export const Home: React.FC = () => {
             <h3 data-lang="skill-cat-1">{t('skill-cat-1')}</h3>
             <div className="skill-pills">
               <span className="skill-pill">
-                <i className="fa-solid fa-microchip"></i> STM32
+                <Icon name="microchip" /> STM32
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-microchip"></i> ESP32
+                <Icon name="microchip" /> ESP32
               </span>
               <span className="skill-pill">
-                <i className="fa-brands fa-raspberry-pi"></i> Raspberry Pi
+                <Icon name="raspberry-pi" /> Raspberry Pi
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-layer-group"></i> Altium Designer
+                <Icon name="layer-group" /> Altium Designer
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-cube"></i> SolidWorks
+                <Icon name="cube" /> SolidWorks
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-gears"></i> Automation Systems
+                <Icon name="gears" /> Automation Systems
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-wifi"></i> IoT
+                <Icon name="wifi" /> IoT
               </span>
             </div>
           </div>
@@ -351,25 +347,25 @@ export const Home: React.FC = () => {
             <h3 data-lang="skill-cat-2">{t('skill-cat-2')}</h3>
             <div className="skill-pills">
               <span className="skill-pill">
-                <i className="fa-brands fa-react"></i> React
+                <Icon name="react" /> React
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-code"></i> Next.js
+                <Icon name="code" /> Next.js
               </span>
               <span className="skill-pill">
-                <i className="fa-brands fa-node-js"></i> Node.js
+                <Icon name="node-js" /> Node.js
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-code"></i> TypeScript
+                <Icon name="code" /> TypeScript
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-atom"></i> Electron
+                <Icon name="atom" /> Electron
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-usb"></i> USB HID / Reverse Eng
+                <Icon name="usb" /> USB HID / Reverse Eng
               </span>
               <span className="skill-pill">
-                <i className="fa-brands fa-github"></i> Open Source
+                <Icon name="github" /> Open Source
               </span>
             </div>
           </div>
@@ -377,19 +373,19 @@ export const Home: React.FC = () => {
             <h3 data-lang="skill-cat-3">{t('skill-cat-3')}</h3>
             <div className="skill-pills">
               <span className="skill-pill">
-                <i className="fa-solid fa-brain"></i> Local AI / LLMs
+                <Icon name="brain" /> Local AI / LLMs
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-terminal"></i> Ollama
+                <Icon name="terminal" /> Ollama
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-wand-magic-sparkles"></i> AI Workflows
+                <Icon name="wand-magic-sparkles" /> AI Workflows
               </span>
               <span className="skill-pill">
-                <i className="fa-brands fa-discord"></i> Discord & Server Bots
+                <Icon name="discord" /> Discord & Server Bots
               </span>
               <span className="skill-pill">
-                <i className="fa-solid fa-robot"></i> Automation Scripts
+                <Icon name="robot" /> Automation Scripts
               </span>
             </div>
           </div>
@@ -410,6 +406,7 @@ export const Home: React.FC = () => {
 
       {/* WHAT I DO (Service Cards) */}
       <section id="services" className="section section-alt reveal" aria-labelledby="services-heading">
+        <span className="section-idx">02 / {language === 'tr' ? 'neler yapıyorum' : 'capabilities'}</span>
         <h2 id="services-heading" className="section-title" data-lang="services-title">
           {t('services-title')}
         </h2>
@@ -417,39 +414,39 @@ export const Home: React.FC = () => {
           {t('services-text')}
         </p>
         <div className="services-grid reveal-stagger">
-          <div className="service-card">
+          <div className="service-card spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="service-icon">
-              <i className="fa-solid fa-microchip"></i>
+              <Icon name="microchip" />
             </div>
             <span data-lang="svc-1">{t('svc-1')}</span>
           </div>
-          <div className="service-card">
+          <div className="service-card spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="service-icon">
-              <i className="fa-solid fa-gears"></i>
+              <Icon name="gears" />
             </div>
             <span data-lang="svc-2">{t('svc-2')}</span>
           </div>
-          <div className="service-card">
+          <div className="service-card spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="service-icon">
-              <i className="fa-solid fa-layer-group"></i>
+              <Icon name="layer-group" />
             </div>
             <span data-lang="svc-3">{t('svc-3')}</span>
           </div>
-          <div className="service-card">
+          <div className="service-card spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="service-icon">
-              <i className="fa-solid fa-code"></i>
+              <Icon name="code" />
             </div>
             <span data-lang="svc-4">{t('svc-4')}</span>
           </div>
-          <div className="service-card">
+          <div className="service-card spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="service-icon">
-              <i className="fa-solid fa-brain"></i>
+              <Icon name="brain" />
             </div>
             <span data-lang="svc-5">{t('svc-5')}</span>
           </div>
-          <div className="service-card">
+          <div className="service-card spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="service-icon">
-              <i className="fa-brands fa-github"></i>
+              <Icon name="github" />
             </div>
             <span data-lang="svc-6">{t('svc-6')}</span>
           </div>
@@ -460,11 +457,12 @@ export const Home: React.FC = () => {
 
       {/* EXPERIENCE & EDUCATION */}
       <section id="experience" className="section reveal" aria-labelledby="experience-heading">
+        <span className="section-idx">03 / {language === 'tr' ? 'deneyim' : 'experience'}</span>
         <h2 id="experience-heading" className="section-title" data-lang="exp-title">
           {t('exp-title')}
         </h2>
         <div className="experience-list">
-          <div className="experience-item">
+          <div className="experience-item is-present spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="exp-header">
               <span className="exp-company">
                 <a
@@ -487,7 +485,13 @@ export const Home: React.FC = () => {
                   </svg>
                 </a>
               </span>
-              <span className="exp-date">{language === 'tr' ? '2026 - GÜNÜMÜZ' : '2026 - PRESENT'}</span>
+              <div className="exp-date-group">
+                <span className="exp-present-badge">
+                  <span className="exp-present-dot" />
+                  {language === 'tr' ? 'AKTİF' : 'PRESENT'}
+                </span>
+                <span className="exp-date">{language === 'tr' ? '2026 - GÜNÜMÜZ' : '2026 - PRESENT'}</span>
+              </div>
             </div>
             <div className="exp-role" data-lang="exp-0-role">
               {t('exp-0-role')}
@@ -502,7 +506,7 @@ export const Home: React.FC = () => {
               <span>SOFTWARE</span>
             </div>
           </div>
-          <div className="experience-item">
+          <div className="experience-item spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="exp-header">
               <span className="exp-company">ÇUKUROVA UNIVERSITY</span>
               <span className="exp-date">2022 - 2026</span>
@@ -514,7 +518,7 @@ export const Home: React.FC = () => {
               {t('edu-1-desc')}
             </p>
           </div>
-          <div className="experience-item">
+          <div className="experience-item spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="exp-header">
               <span className="exp-company">ISKAR TECHNOLOGIES</span>
               <span className="exp-date">2025</span>
@@ -531,7 +535,7 @@ export const Home: React.FC = () => {
               <span>PROTOTYPING</span>
             </div>
           </div>
-          <div className="experience-item">
+          <div className="experience-item spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="exp-header">
               <span className="exp-company">STATU.CO</span>
               <span className="exp-date">2024</span>
@@ -555,6 +559,7 @@ export const Home: React.FC = () => {
 
       {/* FEATURED PROJECTS */}
       <section id="projects" className="section section-alt reveal" aria-labelledby="projects-heading">
+        <span className="section-idx">04 / {language === 'tr' ? 'projeler' : 'projects'}</span>
         <h2 id="projects-heading" className="section-title" data-lang="proj-title">
           {t('proj-title')}
         </h2>
@@ -594,102 +599,20 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* LATEST STREAM */}
-      <section id="stream" className="section reveal" aria-labelledby="stream-heading">
-        <h2 id="stream-heading" className="section-title" data-lang="yt-title">
-          {t('yt-title')}
-        </h2>
-
-        <div className="stream-showcase">
-          {/* Video Column */}
-          <div className="stream-video-col">
-            <div className="video-embed">
-              <iframe
-                src="https://www.youtube.com/embed/y2X01DtZ6B0?rel=0&modestbranding=1"
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
-
-          {/* Info Column */}
-          <div className="stream-info-col">
-            <div className="stream-channel-card">
-              <div className="channel-card-header">
-                <div className="channel-avatar">
-                  <img
-                    src="assets/profile.webp"
-                    alt="Mustafa Kemal Göçer"
-                    onError={(e) => (e.currentTarget.style.display = 'none')}
-                  />
-                </div>
-                <div className="channel-meta">
-                  <span className="channel-name">Mustafa Kemal</span>
-                  <span className="channel-handle">@mustafakemalz</span>
-                </div>
-              </div>
-              <p className="channel-desc" data-lang="yt-desc-text">
-                {t('yt-desc-text')}
-              </p>
-
-              <ul className="channel-features">
-                <li>
-                  <i
-                    className="fa-solid fa-circle"
-                    style={{
-                      color: '#ff0000',
-                      fontSize: '8px',
-                      verticalAlign: 'middle',
-                      marginRight: '8px',
-                    }}
-                  ></i>{' '}
-                  <span data-lang="yt-info-1">{t('yt-info-1')}</span>
-                </li>
-                <li>
-                  <i
-                    className="fa-solid fa-wrench"
-                    style={{ color: 'var(--accent)', marginRight: '8px' }}
-                  ></i>{' '}
-                  <span data-lang="yt-info-2">{t('yt-info-2')}</span>
-                </li>
-                <li>
-                  <i
-                    className="fa-solid fa-comments"
-                    style={{ color: 'var(--status-online)', marginRight: '8px' }}
-                  ></i>{' '}
-                  <span data-lang="yt-info-3">{t('yt-info-3')}</span>
-                </li>
-              </ul>
-
-              <a
-                href="https://www.youtube.com/@mustafakemalz"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary"
-                style={{ marginTop: '0.5rem' }}
-                data-lang="yt-btn"
-              >
-                <span>{t('yt-btn')}</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <hr className="section-divider" />
 
       {/* SPOTIFY & GITHUB WIDGETS */}
-      <section className="section reveal" aria-labelledby="widgets-heading">
+      <section id="activity" className="section reveal" aria-labelledby="widgets-heading">
+        <span className="section-idx">05 / {language === 'tr' ? 'canlı aktivite' : 'live activity'}</span>
         <h2 id="widgets-heading" className="section-title" data-lang="spotify-title">
           {t('spotify-title')}
         </h2>
         <div className="widgets-row">
           {/* Spotify Box */}
-          <div className="widget-box">
+          <div className="widget-box spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="widget-header">
               <div className="widget-brand">
-                <i className="fa-brands fa-spotify"></i>
+                <Icon name="spotify" />
                 <span data-lang="spotify-source">{t('spotify-source')}</span>
               </div>
             </div>
@@ -697,10 +620,10 @@ export const Home: React.FC = () => {
           </div>
 
           {/* GitHub Box */}
-          <div className="widget-box">
+          <div className="widget-box spotlight-surface" onMouseMove={handleSurfaceSpotlight}>
             <div className="widget-header">
               <div className="widget-brand">
-                <i className="fa-brands fa-github"></i>
+                <Icon name="github" />
                 <span data-lang="github-title">{t('github-title')}</span>
               </div>
               <a
@@ -709,7 +632,7 @@ export const Home: React.FC = () => {
                 rel="noopener noreferrer"
                 aria-label="View GitHub profile"
               >
-                <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                <Icon name="arrow-up-right-from-square" />
               </a>
             </div>
             <GithubWidget />
@@ -720,7 +643,8 @@ export const Home: React.FC = () => {
       <hr className="section-divider" />
 
       {/* GALLERY (Life Style) */}
-      <section className="section reveal" aria-labelledby="gallery-heading">
+      <section id="gallery" className="section reveal" aria-labelledby="gallery-heading">
+        <span className="section-idx">06 / {language === 'tr' ? 'galeri' : 'gallery'}</span>
         <h2 id="gallery-heading" className="section-title" data-lang="gallery-title">
           {t('gallery-title')}
         </h2>
@@ -729,6 +653,8 @@ export const Home: React.FC = () => {
             <img
               src="assets/photo1.webp"
               alt="Engineering Lab"
+              loading="lazy"
+              decoding="async"
               onError={(e) =>
                 handleImageError(
                   e,
@@ -744,6 +670,8 @@ export const Home: React.FC = () => {
             <img
               src="assets/photo2.webp"
               alt="Simulation"
+              loading="lazy"
+              decoding="async"
               onError={(e) =>
                 handleImageError(
                   e,
@@ -759,6 +687,8 @@ export const Home: React.FC = () => {
             <img
               src="assets/photo3.gif"
               alt="Hardware"
+              loading="lazy"
+              decoding="async"
               onError={(e) =>
                 handleImageError(
                   e,
@@ -774,6 +704,8 @@ export const Home: React.FC = () => {
             <img
               src="assets/photo4.webp"
               alt="Field Work"
+              loading="lazy"
+              decoding="async"
               onError={(e) =>
                 handleImageError(
                   e,
@@ -792,6 +724,7 @@ export const Home: React.FC = () => {
 
       {/* CONTACT */}
       <section id="contact" className="section section-alt reveal" aria-labelledby="contact-heading">
+        <span className="section-idx">07 / {language === 'tr' ? 'iletişim' : 'contact'}</span>
         <div className="cta-row">
           <h2
             id="contact-heading"
@@ -868,7 +801,7 @@ export const Home: React.FC = () => {
               ></textarea>
             </div>
             <button type="submit" className="btn-primary-full" id="form-btn" disabled={isSubmitting}>
-              <i className="fa-solid fa-paper-plane"></i>
+              <Icon name="paper-plane" />
               <span data-lang="form-btn">
                 {isSubmitting ? 'SENDING...' : t('form-btn')}
               </span>
@@ -889,7 +822,7 @@ export const Home: React.FC = () => {
             rel="noopener noreferrer"
             className="btn-outline btn-github"
           >
-            <i className="fa-brands fa-github"></i>
+            <Icon name="github" />
             <span>GitHub</span>
           </a>
           <a
@@ -898,34 +831,23 @@ export const Home: React.FC = () => {
             rel="noopener noreferrer"
             className="btn-outline btn-linkedin"
           >
-            <i className="fa-brands fa-linkedin-in"></i>
+            <Icon name="linkedin-in" />
             <span>LinkedIn</span>
           </a>
-        </div>
-        <div className="btn-row">
           <a
-            href="https://www.youtube.com/@mustafakemalz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-outline btn-youtube"
-          >
-            <i className="fa-brands fa-youtube"></i>
-            <span>YouTube</span>
-          </a>
-          <a
-            href="https://www.instagram.com/jpeg.muskz"
+            href="https://www.instagram.com/jpeg.muskz/"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline btn-instagram"
           >
-            <i className="fa-brands fa-instagram"></i>
+            <Icon name="instagram" />
             <span>Instagram</span>
           </a>
         </div>
 
         <div className="status-indicator">
           <div className="status-dot"></div>
-          <p data-lang="status-text">{t('status-text')}</p>
+          <p className="shiny-status-text" data-lang="status-text">{t('status-text')}</p>
         </div>
       </section>
     </>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from '../context/LanguageContext';
+import Icon from './Icon';
 
 interface Track {
   name: string;
@@ -62,7 +63,7 @@ export const SpotifyWidget: React.FC = () => {
     return (
       <div className="widget-content">
         <div className="widget-empty">
-          <i className="fa-brands fa-spotify"></i>
+          <Icon name="spotify" />
           <span>{t('spotify-empty')}</span>
         </div>
       </div>
