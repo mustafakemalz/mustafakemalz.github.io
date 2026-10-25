@@ -66,7 +66,7 @@ export const AsciiHeroCanvas: React.FC = () => {
     let leftLoaded = false;
     let rightLoaded = false;
     let forceNextRender = true;
-    let lastRenderTime = 0;
+    let lastRenderTime = -1000;
     let render: (now: number) => void;
 
     let W = 0;
@@ -90,26 +90,6 @@ export const AsciiHeroCanvas: React.FC = () => {
     const bucketsY: number[][] = Array.from({ length: 7 }, () => []);
     const bucketsChar: string[][] = Array.from({ length: 7 }, () => []);
 
-    const buildDotLayer = () => {
-      if (!dotCtx || W <= 0 || H <= 0 || cols <= 0 || rows <= 0) return;
-      dotLayer.width = Math.round(W * dpr);
-      dotLayer.height = Math.round(H * dpr);
-      dotCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      dotCtx.clearRect(0, 0, W, H);
-      const isDark = themeRef.current !== 'light';
-      dotCtx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.075)' : 'rgba(0, 0, 0, 0.05)';
-      for (let y = 0; y < rows; y++) {
-        const Y = y * ch + ch / 2 - 0.6;
-        for (let x = 0; x < cols; x++) {
-          const X = x * cw + cw / 2 - 0.6;
-          dotCtx.fillRect(X, Y, 1.25, 1.25);
-        }
-      }
-      forceNextRender = true;
-    };
-
-    rebuildDotsRef.current = buildDotLayer;
-
     const startLoop = () => {
       if (!isMounted || isRunning || !isVisibleRef.current || !leftLoaded || !rightLoaded || !render) return;
       isRunning = true;
@@ -125,6 +105,33 @@ export const AsciiHeroCanvas: React.FC = () => {
       }
     };
 
+    const requestRender = () => {
+      forceNextRender = true;
+      if (!isRunning) {
+        startLoop();
+      }
+    };
+
+    const buildDotLayer = () => {
+      if (!dotCtx || W <= 0 || H <= 0 || cols <= 0 || rows <= 0) return;
+      dotLayer.width = Math.round(W * dpr);
+      dotLayer.height = Math.round(H * dpr);
+      dotCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      dotCtx.clearRect(0, 0, W, H);
+      const isDark = themeRef.current !== 'light';
+      dotCtx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.075)' : 'rgba(0, 0, 0, 0.05)';
+      for (let y = 0; y < rows; y++) {
+        const Y = y * ch + ch / 2 - 0.6;
+        for (let x = 0; x < cols; x++) {
+          const X = x * cw + cw / 2 - 0.6;
+          dotCtx.fillRect(X, Y, 1.25, 1.25);
+        }
+      }
+      requestRender();
+    };
+
+    rebuildDotsRef.current = buildDotLayer;
+
     const checkReady = () => {
       if (!isMounted || !leftLoaded || !rightLoaded) return;
       startLoop();
@@ -134,7 +141,7 @@ export const AsciiHeroCanvas: React.FC = () => {
       const scrollY = window.scrollY;
       const heroHeight = container.parentElement?.offsetHeight || window.innerHeight;
       tp = cl(scrollY / (heroHeight * 0.75), 0, 1);
-      forceNextRender = true;
+      requestRender();
     };
 
     let textMask = new Float32Array(0);
@@ -154,16 +161,27 @@ export const AsciiHeroCanvas: React.FC = () => {
       const children = Array.from(infoEl.children) as HTMLElement[];
       const targets = children.length > 0 ? children : [infoEl as HTMLElement];
 
-      const rects = targets
-        .map((el) => {
-          const r = el.getBoundingClientRect();
-          return {
-            x0: r.left - cRect.left - 14,
-            y0: r.top - cRect.top - 8,
-            x1: r.right - cRect.left + 18,
-            y1: r.bottom - cRect.top + 8,
-          };
-        })
+      const rawRects: DOMRect[] = [];
+      const range = typeof document.createRange === 'function' ? document.createRange() : null;
+      targets.forEach((el) => {
+        if (range) {
+          range.selectNodeContents(el);
+          const clientRects = Array.from(range.getClientRects());
+          if (clientRects.length > 0) {
+            rawRects.push(...clientRects);
+            return;
+          }
+        }
+        rawRects.push(el.getBoundingClientRect());
+      });
+
+      const rects = rawRects
+        .map((r) => ({
+          x0: r.left - cRect.left - 10,
+          y0: r.top - cRect.top - 6,
+          x1: r.right - cRect.left + 12,
+          y1: r.bottom - cRect.top + 6,
+        }))
         .filter((r) => r.x1 > r.x0 && r.y1 > r.y0);
 
       if (rects.length === 0) {
@@ -203,7 +221,7 @@ export const AsciiHeroCanvas: React.FC = () => {
         }
       }
       hasTextMask = true;
-      forceNextRender = true;
+      requestRender();
     };
 
     const handleResize = () => {
@@ -290,7 +308,7 @@ export const AsciiHeroCanvas: React.FC = () => {
         e.clientX <= rect.right
       ) {
         touchImpulse = 1.0;
-        forceNextRender = true;
+        requestRender();
       }
     };
 
@@ -337,14 +355,14 @@ export const AsciiHeroCanvas: React.FC = () => {
         (p > 0.55 && p < 0.92);
 
       const minInterval = isActivelyInteracting ? 15 : 64;
-      if (now - lastRenderTime < minInterval) return;
+      if (!forceNextRender && now - lastRenderTime < minInterval) return;
       lastRenderTime = now;
       forceNextRender = false;
 
       const t = (now - t0) / 1000;
-      p += (tp - p) * 0.12;
-      mx += (targetMx - mx) * 0.12;
-      my += (targetMy - my) * 0.12;
+      p = prefersReducedMotion ? tp : p + (tp - p) * 0.12;
+      mx = prefersReducedMotion ? 0 : mx + (targetMx - mx) * 0.12;
+      my = prefersReducedMotion ? 0 : my + (targetMy - my) * 0.12;
 
       if (touchImpulse > 0) {
         touchImpulse = Math.max(0, touchImpulse - 0.035);
@@ -431,8 +449,10 @@ export const AsciiHeroCanvas: React.FC = () => {
           const on = l > 0.06 && (dis === 0 || hash(x, y, 5) >= dis);
 
           if (on) {
-            const bucketIdx = Math.min(6, Math.floor(l * 7));
-            const arr = LV[bucketIdx];
+            const bucketScale = hasTextMask ? lerp(4.8, 7, textMask[cellIdx]) : 7;
+            const bucketIdx = Math.min(6, Math.floor(l * bucketScale));
+            const charBucketIdx = Math.min(6, Math.floor(rawL * 7));
+            const arr = LV[charBucketIdx];
             const b = hash(x, y, 9) < 0.1 ? t6 : 0;
             bucketsX[bucketIdx].push(X);
             bucketsY[bucketIdx].push(Y);
