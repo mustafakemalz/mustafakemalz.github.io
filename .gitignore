@@ -7,8 +7,9 @@
 .env.spotify
 .env.vercel
 
-# Spotify token script (contains credentials)
+# Spotify token script & scratch scripts (contains credentials or local paths)
 get-spotify-token.js
+copy_profile.js
 
 # Build output
 dist/
