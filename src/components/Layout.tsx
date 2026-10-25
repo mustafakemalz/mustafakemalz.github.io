@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
-import DiscordWidget from './DiscordWidget';
 import CommandMenu from './CommandMenu';
 import Icon from './Icon';
 
@@ -21,10 +20,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isCommandOpen, setIsCommandOpen] = useState(false);
   const [localTime, setLocalTime] = useState<string>('--:--');
 
-  // Handle navbar scroll pill morph (inspired by barbecue/website Navbar.tsx)
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 36);
+      setIsScrolled(window.scrollY > 24);
     };
 
     handleScroll();
@@ -32,180 +30,174 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Live Adana/Istanbul local clock (inspired by tuna.one footer)
   useEffect(() => {
     const updateClock = () => {
       try {
-        const formatted = new Intl.DateTimeFormat('tr-TR', {
+        const formatted = new Intl.DateTimeFormat('en-GB', {
           timeZone: 'Europe/Istanbul',
           hour: '2-digit',
           minute: '2-digit',
           hour12: false,
         }).format(new Date());
-        setLocalTime(formatted);
+        setLocalTime(`${formatted} TRT`);
       } catch {
-        const d = new Date();
+        const now = new Date();
         setLocalTime(
-          `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+          `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
         );
       }
     };
     updateClock();
-    const timer = window.setInterval(updateClock, 15000);
+    const timer = window.setInterval(updateClock, 30000);
     return () => window.clearInterval(timer);
   }, []);
 
-  // Handle mobile menu ESC key close
+  const openMobileMenu = () => {
+    setIsMobileMenuOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    document.body.style.overflow = '';
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
         closeMobileMenu();
       }
     };
-
-    if (isMobileMenuOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isMobileMenuOpen]);
-
-  const openMobileMenu = () => setIsMobileMenuOpen(true);
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    closeMobileMenu();
+    if (isMobileMenuOpen) {
+      closeMobileMenu();
+    }
 
-    const isHomePage = location.pathname === '/';
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: targetId } });
+      return;
+    }
 
     if (targetId === '#' || targetId === '' || targetId === '#top') {
-      if (isHomePage) {
-        if ((window as any).lenis) {
-          (window as any).lenis.scrollTo(0, { duration: 1.2 });
-        } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(0, { duration: 1.1 });
       } else {
-        navigate('/');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
       return;
     }
 
-    if (isHomePage) {
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        const navOffset = window.innerWidth <= 768 ? -64 : -72;
-        if ((window as any).lenis) {
-          (window as any).lenis.scrollTo(targetEl, {
-            offset: navOffset,
-            duration: 1.2,
-          });
-        } else {
-          const targetY = targetEl.getBoundingClientRect().top + window.scrollY + navOffset;
-          window.scrollTo({
-            top: targetY,
-            behavior: 'smooth',
-          });
-        }
+    const targetEl = document.querySelector(targetId);
+    if (targetEl) {
+      const navOffset = window.innerWidth <= 768 ? -64 : -72;
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(targetEl, {
+          offset: navOffset,
+          duration: 1.1,
+        });
+      } else {
+        const targetY = targetEl.getBoundingClientRect().top + window.scrollY + navOffset;
+        window.scrollTo({
+          top: targetY,
+          behavior: 'smooth',
+        });
       }
-    } else {
-      navigate('/', { state: { scrollTo: targetId } });
     }
   };
 
   const currentYear = new Date().getFullYear();
-  const routeSegment = location.pathname === '/' ? '' : location.pathname.split('/')[1] || '';
+  const routeSegment =
+    location.pathname === '/' ? '' : location.pathname.replace(/^\//, '');
 
   return (
     <>
-      {/* ═══════════════ STICKY PILL NAVIGATION ═══════════════ */}
       <nav
-        id="site-nav"
         className={`site-nav ${isScrolled ? 'is-scrolled' : ''}`}
+        id="site-nav"
         aria-label="Main navigation"
       >
-        <div className="nav-brand-wrap">
-          <Link to="/" onClick={(e) => handleNavClick(e, '#')} className="nav-brand">
-            Mustafa Kemal
-          </Link>
-          {routeSegment && <span className="nav-route-crumb">/{routeSegment}</span>}
-        </div>
-        <div className="nav-links" id="nav-links">
-          <a href="#about" onClick={(e) => handleNavClick(e, '#about')} data-lang="nav-about">
-            {t('nav-about')}
-          </a>
-          <a href="#services" onClick={(e) => handleNavClick(e, '#services')} data-lang="nav-skills">
-            {t('nav-skills')}
-          </a>
-          <a href="#experience" onClick={(e) => handleNavClick(e, '#experience')} data-lang="nav-experience">
-            {t('nav-experience')}
-          </a>
-          <a href="#projects" onClick={(e) => handleNavClick(e, '#projects')} data-lang="nav-projects">
-            {t('nav-projects')}
-          </a>
-          <Link to="/journey" onClick={closeMobileMenu} data-lang="nav-journey">
-            {t('nav-journey')}
-          </Link>
-          <Link to="/sistem" onClick={closeMobileMenu}>
-            {language === 'tr' ? 'Sistem' : 'Setup'}
-          </Link>
-          <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} data-lang="nav-contact">
-            {t('nav-contact')}
-          </a>
-        </div>
-        <div className="nav-actions">
-          <button
-            type="button"
-            id="cmd-btn"
-            className="cmd-trigger-btn"
-            onClick={() => setIsCommandOpen(true)}
-            aria-label="Open Command Menu (Ctrl+K)"
-            title="Command Menu (Ctrl+K)"
-          >
-            <Icon name="search" size={14} />
-            <kbd>⌘K</kbd>
-          </button>
-          <button
-            id="theme-btn"
-            className="control-btn"
-            onClick={toggleTheme}
-            aria-label="Toggle Theme"
-          >
-            <Icon name={theme === 'light' ? 'sun' : 'moon'} />
-          </button>
-          <button
-            id="lang-btn"
-            className="control-btn"
-            onClick={toggleLanguage}
-            aria-label="Change Language"
-          >
-            {language.toUpperCase()}
-          </button>
-          <button
-            id="hamburger-btn"
-            className={`hamburger-btn ${isMobileMenuOpen ? 'is-active' : ''}`}
-            onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
-            aria-label="Toggle Menu"
-            aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
-          >
-            <span className="hamburger-line"></span>
-            <span className="hamburger-line"></span>
-            <span className="hamburger-line"></span>
-          </button>
+        <div className="site-nav-inner">
+          <div className="nav-brand-wrap">
+            <a href="#" className="nav-brand" onClick={(e) => handleNavClick(e, '#')}>
+              Mustafa Kemal
+            </a>
+            {routeSegment && (
+              <span className="nav-route-crumb" aria-hidden="true">
+                /{routeSegment}
+              </span>
+            )}
+          </div>
+          <div className="nav-links">
+            <a href="#about" onClick={(e) => handleNavClick(e, '#about')} data-lang="nav-about">
+              {t('nav-about')}
+            </a>
+            <a href="#experience" onClick={(e) => handleNavClick(e, '#experience')} data-lang="nav-experience">
+              {t('nav-experience')}
+            </a>
+            <a href="#projects" onClick={(e) => handleNavClick(e, '#projects')} data-lang="nav-projects">
+              {t('nav-projects')}
+            </a>
+            <Link to="/journey" onClick={closeMobileMenu} data-lang="nav-journey">
+              {t('nav-journey')}
+            </Link>
+            <Link to="/sistem" onClick={closeMobileMenu}>
+              {language === 'tr' ? 'Sistem' : 'Setup'}
+            </Link>
+            <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} data-lang="nav-contact">
+              {t('nav-contact')}
+            </a>
+          </div>
+          <div className="nav-actions">
+            <button
+              type="button"
+              id="cmd-btn"
+              className="nav-plain-btn"
+              onClick={() => setIsCommandOpen(true)}
+              aria-label="Open Command Menu (Ctrl+K)"
+              title="Command Menu (Ctrl+K)"
+            >
+              ⌘K
+            </button>
+            <button
+              type="button"
+              id="lang-btn"
+              className="nav-plain-btn"
+              onClick={toggleLanguage}
+              aria-label="Change Language"
+            >
+              {language.toUpperCase()}
+            </button>
+            <button
+              type="button"
+              id="theme-btn"
+              className="nav-plain-btn"
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+            >
+              <Icon name={theme === 'light' ? 'sun' : 'moon'} size={15} />
+            </button>
+            <button
+              type="button"
+              id="hamburger-btn"
+              className={`hamburger-btn ${isMobileMenuOpen ? 'is-active' : ''}`}
+              onClick={isMobileMenuOpen ? closeMobileMenu : openMobileMenu}
+              aria-label="Toggle Menu"
+              aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
+            >
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Command Palette Dialog (Ctrl+K) */}
       <CommandMenu open={isCommandOpen} onOpenChange={setIsCommandOpen} />
 
-      {/* Mobile Menu Overlay */}
       <div
         className={`mobile-menu-overlay ${isMobileMenuOpen ? 'is-open' : ''}`}
         id="mobile-menu-overlay"
@@ -217,9 +209,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="mobile-menu-links">
             <a href="#about" onClick={(e) => handleNavClick(e, '#about')} data-lang="nav-about">
               {t('nav-about')}
-            </a>
-            <a href="#services" onClick={(e) => handleNavClick(e, '#services')} data-lang="nav-skills">
-              {t('nav-skills')}
             </a>
             <a href="#experience" onClick={(e) => handleNavClick(e, '#experience')} data-lang="nav-experience">
               {t('nav-experience')}
@@ -240,55 +229,40 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-      {/* ═══════════════ MAIN CONTENT WRAPPER ═══════════════ */}
       <main className="site-wrapper">
         <div key={location.pathname} className="route-transition-stage">
           {children}
         </div>
 
-        {/* FOOTER */}
-        <footer className="site-footer">
-          <div className="footer-left">
-            <p className="footer-quote" data-lang="footer-quote">
-              {t('footer-quote')}
-            </p>
-            <p className="footer-copyright">
-              © <span id="year">{currentYear}</span> Mustafa Kemal ·{' '}
-              <span data-lang="footer-rights">{t('footer-rights')}</span>
-            </p>
+        <footer className="site-footer reveal">
+          <div className="footer-row">
+            <div className="footer-meta-bar">
+              <span>Adana, TR</span>
+              <span className="footer-meta-sep">·</span>
+              <span>{localTime}</span>
+              <span className="footer-meta-sep">·</span>
+              <span>© {currentYear} Mustafa Kemal Göçer</span>
+            </div>
+            <div className="footer-links">
+              <a href="https://github.com/mustafakemalz" target="_blank" rel="noopener noreferrer">
+                GitHub ↗
+              </a>
+              <a
+                href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn ↗
+              </a>
+              <a href="https://www.instagram.com/jpeg.muskz/" target="_blank" rel="noopener noreferrer">
+                Instagram ↗
+              </a>
+              <Link to="/sistem">{language === 'tr' ? 'Sistem' : 'Setup'}</Link>
+              <Link to="/links">Links</Link>
+            </div>
           </div>
-          <div className="footer-meta-bar">
-            <span className="footer-meta-col">
-              <small>{language === 'tr' ? 'konum' : 'based in'}</small>
-              <strong>adana, tr</strong>
-            </span>
-            <span className="footer-meta-col">
-              <small>{language === 'tr' ? 'yerel saat' : 'local time'}</small>
-              <strong>{localTime}</strong>
-            </span>
-          </div>
-          <nav className="footer-links" aria-label="Footer links">
-            <a href="https://github.com/mustafakemalz" target="_blank" rel="noopener noreferrer">
-              GITHUB ↗
-            </a>
-            <a
-              href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LINKEDIN ↗
-            </a>
-            <a href="https://www.instagram.com/jpeg.muskz/" target="_blank" rel="noopener noreferrer">
-              INSTAGRAM ↗
-            </a>
-          </nav>
         </footer>
       </main>
-
-      {/* ═══════════════ DISCORD WIDGET (Bottom-right) ═══════════════ */}
-      {!['/link', '/links', '/hub', '/linktree', '/card', '/vcard', '/linkedin', '/in', '/li'].includes(
-        location.pathname
-      ) && <DiscordWidget />}
     </>
   );
 };

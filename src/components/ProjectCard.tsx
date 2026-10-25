@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 interface ProjectCardProps {
   title: string;
@@ -7,7 +7,7 @@ interface ProjectCardProps {
   link?: string;
   linkText?: string;
   comingSoon?: boolean;
-  visualClass?: string;
+  year?: string;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -15,106 +15,33 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   tags,
   description,
   link,
-  linkText = 'Live Demo →',
+  linkText = 'View ↗',
   comingSoon = false,
-  visualClass = '',
+  year,
 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const frameId = useRef<number>(0);
-
-  const resetCard = () => {
-    const card = cardRef.current;
-    if (!card) return;
-    card.style.setProperty('--card-tilt-x', '0deg');
-    card.style.setProperty('--card-tilt-y', '0deg');
-    card.style.setProperty('--card-shift-x', '0px');
-    card.style.setProperty('--card-shift-y', '0px');
-    card.style.setProperty('--card-media-x', '0px');
-    card.style.setProperty('--card-media-y', '0px');
-  };
-
-  const updateCard = (clientX: number, clientY: number) => {
-    const card = cardRef.current;
-    if (!card) return;
-
-    const rect = card.getBoundingClientRect();
-    const px = clientX - rect.left;
-    const py = clientY - rect.top;
-    const x = px / rect.width;
-    const y = py / rect.height;
-
-    const clampedX = Math.min(1, Math.max(0, x));
-    const clampedY = Math.min(1, Math.max(0, y));
-
-    const tiltY = (clampedX - 0.5) * 9;
-    const tiltX = (0.5 - clampedY) * 7;
-    const shiftX = (clampedX - 0.5) * 9;
-    const shiftY = (clampedY - 0.5) * 9;
-
-    card.style.setProperty('--spot-x', `${px.toFixed(0)}px`);
-    card.style.setProperty('--spot-y', `${py.toFixed(0)}px`);
-    card.style.setProperty('--card-tilt-x', `${tiltX.toFixed(2)}deg`);
-    card.style.setProperty('--card-tilt-y', `${tiltY.toFixed(2)}deg`);
-    card.style.setProperty('--card-shift-x', `${shiftX.toFixed(2)}px`);
-    card.style.setProperty('--card-shift-y', `${shiftY.toFixed(2)}px`);
-    card.style.setProperty('--card-media-x', `${(-shiftX * 0.5).toFixed(2)}px`);
-    card.style.setProperty('--card-media-y', `${(-shiftY * 0.5).toFixed(2)}px`);
-  };
-
-  const handlePointerEnter = () => {
-    resetCard();
-  };
-
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    if (prefersReducedMotion || !canHover) return;
-
-    const { clientX, clientY } = event;
-    if (frameId.current) {
-      cancelAnimationFrame(frameId.current);
-    }
-
-    frameId.current = requestAnimationFrame(() => updateCard(clientX, clientY));
-  };
-
-  const handlePointerLeave = () => {
-    if (frameId.current) {
-      cancelAnimationFrame(frameId.current);
-    }
-    resetCard();
-  };
-
   return (
-    <article
-      className="project-card spotlight-surface"
-      ref={cardRef}
-      onPointerEnter={handlePointerEnter}
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-    >
-      <div className={`project-visual ${visualClass}`}>
-        <div className="project-visual-media" aria-hidden="true"></div>
+    <article className="project-row">
+      <div className="project-row-meta">
+        {year && <span className="project-row-year">{year}</span>}
+        <span className="project-row-stack">{tags}</span>
       </div>
-      <div className="project-body">
-        <div className="project-tags">{tags}</div>
-        <h3>{title}</h3>
-        <p className="project-desc">{description}</p>
-        <div className="project-footer">
+      <div className="project-row-main">
+        <div className="project-row-head">
+          <h3>{title}</h3>
           {comingSoon ? (
-            <span className="project-badge">Coming Soon</span>
+            <span className="project-row-status">WIP</span>
           ) : link ? (
             <a
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="project-link"
+              className="project-row-link"
             >
               {linkText}
             </a>
           ) : null}
         </div>
+        <p className="project-row-desc">{description}</p>
       </div>
     </article>
   );

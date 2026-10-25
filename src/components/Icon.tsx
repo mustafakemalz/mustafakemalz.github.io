@@ -363,6 +363,89 @@ export const Icon: React.FC<IconProps> = ({
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
       );
+    case 'typescript':
+      return (
+        <svg {...svgProps} fill="currentColor" stroke="none">
+          {title ? <title>{title}</title> : null}
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M3 3h18v18H3V3zm10.7 9.1h-2.2v6.6H9.8v-6.6H7.6v-1.5h6.1v1.5zm4.1 6.7c-1.1 0-2-.4-2.6-1l.9-1.2c.4.4 1 .7 1.6.7.7 0 1.1-.3 1.1-.8 0-.5-.4-.7-1.3-1.1-1.3-.5-2.1-1.1-2.1-2.3 0-1.3 1-2.2 2.5-2.2 1 0 1.8.3 2.4.8l-.9 1.1c-.4-.3-.9-.5-1.5-.5-.6 0-1 .3-1 .7 0 .5.4.7 1.4 1.1 1.3.5 2 1.1 2 2.3 0 1.4-1.1 2.4-2.5 2.4z"
+          />
+        </svg>
+      );
+    case 'javascript':
+      return (
+        <svg {...svgProps} fill="currentColor" stroke="none">
+          {title ? <title>{title}</title> : null}
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M3 3h18v18H3V3zm9.5 13.4c0 1.5-.9 2.2-2.2 2.2-.9 0-1.6-.4-2-.9l1.1-.9c.2.4.5.6.9.6.5 0 .8-.2.8-.9v-5h1.4v4.9zm4.7 2.2c-1.2 0-2-.5-2.5-1.3l1.1-.8c.3.5.7.9 1.4.9.6 0 1-.3 1-.8 0-.5-.4-.7-1.2-1.1-1.2-.5-2-1.1-2-2.3 0-1.2.9-2.1 2.3-2.1 1 0 1.7.3 2.2 1l-1 .8c-.3-.4-.6-.6-1.2-.6-.5 0-.9.3-.9.7 0 .5.3.7 1.2 1.1 1.2.5 2 1.1 2 2.3 0 1.4-1.1 2.2-2.4 2.2z"
+          />
+        </svg>
+      );
+    case 'python':
+      return (
+        <svg {...svgProps} fill="currentColor" stroke="none">
+          {title ? <title>{title}</title> : null}
+          <path d="M11.9 2c-4.1 0-3.8 1.8-3.8 1.8v1.9h3.9v.6H6.5S3 5.9 3 9.9c0 4 3.1 3.9 3.1 3.9h1.8v-1.9s-.1-2.2 2.2-2.2h3.8s2.1 0 2.1-2V4.1S16.3 2 11.9 2zm-2.1 1.2c.4 0 .7.3.7.7s-.3.7-.7.7-.7-.3-.7-.7.3-.7.7-.7zm2.3 18.8c4.1 0 3.8-1.8 3.8-1.8v-1.9H12v-.6h5.5S21 18.1 21 14.1c0-4-3.1-3.9-3.1-3.9h-1.8v1.9s.1 2.2-2.2 2.2h-3.8s-2.1 0-2.1 2v3.6S7.7 22 12.1 22zm2.1-1.2c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7z" />
+        </svg>
+      );
+    case 'cpp':
+      return (
+        <svg {...svgProps}>
+          {title ? <title>{title}</title> : null}
+          <path d="M10 8.5a4 4 0 1 0 0 7" />
+          <path d="M13.5 12h3M15 10.5v3M18.5 12h3M20 10.5v3" />
+        </svg>
+      );
+    case 'nextjs':
+      return (
+        <svg {...svgProps} fill="currentColor" stroke="none">
+          {title ? <title>{title}</title> : null}
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.25 14.65L9.72 8.2v6.8H8.3V6.9h1.68l5.8 7.52V6.9h1.42v9.2l-.95.55z" />
+        </svg>
+      );
+    case 'tailwind':
+      return (
+        <svg {...svgProps} fill="currentColor" stroke="none">
+          {title ? <title>{title}</title> : null}
+          <path d="M12 6c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.31.74 1.91 1.35.98 1 2.09 2.15 4.59 2.15 2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.3-.74-1.91-1.35C15.61 7.15 14.5 6 12 6zm-5 6c-2.67 0-4.33 1.33-5 4 1-1.33 2.17-1.83 3.5-1.5.76.19 1.3.74 1.91 1.35C8.39 16.85 9.5 18 12 18c2.67 0 4.33-1.33 5-4-1 1.33-2.17 1.83-3.5 1.5-.76-.19-1.3-.74-1.91-1.35C10.61 13.15 9.5 12 7 12z" />
+        </svg>
+      );
+    case 'docker':
+      return (
+        <svg {...svgProps} fill="currentColor" stroke="none">
+          {title ? <title>{title}</title> : null}
+          <path d="M13 5h2v2h-2V5zm-3 0h2v2h-2V5zM7 5h2v2H7V5zm6 3h2v2h-2V8zm-3 0h2v2h-2V8zM7 8h2v2H7V8zM4 8h2v2H4V8zm16.5 3.2c-.5-.3-1.5-.4-2.3-.2-.2-.9-.8-1.7-1.6-2.2l-.3-.2-.2.3c-.4.6-.5 1.6-.1 2.3-.4.2-1.1.4-2 .4H2.2l-.1.6c-.2 1.9.2 3.8 1.2 5.3 1 1.5 2.6 2.3 4.7 2.3 4.5 0 7.8-2.1 9.4-5.9.7 0 2.1 0 2.8-1.4l.2-.4-.4-.9z" />
+        </svg>
+      );
+    case 'git':
+      return (
+        <svg {...svgProps}>
+          {title ? <title>{title}</title> : null}
+          <circle cx="18" cy="18" r="3" />
+          <circle cx="6" cy="6" r="3" />
+          <path d="M13 6h3a2 2 0 0 1 2 2v7" />
+          <line x1="6" y1="9" x2="6" y2="21" />
+        </svg>
+      );
+    case 'linux':
+      return (
+        <svg {...svgProps}>
+          {title ? <title>{title}</title> : null}
+          <path d="M12 3c-2.5 0-4 2-4 5 0 1.8-.8 3.5-1.8 5.2-.9 1.5-1.2 3.3-.2 4.8.8 1.2 2.2 2 3.5 2h5c1.3 0 2.7-.8 3.5-2 1-1.5.7-3.3-.2-4.8-1-1.7-1.8-3.4-1.8-5.2 0-3-1.5-5-4-5z" />
+          <path d="M10 8h.01M14 8h.01M10.5 11c.9.6 2.1.6 3 0" />
+        </svg>
+      );
+    case 'supabase':
+      return (
+        <svg {...svgProps} fill="currentColor" stroke="none">
+          {title ? <title>{title}</title> : null}
+          <path d="M13.5 2.2c-.5-.6-1.5-.2-1.5.6V11h7.2c.8 0 1.3.9.8 1.6l-7.5 9.2c-.5.6-1.5.2-1.5-.6V13H3.8c-.8 0-1.3-.9-.8-1.6l7.5-9.2z" />
+        </svg>
+      );
     default:
       return (
         <svg {...svgProps}>
