@@ -37,13 +37,13 @@ const resolveColor = (col: string, el: HTMLElement): string => {
 export const FuzzyText: React.FC<FuzzyTextProps> = ({
   children,
   fontSize = 'clamp(2rem, 10vw, 10rem)',
-  fontWeight = 900,
+  fontWeight = 500,
   fontFamily = 'inherit',
   color = '#fff',
   enableHover = true,
   baseIntensity = 0.18,
   hoverIntensity = 0.5,
-  fuzzRange = 30,
+  fuzzRange = 12,
   fps = 60,
   direction = 'horizontal',
   transitionDuration = 0,
@@ -123,7 +123,7 @@ export const FuzzyText: React.FC<FuzzyTextProps> = ({
       const textBoundingWidth = Math.ceil(letterSpacing !== 0 ? totalWidth : actualLeft + actualRight);
       const tightHeight = Math.ceil(actualAscent + actualDescent);
 
-      const extraWidthBuffer = 10;
+      const extraWidthBuffer = 4;
       const offscreenWidth = textBoundingWidth + extraWidthBuffer;
 
       offscreen.width = offscreenWidth;
@@ -153,7 +153,7 @@ export const FuzzyText: React.FC<FuzzyTextProps> = ({
         offCtx.fillText(text, xOffset - actualLeft, actualAscent);
       }
 
-      const horizontalMargin = fuzzRange + 20;
+      const horizontalMargin = Math.ceil(fuzzRange * 0.5);
       const verticalMargin = 0;
       canvas.width = offscreenWidth + horizontalMargin * 2;
       canvas.height = tightHeight + verticalMargin * 2;

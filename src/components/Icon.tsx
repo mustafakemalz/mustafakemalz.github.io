@@ -91,7 +91,6 @@ export const Icon: React.FC<IconProps> = ({
         </svg>
       );
     case 'react':
-    case 'atom':
       return (
         <svg {...svgProps}>
           {title ? <title>{title}</title> : null}
@@ -99,6 +98,19 @@ export const Icon: React.FC<IconProps> = ({
           <ellipse cx="12" cy="12" rx="10" ry="4.2" />
           <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)" />
           <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)" />
+        </svg>
+      );
+    case 'electron':
+    case 'atom':
+      return (
+        <svg {...svgProps}>
+          {title ? <title>{title}</title> : null}
+          <ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(30 12 12)" />
+          <ellipse cx="12" cy="12" rx="9.5" ry="3.8" transform="rotate(-30 12 12)" />
+          <ellipse cx="12" cy="12" rx="3.8" ry="9.5" />
+          <circle cx="12" cy="2.5" r="1.4" fill="currentColor" stroke="none" />
+          <circle cx="3.8" cy="16.7" r="1.4" fill="currentColor" stroke="none" />
+          <circle cx="20.2" cy="16.7" r="1.4" fill="currentColor" stroke="none" />
         </svg>
       );
     case 'node-js':

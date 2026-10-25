@@ -137,23 +137,73 @@ export const AsciiHeroCanvas: React.FC = () => {
       forceNextRender = true;
     };
 
-    let textBox = { x0: 0, y0: 0, x1: 0, y1: 0, active: false };
+    let textMask = new Float32Array(0);
+    let hasTextMask = false;
 
-    const updateTextBox = () => {
+    const updateTextMask = () => {
+      if (cols <= 0 || rows <= 0 || W <= 0 || H <= 0) {
+        hasTextMask = false;
+        return;
+      }
       const infoEl = container.parentElement?.querySelector('.header-info');
       if (!infoEl) {
-        textBox.active = false;
+        hasTextMask = false;
         return;
       }
       const cRect = container.getBoundingClientRect();
-      const tRect = infoEl.getBoundingClientRect();
-      textBox = {
-        x0: tRect.left - cRect.left - 16,
-        y0: tRect.top - cRect.top - 12,
-        x1: tRect.right - cRect.left + 24,
-        y1: tRect.bottom - cRect.top + 12,
-        active: true,
-      };
+      const children = Array.from(infoEl.children) as HTMLElement[];
+      const targets = children.length > 0 ? children : [infoEl as HTMLElement];
+
+      const rects = targets
+        .map((el) => {
+          const r = el.getBoundingClientRect();
+          return {
+            x0: r.left - cRect.left - 14,
+            y0: r.top - cRect.top - 8,
+            x1: r.right - cRect.left + 18,
+            y1: r.bottom - cRect.top + 8,
+          };
+        })
+        .filter((r) => r.x1 > r.x0 && r.y1 > r.y0);
+
+      if (rects.length === 0) {
+        hasTextMask = false;
+        return;
+      }
+
+      const total = cols * rows;
+      if (textMask.length !== total) {
+        textMask = new Float32Array(total);
+      }
+
+      const feather = W < 768 ? 64 : 92;
+      const minMask = W < 768 ? 0.14 : 0.04;
+
+      for (let y = 0; y < rows; y++) {
+        const Y = y * ch + ch / 2;
+        const rowOffset = y * cols;
+        for (let x = 0; x < cols; x++) {
+          const X = x * cw + cw / 2;
+          let minDist = feather;
+          for (let i = 0; i < rects.length; i++) {
+            const box = rects[i];
+            const dx = Math.max(box.x0 - X, 0, X - box.x1);
+            const dy = Math.max(box.y0 - Y, 0, Y - box.y1);
+            if (dx === 0 && dy === 0) {
+              minDist = 0;
+              break;
+            }
+            if (dx < minDist && dy < minDist) {
+              const d = Math.hypot(dx, dy);
+              if (d < minDist) minDist = d;
+            }
+          }
+          textMask[rowOffset + x] =
+            minDist >= feather ? 1.0 : lerp(minMask, 1.0, ease(minDist / feather));
+        }
+      }
+      hasTextMask = true;
+      forceNextRender = true;
     };
 
     const handleResize = () => {
@@ -176,7 +226,7 @@ export const AsciiHeroCanvas: React.FC = () => {
       off.width = cols;
       off.height = rows;
       o.imageSmoothingQuality = 'high';
-      updateTextBox();
+      updateTextMask();
       buildDotLayer();
       handleScroll();
     };
@@ -184,10 +234,32 @@ export const AsciiHeroCanvas: React.FC = () => {
     handleResize();
     window.addEventListener('resize', handleResize, { passive: true });
 
+    let prevW = W;
+    let prevH = H;
     const resizeObserver = new ResizeObserver(() => {
-      handleResize();
+      const curW = container.clientWidth || window.innerWidth;
+      const curH = container.clientHeight || window.innerHeight;
+      if (curW !== prevW || curH !== prevH) {
+        prevW = curW;
+        prevH = curH;
+        handleResize();
+      } else {
+        updateTextMask();
+      }
     });
     resizeObserver.observe(container);
+    const infoEl = container.parentElement?.querySelector('.header-info');
+    if (infoEl) {
+      resizeObserver.observe(infoEl);
+    }
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (isMounted) {
+          updateTextMask();
+        }
+      });
+    }
 
     handleScroll();
     p = tp;
@@ -294,8 +366,8 @@ export const AsciiHeroCanvas: React.FC = () => {
       const par = mx * 3.0;
 
       // Asymmetric composition: shift hands focal point right-of-center on desktop so left-aligned hero text breathes cleanly
-      const centerXRatio = W >= 900 ? 0.6 : W >= 680 ? 0.56 : 0.5;
-      const centerYRatio = W >= 768 ? 0.42 : 0.32;
+      const centerXRatio = W >= 1024 ? 0.64 : W >= 720 ? 0.58 : 0.5;
+      const centerYRatio = W >= 768 ? 0.44 : 0.34;
       const ox = cols * centerXRatio - (HANDS_META.W / 2) * sx;
       const oy = rows * centerYRatio - (HANDS_META.H / 2) * sy + my * 2;
 
@@ -337,13 +409,13 @@ export const AsciiHeroCanvas: React.FC = () => {
 
       const t6 = Math.floor(t * 6);
       const t8 = Math.floor(t * 8);
-      const feather = 84;
 
       for (let y = 0; y < rows; y++) {
         const Y = y * ch + ch / 2;
         const rowOffset = y * cols;
         for (let x = 0; x < cols; x++) {
-          const raw = imgData[(rowOffset + x) << 2];
+          const cellIdx = rowOffset + x;
+          const raw = imgData[cellIdx << 2];
           // Fast skip for empty background cells when not dispersing
           if (raw < 17 && dis === 0) continue;
 
@@ -351,16 +423,8 @@ export const AsciiHeroCanvas: React.FC = () => {
           let l = raw >= 17 ? Math.pow(raw / 255, 0.92) : 0;
 
           // Smoothly attenuate ASCII luminance directly behind left-aligned hero typography
-          if (l > 0 && textBox.active) {
-            const dx = Math.max(textBox.x0 - X, 0, X - textBox.x1);
-            const dy = Math.max(textBox.y0 - Y, 0, Y - textBox.y1);
-            if (dx < feather && dy < feather) {
-              const dist = Math.hypot(dx, dy);
-              if (dist < feather) {
-                const mask = lerp(0.24, 1.0, ease(dist / feather));
-                l *= mask;
-              }
-            }
+          if (l > 0 && hasTextMask) {
+            l *= textMask[cellIdx];
           }
 
           const on = l > 0.06 && (dis === 0 || hash(x, y, 5) >= dis);

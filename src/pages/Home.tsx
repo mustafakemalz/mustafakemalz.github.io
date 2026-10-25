@@ -22,7 +22,7 @@ const TECH_ROWS: TechItem[][] = [
   [
     { name: 'React', icon: 'react', color: '#61DAFB' },
     { name: 'Next.js', icon: 'nextjs', color: 'var(--foreground-heading)' },
-    { name: 'Electron', icon: 'atom', color: '#47848F' },
+    { name: 'Electron', icon: 'electron', color: '#47848F' },
     { name: 'Node.js', icon: 'node-js', color: '#5FA04E' },
     { name: 'Tailwind CSS', icon: 'tailwind', color: '#06B6D4' },
   ],
@@ -47,7 +47,6 @@ export const Home: React.FC = () => {
   const location = useLocation();
 
   const heroHeaderRef = useRef<HTMLDivElement>(null);
-  const heroWrapRef = useRef<HTMLDivElement>(null);
 
   const [formStatus, setFormStatus] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,27 +88,6 @@ export const Home: React.FC = () => {
     }
   }, [location]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const heroWrap = heroWrapRef.current;
-
-      if (heroWrap) {
-        if (scrollY < window.innerHeight) {
-          const progress = scrollY / window.innerHeight;
-          heroWrap.style.transform = `translate3d(0, ${scrollY * 0.14}px, 0)`;
-          heroWrap.style.opacity = String(Math.max(0.2, 1 - progress * 0.8));
-        } else {
-          heroWrap.style.transform = `translate3d(0, ${window.innerHeight * 0.14}px, 0)`;
-          heroWrap.style.opacity = '0.2';
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -150,7 +128,7 @@ export const Home: React.FC = () => {
       {/* HERO */}
       <header className="site-header reveal" ref={heroHeaderRef}>
         <AsciiHeroCanvas />
-        <div className="hero-parallax-wrap" ref={heroWrapRef}>
+        <div className="hero-parallax-wrap">
           <div className="header-info">
             <h1 className="hero-name" data-lang="hero-name">
               {t('hero-name')}
@@ -349,7 +327,7 @@ export const Home: React.FC = () => {
           <figure className="gallery-figure">
             <div className="gallery-img-wrap">
               <img
-                src="assets/photo1.webp"
+                src="/assets/photo1.webp"
                 alt="Engineering Lab"
                 loading="lazy"
                 decoding="async"
@@ -368,7 +346,7 @@ export const Home: React.FC = () => {
           <figure className="gallery-figure">
             <div className="gallery-img-wrap">
               <img
-                src="assets/photo2.webp"
+                src="/assets/photo2.webp"
                 alt="Simulation"
                 loading="lazy"
                 decoding="async"
@@ -387,7 +365,7 @@ export const Home: React.FC = () => {
           <figure className="gallery-figure">
             <div className="gallery-img-wrap">
               <img
-                src="assets/photo3.gif"
+                src="/assets/photo3.gif"
                 alt="Hardware"
                 loading="lazy"
                 decoding="async"
@@ -406,7 +384,7 @@ export const Home: React.FC = () => {
           <figure className="gallery-figure">
             <div className="gallery-img-wrap">
               <img
-                src="assets/photo4.webp"
+                src="/assets/photo4.webp"
                 alt="Field Work"
                 loading="lazy"
                 decoding="async"

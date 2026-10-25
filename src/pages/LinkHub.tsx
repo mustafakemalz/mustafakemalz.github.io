@@ -66,7 +66,7 @@ export const LinkHub: React.FC = () => {
       brandColor: '#53FC18',
       iconSvg: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 3h4.8v6.4h2.9V3h4.8v6.4h-2.9v2.4h2.9v6.4H10.7v-6.4H7.8v6.4H3V3z" />
+          <path d="M4 3h5v6h3V6h3V3h5v6h-3v3h3v6h-5v-3h-3v-3H9v6H4V3z" />
         </svg>
       ),
     },
