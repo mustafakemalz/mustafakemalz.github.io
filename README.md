@@ -6,12 +6,22 @@
  [ muskz.tech · mustafakemalz.github.io ]
 ```
 
+# muskz.tech — Personal Engineering Portfolio
+
 <p align="center">
   <strong>Minimal, asymmetric editorial portfolio built with React 19, TypeScript, and an interactive ASCII canvas engine.</strong>
 </p>
 
 <p align="center">
-  <a href="https://muskz.tech">Live Demo</a> ·
+  <a href="https://muskz.tech"><img src="https://img.shields.io/badge/Live_Site-muskz.tech-121214?style=for-the-badge&logo=safari&logoColor=white" alt="Live Site" /></a>
+  <a href="https://react.dev/"><img src="https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 19" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript_5.7-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://vitejs.dev/"><img src="https://img.shields.io/badge/Vite_6-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" /></a>
+</p>
+
+<p align="center">
+  <a href="https://muskz.tech">🌐 Live Demo</a> ·
+  <a href="#-previews">Visual Showcase</a> ·
   <a href="#-design-philosophy">Design Philosophy</a> ·
   <a href="#-architecture--stack">Architecture</a> ·
   <a href="#-pages--routes">Pages</a> ·
@@ -19,13 +29,70 @@
   <a href="#-getting-started">Getting Started</a>
 </p>
 
----
+<br />
+
+<a href="https://muskz.tech">
+  <img src="./.github/assets/hero-preview.png" alt="Desktop Hero Preview" width="100%" style="border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);" />
+</a>
 
 </div>
 
+<br />
+
+---
+
+## 📸 Visual Showcase
+
+### 1. Interactive ASCII Hero Canvas
+The hero features a custom 2D Canvas engine rendering Michelangelo's *Creation of Adam* hands in live ASCII typography. The hands respond dynamically to mouse/touch gestures, disperse on scroll, and use line-level text bounding boxes (`Range.getClientRects()`) to feather brightness behind foreground text.
+
+<div align="center">
+  <img src="./.github/assets/hero-preview.png" alt="ASCII Hero & Typography" width="100%" />
+</div>
+
+<br />
+
+### 2. Hover-Reactive Tech Stack Ledger
+Instead of generic rounded pills or tag badges, technologies sit on 1px hairline rows. Muted monochrome by default, each item lights up with its authentic brand color on hover.
+
+<div align="center">
+  <img src="./.github/assets/stack-preview.png" alt="Flat Hover-Colored Tech Ledger" width="100%" />
+</div>
+
+<br />
+
+### 3. Responsive Mobile & Digital vCard Specification
+Seamless mobile experience (`390×844`) with borderless header controls (`⌘K`, `EN/TR`, Theme Toggle) paired with a minimalist digital specification card on `/card` supporting `.vcf` contact downloads.
+
+<div align="center">
+  <table>
+    <tr>
+      <td width="40%" align="center">
+        <strong>Mobile Interface</strong><br /><br />
+        <img src="./.github/assets/mobile-preview.png" alt="Mobile View" width="100%" />
+      </td>
+      <td width="60%" align="center">
+        <strong>Digital vCard Specification Ledger (/card)</strong><br /><br />
+        <img src="./.github/assets/card-preview.png" alt="Digital Card" width="100%" />
+      </td>
+    </tr>
+  </table>
+</div>
+
+<br />
+
+### 4. Hardware Workstation & Lab Bench (`/sistem`)
+Dedicated technical documentation of primary development workstation hardware and lab peripherals used for PCB routing, CAD modeling, and embedded firmware compilation.
+
+<div align="center">
+  <img src="./.github/assets/sistem-preview.png" alt="Workstation & Lab Setup" width="100%" />
+</div>
+
+---
+
 ## ✦ Design Philosophy
 
-Designed from scratch to reject generic portfolio templates, bubble badges, and AI-slop clichés in favor of a quiet, high-density engineering editorial aesthetic inspired by technical lab notes and monochrome ledgers.
+Designed to reject generic AI-slop portfolio clichés, bubble badges, and centered card grids in favor of a quiet, high-density engineering editorial aesthetic:
 
 - **Asymmetric Hairline Ledgers**: 1px subtle hairline dividers (`rgba(255, 255, 255, 0.085)`) separating chronological records and specs instead of heavy card shadows and nested containers.
 - **Interactive ASCII Canvas Engine**: A custom HTML5 Canvas rendering of Michelangelo's *Creation of Adam* hands in ASCII glyphs, featuring real-time pointer physics, scroll-driven convergence/dispersion, offscreen dot-matrix caching, and line-level typography masking.
@@ -54,6 +121,8 @@ Designed from scratch to reject generic portfolio templates, bubble badges, and 
 
 ```text
 mustafakemalz.github.io/
+├── .github/
+│   └── assets/               # Showcase screenshots used in documentation
 ├── public/
 │   └── assets/               # Compressed WebP assets & favicon (3.4 KB)
 ├── src/
