@@ -4,6 +4,7 @@ import { useTranslation } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import CommandMenu from './CommandMenu';
 import Icon from './Icon';
+import PixelCompanion from './PixelCompanion';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -145,9 +146,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Link to="/journey" onClick={closeMobileMenu} data-lang="nav-journey">
               {t('nav-journey')}
             </Link>
-            <Link to="/sistem" onClick={closeMobileMenu}>
-              {language === 'tr' ? 'Sistem' : 'Setup'}
-            </Link>
             <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} data-lang="nav-contact">
               {t('nav-contact')}
             </a>
@@ -219,9 +217,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <Link to="/journey" onClick={closeMobileMenu} data-lang="nav-journey">
               {t('nav-journey')}
             </Link>
-            <Link to="/sistem" onClick={closeMobileMenu}>
-              {language === 'tr' ? 'Sistem' : 'Setup'}
-            </Link>
             <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} data-lang="nav-contact">
               {t('nav-contact')}
             </a>
@@ -235,6 +230,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
 
         <footer className="site-footer reveal">
+          <PixelCompanion />
           <div className="footer-row">
             <div className="footer-meta-bar">
               <span>Adana, TR</span>

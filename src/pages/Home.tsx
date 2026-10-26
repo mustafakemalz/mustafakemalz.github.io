@@ -125,46 +125,131 @@ export const Home: React.FC = () => {
 
   return (
     <>
+      <AsciiHeroCanvas />
       {/* HERO */}
       <header className="site-header reveal" ref={heroHeaderRef}>
-        <AsciiHeroCanvas />
         <div className="hero-parallax-wrap">
-          <div className="header-info">
-            <h1 className="hero-name" data-lang="hero-name">
-              {t('hero-name')}
-            </h1>
-            <p className="hero-role" data-lang="hero-role">
-              {t('hero-role')}
-            </p>
-            <p className="hero-lead" data-lang="hero-lead">
-              {t('hero-lead')}
-            </p>
-            <nav aria-label="External links" className="hero-text-links">
-              <a
-                href="https://github.com/mustafakemalz"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub ↗
-              </a>
-              <a
-                href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn ↗
-              </a>
-              <a
-                href="https://www.instagram.com/jpeg.muskz/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Instagram ↗
-              </a>
-              <a href="mailto:mustafakemalgocer@gmail.com">
-                mustafakemalgocer@gmail.com ↗
-              </a>
-            </nav>
+          <div className="hero-grid">
+            <div className="hero-avatar-col">
+              <div className="hero-avatar-frame" title="MKG // Hardware & Embedded Architecture">
+                <div className="hero-chip-badge" aria-label="MKG Hardware Architecture Emblem">
+                  <svg
+                    viewBox="0 0 88 88"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="hero-chip-svg"
+                    aria-hidden="true"
+                  >
+                    {/* Background Substrate Pin Leads */}
+                    <path
+                      d="M10 26H22M10 44H22M10 62H22M66 26H78M66 44H78M66 62H78M26 10V22M44 10V22M62 10V22M26 66V78M44 66V78M62 66V78"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      className="hero-chip-pins"
+                    />
+                    {/* IC Carrier Package */}
+                    <rect
+                      x="22"
+                      y="22"
+                      width="44"
+                      height="44"
+                      rx="6"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      className="hero-chip-body"
+                    />
+                    {/* Pin 1 Index Dot */}
+                    <circle cx="28.5" cy="28.5" r="2" fill="#10b981" className="hero-chip-pin1" />
+                    {/* Silicon Core Die Boundary */}
+                    <rect
+                      x="30"
+                      y="30"
+                      width="28"
+                      height="28"
+                      rx="3"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                      strokeDasharray="2 2"
+                      className="hero-chip-die"
+                    />
+                    {/* Internal Bus & Logic Routing Traces */}
+                    <path
+                      d="M37 37L44 44M51 37L44 44M44 44V51"
+                      stroke="currentColor"
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                      className="hero-chip-trace"
+                    />
+                    {/* Laser Engraved Monogram & Clock */}
+                    <text
+                      x="44"
+                      y="42"
+                      textAnchor="middle"
+                      className="hero-chip-label"
+                      fill="currentColor"
+                    >
+                      MKG
+                    </text>
+                    <text
+                      x="44"
+                      y="52"
+                      textAnchor="middle"
+                      className="hero-chip-sub"
+                      fill="currentColor"
+                    >
+                      84MHz
+                    </text>
+                  </svg>
+                </div>
+                <span className="hero-avatar-status" title={t('hero-status')} aria-label={t('hero-status')}>
+                  <span className="hero-avatar-dot" />
+                </span>
+              </div>
+              <div className="hero-avatar-meta">
+                <span className="hero-meta-label">MKG // 2026</span>
+                <span className="hero-meta-sub">Adana, TR</span>
+                <span className="hero-meta-status">{t('hero-status')}</span>
+              </div>
+            </div>
+
+            <div className="header-info">
+              <h1 className="hero-name" data-lang="hero-name">
+                {t('hero-name')}
+              </h1>
+              <p className="hero-role" data-lang="hero-role">
+                {t('hero-role')}
+              </p>
+              <p className="hero-lead" data-lang="hero-lead">
+                {t('hero-lead')}
+              </p>
+              <nav aria-label="External links" className="hero-text-links">
+                <a
+                  href="https://github.com/mustafakemalz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  GitHub ↗
+                </a>
+                <a
+                  href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn ↗
+                </a>
+                <a
+                  href="https://www.instagram.com/jpeg.muskz/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Instagram ↗
+                </a>
+                <a href="mailto:mustafakemalgocer@gmail.com">
+                  mustafakemalgocer@gmail.com ↗
+                </a>
+              </nav>
+            </div>
           </div>
         </div>
       </header>

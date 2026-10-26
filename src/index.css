@@ -29,7 +29,7 @@
     --transition-fast: 0.22s ease;
     --font: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    --max-width: 1040px;
+    --max-width: 1180px;
     --section-padding: clamp(4rem, 7vw, 6rem);
 }
 
@@ -51,6 +51,24 @@
     --accent-soft: rgba(18, 18, 20, 0.05);
     --muted-bg: rgba(18, 18, 20, 0.035);
     --input-bg: transparent;
+}
+
+@media (min-width: 1360px) {
+    :root {
+        --max-width: 1260px;
+    }
+}
+
+@media (min-width: 1600px) {
+    :root {
+        --max-width: 1340px;
+    }
+}
+
+@media (min-width: 1920px) {
+    :root {
+        --max-width: 1440px;
+    }
 }
 
 /* --- RESET & BASE --- */
@@ -313,6 +331,8 @@ ul, ol {
     padding: 0 clamp(1.25rem, 4vw, 2rem);
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 2;
 }
 
 .route-transition-stage {
@@ -321,7 +341,7 @@ ul, ol {
 
 @keyframes routeStageEnter {
     from { opacity: 0; transform: translate3d(0, 6px, 0); }
-    to { opacity: 1; transform: translate3d(0, 0, 0); }
+    to { opacity: 1; transform: none; }
 }
 
 .section {
@@ -330,6 +350,8 @@ ul, ol {
     gap: 1.75rem;
     padding: var(--section-padding) 0;
     scroll-margin-top: 72px;
+    position: relative;
+    z-index: 2;
 }
 
 .section-head {
@@ -348,7 +370,7 @@ ul, ol {
 }
 
 /* ═══════════════════════════════════════════
-   HERO — Left-Aligned Asymmetric + ASCII Hands
+   HERO — Left-Aligned Asymmetric + ASCII Generative Background
    ═══════════════════════════════════════════ */
 .site-header {
     position: relative;
@@ -362,15 +384,13 @@ ul, ol {
 }
 
 .hero-ascii-container {
-    position: absolute;
-    top: -2rem;
-    bottom: -2rem;
-    left: 50%;
-    transform: translateX(-50%);
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
-    max-width: 100vw;
+    height: 100vh;
     pointer-events: none;
-    z-index: 1;
+    z-index: 0;
     overflow: hidden;
 }
 
@@ -379,9 +399,9 @@ ul, ol {
     inset: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.72;
-    -webkit-mask-image: radial-gradient(ellipse 78% 72% at 50% 48%, #000 35%, rgba(0, 0, 0, 0.55) 68%, transparent 98%);
-    mask-image: radial-gradient(ellipse 78% 72% at 50% 48%, #000 35%, rgba(0, 0, 0, 0.55) 68%, transparent 98%);
+    opacity: 0.75;
+    -webkit-mask-image: radial-gradient(ellipse 96% 92% at 50% 50%, #000 68%, rgba(0, 0, 0, 0.62) 88%, transparent 100%);
+    mask-image: radial-gradient(ellipse 96% 92% at 50% 50%, #000 68%, rgba(0, 0, 0, 0.62) 88%, transparent 100%);
 }
 
 .hero-parallax-wrap {
@@ -392,39 +412,217 @@ ul, ol {
     will-change: transform, opacity;
 }
 
+.hero-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+    width: 100%;
+}
+
+@media (min-width: 860px) {
+    .hero-grid {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: clamp(2.25rem, 3.8vw, 3.5rem);
+        align-items: flex-start;
+    }
+}
+
+.hero-avatar-col {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    flex-shrink: 0;
+}
+
+@media (min-width: 860px) {
+    .hero-avatar-col {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.85rem;
+        padding-top: 0.35rem;
+    }
+}
+
+.hero-avatar-frame {
+    position: relative;
+    width: clamp(74px, 11vw, 102px);
+    height: clamp(74px, 11vw, 102px);
+    border-radius: 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    padding: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: border-color var(--transition-fast), transform var(--transition), box-shadow var(--transition);
+}
+
+.hero-avatar-frame:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.hero-chip-badge {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card-solid);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    color: var(--foreground-heading);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-chip-svg {
+    width: 86%;
+    height: 86%;
+    color: var(--foreground-heading);
+}
+
+.hero-chip-pins {
+    opacity: 0.5;
+    color: var(--foreground-muted);
+}
+
+.hero-chip-body {
+    opacity: 0.9;
+}
+
+.hero-chip-die {
+    opacity: 0.45;
+}
+
+.hero-chip-pin1 {
+    color: #10b981;
+}
+
+.hero-chip-trace {
+    opacity: 0.55;
+    stroke-dasharray: 18;
+    animation: chipTracePulse 4s ease-in-out infinite;
+}
+
+@keyframes chipTracePulse {
+    0%, 100% { stroke-dashoffset: 0; opacity: 0.4; }
+    50% { stroke-dashoffset: 18; opacity: 0.9; }
+}
+
+.hero-chip-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    opacity: 0.95;
+}
+
+.hero-chip-sub {
+    font-family: var(--font-mono);
+    font-size: 5.5px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    opacity: 0.6;
+}
+
+.hero-avatar-status {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 2px var(--bg);
+    z-index: 3;
+}
+
+.hero-avatar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+    animation: statusPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.85); }
+}
+
+.hero-avatar-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.hero-meta-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--foreground-heading);
+    opacity: 0.88;
+}
+
+.hero-meta-sub {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--foreground-muted);
+}
+
+.hero-meta-status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--foreground-muted);
+    letter-spacing: -0.01em;
+    opacity: 0.85;
+}
+
 .header-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 1.1rem;
-    max-width: 680px;
+    max-width: clamp(680px, 60vw, 880px);
 }
 
 .hero-name {
-    font-size: clamp(2.35rem, 6vw, 4.25rem);
+    font-size: clamp(2.35rem, 5.5vw, 4.4rem);
     font-weight: 500;
     letter-spacing: -0.035em;
     line-height: 1.04;
     color: var(--foreground-heading);
-    text-shadow: 0 2px 18px var(--bg), 0 0 8px var(--bg);
+    text-shadow: 0 2px 20px var(--bg), 0 0 10px var(--bg);
 }
 
 .hero-role {
     font-family: var(--font-mono);
-    font-size: clamp(0.8rem, 1.4vw, 0.9rem);
-    font-weight: 400;
-    color: var(--foreground-muted);
+    font-size: clamp(0.82rem, 1.4vw, 0.92rem);
+    font-weight: 450;
+    color: var(--foreground-heading);
+    opacity: 0.84;
     letter-spacing: -0.01em;
-    text-shadow: 0 2px 18px var(--bg), 0 0 8px var(--bg);
+    text-shadow: 0 2px 20px var(--bg), 0 0 10px var(--bg);
 }
 
 .hero-lead {
-    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    font-size: clamp(1.05rem, 1.55vw, 1.18rem);
     font-weight: 400;
     color: var(--foreground);
-    line-height: 1.65;
-    max-width: 600px;
-    text-shadow: 0 2px 18px var(--bg), 0 0 8px var(--bg);
+    line-height: 1.6;
+    max-width: 620px;
+    text-shadow: 0 2px 20px var(--bg), 0 0 10px var(--bg);
 }
 
 .hero-text-links {
@@ -780,9 +978,105 @@ ul, ol {
    FOOTER — Left/Right Hairline Bar
    ═══════════════════════════════════════════ */
 .site-footer {
+    position: relative;
     padding: 2.25rem 0 2.5rem;
     border-top: 1px solid var(--border);
     margin-top: 2rem;
+}
+
+.footer-companion-perch {
+    position: relative;
+    width: 100%;
+    height: 0;
+}
+
+/* ═══════════════════════════════════════════
+   PIXEL COMPANION (Pure Transparent Animated GIF / WebP)
+   ═══════════════════════════════════════════ */
+.pixel-companion-shelf {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateY(-100%);
+    margin-top: 1px; /* sits flush on top of the 1px hairline border */
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    z-index: 2;
+    background: transparent;
+}
+
+.pixel-companion-shelf:focus-visible {
+    outline: 1px dotted var(--foreground-muted);
+    outline-offset: 2px;
+}
+
+.pixel-companion-bubble {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--foreground-muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 0.15rem 0.45rem;
+    margin-bottom: 0.35rem;
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+    pointer-events: none;
+    animation: bubblePop 0.18s var(--ease-out-expo);
+}
+
+@keyframes bubblePop {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.pixel-companion-frame {
+    position: relative;
+    height: 48px;
+    max-height: 48px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    background: transparent;
+    line-height: 0;
+}
+
+.pixel-companion-picture {
+    display: block;
+    height: 48px;
+    max-height: 48px;
+    line-height: 0;
+}
+
+.pixel-dev-gif {
+    display: block;
+    height: 48px !important;
+    max-height: 48px !important;
+    width: auto !important;
+    max-width: 64px !important;
+    object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    background: transparent;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+@media (max-width: 600px) {
+    .pixel-companion-frame,
+    .pixel-companion-picture {
+        height: 40px;
+        max-height: 40px;
+    }
+    .pixel-dev-gif {
+        height: 40px !important;
+        max-height: 40px !important;
+        max-width: 54px !important;
+    }
 }
 
 .footer-row {
