@@ -3,12 +3,12 @@ import { useTheme } from '../context/ThemeContext';
 import { HANDS_META, HAND_IMG_LEFT, HAND_IMG_RIGHT } from './asciiHandsData';
 
 const LV = [
-  ['.', '·'],
-  ['·', ':', '.'],
-  [':', '-', '·'],
-  ['-', '=', ':'],
-  ['=', '+', '-'],
-  ['+', '*', '#'],
+  ['.'],
+  [':', '.'],
+  ['-', ':'],
+  ['=', '-'],
+  ['+', '='],
+  ['*', '#'],
   ['#', '%', '@'],
 ];
 
@@ -294,8 +294,8 @@ export const AsciiHeroCanvas: React.FC = () => {
       }
       textMask.fill(1.0);
 
-      const feather = 24;
-      const minMask = 0.0; // Negative space masking directly over readable typography
+      const feather = 28;
+      const minMask = 0.22; // Soft attenuation: preserves full continuous silhouette behind typography without clipping
 
       for (let i = 0; i < rawRects.length; i++) {
         const r = rawRects[i];
@@ -343,10 +343,12 @@ export const AsciiHeroCanvas: React.FC = () => {
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
 
-      if (W < 600) {
+      if (W < 400) {
+        CS = 9;
+      } else if (W < 768) {
         CS = 10;
-      } else if (W > 2400) {
-        CS = Math.max(12, Math.round(W / 180));
+      } else if (W < 1440) {
+        CS = 11;
       } else {
         CS = 12;
       }
@@ -643,41 +645,23 @@ export const AsciiHeroCanvas: React.FC = () => {
 
         if (isMobile) {
           const contentTop = cachedAvatarRect && cachedAvatarRect.top > 0 ? cachedAvatarRect.top : Math.max(130, H * 0.16);
-          const topMargin = 16;
-          const availH = Math.max(70, contentTop - topMargin - 10);
-          const maxKpxByW = (W - 32) / HANDS_META.W;
-          const maxKpxByH = availH / 150;
-          kpx = Math.max(0.55, Math.min(0.72, Math.min(maxKpxByW, maxKpxByH)));
-
-          focalPixelX = W * 0.5;
-          const activeH = 150 * kpx;
-          const remSpace = Math.max(0, availH - activeH);
-          focalPixelY = topMargin + 80.42 * kpx + remSpace * 0.5;
+          // Scale hands so finger separation and contours remain clear and uncompressed on mobile
+          kpx = Math.max(0.68, Math.min(0.80, (W - 20) / HANDS_META.W));
+          focalPixelX = W * 0.50;
+          // Fingertips sit gracefully above avatar / header content
+          focalPixelY = Math.max(100, Math.min(135, contentTop - 10));
         } else if (isTabletPortrait) {
           const contentTop = cachedAvatarRect && cachedAvatarRect.top > 0 ? cachedAvatarRect.top : Math.max(160, H * 0.18);
-          const topMargin = 20;
-          const availH = Math.max(90, contentTop - topMargin - 12);
-          const maxKpxByW = (W - 48) / HANDS_META.W;
-          const maxKpxByH = availH / 150;
-          kpx = Math.max(0.75, Math.min(0.95, Math.min(maxKpxByW, maxKpxByH)));
-
-          focalPixelX = W * 0.5;
-          const activeH = 150 * kpx;
-          const remSpace = Math.max(0, availH - activeH);
-          focalPixelY = topMargin + 80.42 * kpx + remSpace * 0.5;
+          kpx = Math.max(0.85, Math.min(1.05, (W - 48) / HANDS_META.W));
+          focalPixelX = W * 0.50;
+          focalPixelY = Math.max(120, Math.min(155, contentTop - 15));
         } else {
-          // Desktop: position hands in the generous negative space above the primary hero heading
-          const nameTop = cachedNameRect && cachedNameRect.top > 0 ? cachedNameRect.top : Math.max(220, H * 0.22);
-          const topMargin = 22;
-          const availH = Math.max(120, nameTop - topMargin - 16);
-          const maxKpxByW = (W - 64) / HANDS_META.W;
-          const maxKpxByH = availH / 150;
-          kpx = Math.max(0.92, Math.min(1.28, Math.min(maxKpxByW, maxKpxByH)));
-
-          focalPixelX = W * 0.5;
-          const activeH = 150 * kpx;
-          const remSpace = Math.max(0, availH - activeH);
-          focalPixelY = topMargin + 80.42 * kpx + remSpace * 0.5;
+          // Desktop: Adam hand on left, God hand in open space on right, fingertips meeting at ~53% W
+          const nameTop = cachedNameRect && cachedNameRect.top > 0 ? cachedNameRect.top : Math.max(210, H * 0.22);
+          kpx = Math.max(1.12, Math.min(1.42, (W - 64) / HANDS_META.W));
+          focalPixelX = W * 0.53;
+          // Fingertips meet slightly above nameTop so Adam's wrist (+28px) sits naturally above/at nameTop without cutting
+          focalPixelY = Math.max(145, Math.min(175, nameTop - 36));
         }
 
         const sx = kpx / cw;
@@ -718,12 +702,11 @@ export const AsciiHeroCanvas: React.FC = () => {
           for (let x = 0; x < cols; x++) {
             const cellIdx = rowOffset + x;
             const raw = imgData[cellIdx << 2];
-            // Threshold gate eliminates JPEG compression noise & downsampling blur between fingers
-            if (raw >= 26 && (dis === 0 || hash(x, y, 5) >= dis)) {
-              const norm = (raw - 26) / (255 - 26);
-              // Contrast S-curve: cleanly isolates fingers, preserves knuckles and tendons
-              const contrast = norm * norm * (3 - 2 * norm);
-              const rawL = Math.pow(contrast, 1.15);
+            // Gate 14 ignores JPEG black background while retaining delicate finger silhouettes
+            if (raw >= 14 && (dis === 0 || hash(x, y, 5) >= dis)) {
+              const norm = (raw - 14) / (255 - 14);
+              // Gamma 0.88 keeps finger contours, tendon highlights, and knuckles crisp without crushing midtones
+              const rawL = Math.pow(norm, 0.88);
               cellL[cellIdx] += rawL * w0;
             } else if (dis > 0) {
               // Binary dust rain
@@ -1117,7 +1100,7 @@ export const AsciiHeroCanvas: React.FC = () => {
         for (let x = 0; x < cols; x++) {
           const cellIdx = rowOffset + x;
           let l = cellL[cellIdx];
-          if (l < 0.04) continue;
+          if (l < 0.035) continue;
 
           const X = x * cw + cw / 2;
 
@@ -1139,7 +1122,7 @@ export const AsciiHeroCanvas: React.FC = () => {
             l *= textMask[cellIdx];
           }
 
-          if (l > 0.05) {
+          if (l >= 0.035) {
             const bucketScale = hasTextMask ? lerp(5.2, 7, textMask[cellIdx]) : 7;
             const bucketIdx = Math.min(6, Math.max(0, Math.floor(l * bucketScale)));
             const charBucketIdx = Math.min(6, Math.max(0, Math.floor(l * 7)));
