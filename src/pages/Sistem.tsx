@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../context/LanguageContext';
+import { KICK_URL } from '../config';
 import './Sistem.css';
 
 interface SpecItem {
@@ -90,8 +91,8 @@ export const Sistem: React.FC = () => {
       : {};
 
     return (
-      <RowTag key={spec.labelKey} className="sistem-row" {...rowProps}>
-        <span className="sistem-row-label" data-lang={spec.labelKey}>
+      <RowTag key={spec.labelKey} className="ledger-row sistem-row" {...rowProps}>
+        <span className="ledger-meta">
           {t(spec.labelKey)}
         </span>
         <div className="sistem-row-main">
@@ -109,57 +110,48 @@ export const Sistem: React.FC = () => {
 
   return (
     <div className="sistem-page">
-      <header className="sistem-header reveal">
-        <Link to="/" className="sistem-back-link" data-lang="back-home">
+      <header className="page-header">
+        <Link to="/" className="page-back-link">
           {t('back-home')}
         </Link>
-        <h1 className="sistem-title" data-lang="sistem-hero-title">
-          {t('sistem-hero-title')}
-        </h1>
-        <p className="sistem-lead" data-lang="sistem-hero-desc">
-          {t('sistem-hero-desc')}
-        </p>
+        <h1 className="page-title">{t('sistem-hero-title')}</h1>
+        <p className="page-lead">{t('sistem-hero-desc')}</p>
       </header>
 
-      <figure className="sistem-figure reveal">
-        <div className="sistem-photo-frame">
-          <img
-            src="/assets/system_setup.jpg"
-            alt="Mustafa Kemal Workstation Setup"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <figcaption className="sistem-figcaption">
-          <span>Adana, TR — Workstation &amp; Bench</span>
-          <a
-            href="https://kick.com/muskz"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sistem-kick-link"
-            data-lang="watch-on-kick"
-          >
+      <figure className="ledger-row sistem-figure">
+        <figcaption className="ledger-meta sistem-figcaption">
+          <span>Adana, TR</span>
+          <a href={KICK_URL} target="_blank" rel="noopener noreferrer" className="ledger-meta-dim">
             {t('watch-on-kick')}
           </a>
         </figcaption>
+        <div className="sistem-photo-frame">
+          <img
+            src="/assets/system_setup.jpg"
+            alt={t('sistem-photo-alt')}
+            width={1024}
+            height={768}
+            decoding="async"
+          />
+        </div>
       </figure>
 
-      <section className="sistem-section reveal" aria-labelledby="cat-core-heading">
+      <section className="section reveal" aria-labelledby="cat-core-heading">
         <div className="section-head">
-          <h2 id="cat-core-heading" className="section-title" data-lang="cat-core">
+          <h2 id="cat-core-heading" className="section-title">
             {t('cat-core')}
           </h2>
         </div>
-        <div className="sistem-ledger">{coreSpecs.map(renderSpecRow)}</div>
+        <div className="ledger">{coreSpecs.map(renderSpecRow)}</div>
       </section>
 
-      <section className="sistem-section reveal" aria-labelledby="cat-peripherals-heading">
+      <section className="section reveal" aria-labelledby="cat-peripherals-heading">
         <div className="section-head">
-          <h2 id="cat-peripherals-heading" className="section-title" data-lang="cat-peripherals">
+          <h2 id="cat-peripherals-heading" className="section-title">
             {t('cat-peripherals')}
           </h2>
         </div>
-        <div className="sistem-ledger">{peripheralSpecs.map(renderSpecRow)}</div>
+        <div className="ledger">{peripheralSpecs.map(renderSpecRow)}</div>
       </section>
     </div>
   );

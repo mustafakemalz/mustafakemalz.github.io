@@ -7,7 +7,10 @@ interface ProjectCardProps {
   link?: string;
   linkText?: string;
   comingSoon?: boolean;
+  statusText?: string;
   year?: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -17,31 +20,48 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   link,
   linkText = 'View ↗',
   comingSoon = false,
+  statusText = 'WIP',
   year,
+  image,
+  imageAlt = '',
 }) => {
+  const shot = image ? <img src={image} alt={imageAlt} loading="lazy" decoding="async" /> : null;
+
   return (
-    <article className="project-row">
-      <div className="project-row-meta">
-        {year && <span className="project-row-year">{year}</span>}
-        <span className="project-row-stack">{tags}</span>
+    <article className="ledger-row project-row">
+      <div className="ledger-meta">
+        {year && <span>{year}</span>}
+        <span className="ledger-meta-dim">{tags}</span>
       </div>
-      <div className="project-row-main">
-        <div className="project-row-head">
-          <h3>{title}</h3>
-          {comingSoon ? (
-            <span className="project-row-status">WIP</span>
-          ) : link ? (
+      <div className="project-body">
+        <div className="ledger-main">
+          <div className="project-row-head">
+            <h3 className="ledger-title">{title}</h3>
+            {comingSoon ? (
+              <span className="project-row-status">{statusText}</span>
+            ) : link ? (
+              <a href={link} target="_blank" rel="noopener noreferrer" className="project-row-link">
+                {linkText}
+              </a>
+            ) : null}
+          </div>
+          <p className="ledger-desc">{description}</p>
+        </div>
+        {shot &&
+          (link ? (
             <a
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="project-row-link"
+              className="project-shot"
+              tabIndex={-1}
+              aria-hidden="true"
             >
-              {linkText}
+              {shot}
             </a>
-          ) : null}
-        </div>
-        <p className="project-row-desc">{description}</p>
+          ) : (
+            <div className="project-shot">{shot}</div>
+          ))}
       </div>
     </article>
   );

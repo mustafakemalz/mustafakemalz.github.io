@@ -4,7 +4,6 @@ import { useTranslation } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import CommandMenu from './CommandMenu';
 import Icon from './Icon';
-import PixelCompanion from './PixelCompanion';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -230,7 +229,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
 
         <footer className="site-footer reveal">
-          <PixelCompanion />
           <div className="footer-row">
             <div className="footer-meta-bar">
               <span>Adana, TR</span>
@@ -241,17 +239,17 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             <div className="footer-links">
               <a href="https://github.com/mustafakemalz" target="_blank" rel="noopener noreferrer">
-                GitHub ↗
+                GitHub
               </a>
               <a
                 href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                LinkedIn ↗
+                LinkedIn
               </a>
               <a href="https://www.instagram.com/jpeg.muskz/" target="_blank" rel="noopener noreferrer">
-                Instagram ↗
+                Instagram
               </a>
               <Link to="/sistem">{language === 'tr' ? 'Sistem' : 'Setup'}</Link>
               <Link to="/links">Links</Link>

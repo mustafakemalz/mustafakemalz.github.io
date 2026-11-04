@@ -1,74 +1,69 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from '../context/LanguageContext';
 
+const THOUGHTS = {
+  tr: [
+    '// biraz mola',
+    'git commit -m "dinlen"',
+    'npm run nefes-al',
+    '// kahve zamanı',
+    '5 dk esneme',
+    'while (alive) { code(); }',
+  ],
+  en: [
+    '// quick break',
+    'git commit -m "stretch"',
+    'npm run take-a-breath',
+    '// coffee time',
+    '5 min stretch',
+    'while (alive) { code(); }',
+  ],
+};
+
+// Side-quest card on /journey: a pixel developer who suggests a break when clicked
 export const PixelCompanion: React.FC = () => {
-  const { language } = useTranslation();
+  const { t, language } = useTranslation();
   const [thought, setThought] = useState<string | null>(null);
-  const thoughtTimerRef = useRef<number | null>(null);
+  const timerRef = useRef<number | null>(null);
+
+  useEffect(
+    () => () => {
+      if (timerRef.current) window.clearTimeout(timerRef.current);
+    },
+    []
+  );
 
   const handleClick = () => {
-    const thoughtsTr = [
-      '// biraz mola',
-      'git commit -m "dinlen"',
-      'npm run nefes-al',
-      '// kahve zamanı ☕',
-      '5 dk dinlenme...',
-      'while(alive) { code(); }',
-    ];
-    const thoughtsEn = [
-      '// quick break',
-      'git commit -m "stretch"',
-      'npm run take-a-breath',
-      '// coffee time ☕',
-      '5 min stretch...',
-      'while(alive) { code(); }',
-    ];
-    const list = language === 'tr' ? thoughtsTr : thoughtsEn;
-    const randomThought = list[Math.floor(Math.random() * list.length)];
-
-    setThought(randomThought);
-
-    if (thoughtTimerRef.current) {
-      window.clearTimeout(thoughtTimerRef.current);
-    }
-    thoughtTimerRef.current = window.setTimeout(() => {
-      setThought(null);
-    }, 2800);
+    const list = THOUGHTS[language];
+    setThought((prev) => {
+      const options = list.filter((item) => item !== prev);
+      return options[Math.floor(Math.random() * options.length)];
+    });
+    if (timerRef.current) window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => setThought(null), 2800);
   };
 
   return (
-    <div
-      className="pixel-companion-shelf"
-      onClick={handleClick}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleClick();
-        }
-      }}
-      role="button"
-      tabIndex={0}
-      title={language === 'tr' ? 'Mola vermek için tıkla' : 'Click to take a stretch break'}
-      aria-label="Pixel developer companion"
-    >
-      {thought && (
-        <span className="pixel-companion-bubble" aria-live="polite">
-          {thought}
-        </span>
-      )}
-
-      <div className="pixel-companion-frame">
+    <button type="button" className="quest-card" onClick={handleClick}>
+      <span className="quest-kicker">{t('quest-buddy-kicker')}</span>
+      <span className="quest-title">{t('quest-buddy-title')}</span>
+      <span className="quest-desc">{t('quest-buddy-desc')}</span>
+      <span className="quest-companion">
         <img
           src="/assets/dev-companion.gif"
-          alt="Pixel developer coding and stretching"
+          alt=""
           className="pixel-dev-gif"
-          width={62}
+          width={61}
           height={48}
-          loading="eager"
           decoding="async"
         />
-      </div>
-    </div>
+        {thought && (
+          <span className="quest-bubble" aria-live="polite">
+            {thought}
+          </span>
+        )}
+      </span>
+    </button>
   );
 };
 

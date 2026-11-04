@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from '../context/LanguageContext';
 import ProjectCard from '../components/ProjectCard';
@@ -11,81 +11,141 @@ interface TechItem {
   color: string;
 }
 
-const TECH_ROWS: TechItem[][] = [
-  [
-    { name: 'TypeScript', icon: 'typescript', color: '#3178C6' },
-    { name: 'JavaScript', icon: 'javascript', color: '#F7DF1E' },
-    { name: 'Python', icon: 'python', color: '#3776AB' },
-    { name: 'C / C++', icon: 'cpp', color: '#00599C' },
-    { name: 'USB HID', icon: 'usb', color: '#38BDF8' },
-  ],
-  [
-    { name: 'React', icon: 'react', color: '#61DAFB' },
-    { name: 'Next.js', icon: 'nextjs', color: 'var(--foreground-heading)' },
-    { name: 'Electron', icon: 'electron', color: '#47848F' },
-    { name: 'Node.js', icon: 'node-js', color: '#5FA04E' },
-    { name: 'Tailwind CSS', icon: 'tailwind', color: '#06B6D4' },
-  ],
-  [
-    { name: 'STM32', icon: 'microchip', color: '#00A9E0' },
-    { name: 'ESP32', icon: 'wifi', color: '#E7352C' },
-    { name: 'Raspberry Pi', icon: 'raspberry-pi', color: '#C51A4A' },
-    { name: 'Altium Designer', icon: 'layer-group', color: '#A5915F' },
-    { name: 'SolidWorks', icon: 'cube', color: '#DA291C' },
-  ],
-  [
-    { name: 'Ollama', icon: 'terminal', color: 'var(--foreground-heading)' },
-    { name: 'Docker', icon: 'docker', color: '#2496ED' },
-    { name: 'Git', icon: 'git', color: '#F05032' },
-    { name: 'Linux', icon: 'linux', color: '#FCC624' },
-    { name: 'Supabase', icon: 'supabase', color: '#3ECF8E' },
-  ],
+interface TechRow {
+  labelKey: string;
+  items: TechItem[];
+}
+
+const TECH_ROWS: TechRow[] = [
+  {
+    labelKey: 'stack-cat-lang',
+    items: [
+      { name: 'TypeScript', icon: 'typescript', color: '#3178C6' },
+      { name: 'JavaScript', icon: 'javascript', color: '#F7DF1E' },
+      { name: 'Python', icon: 'python', color: '#3776AB' },
+      { name: 'C / C++', icon: 'cpp', color: '#00599C' },
+      { name: 'USB HID', icon: 'usb', color: '#38BDF8' },
+    ],
+  },
+  {
+    labelKey: 'stack-cat-web',
+    items: [
+      { name: 'React', icon: 'react', color: '#61DAFB' },
+      { name: 'Next.js', icon: 'nextjs', color: 'var(--foreground-heading)' },
+      { name: 'Electron', icon: 'electron', color: '#47848F' },
+      { name: 'Node.js', icon: 'node-js', color: '#5FA04E' },
+      { name: 'Tailwind CSS', icon: 'tailwind', color: '#06B6D4' },
+    ],
+  },
+  {
+    labelKey: 'stack-cat-hw',
+    items: [
+      { name: 'STM32', icon: 'microchip', color: '#00A9E0' },
+      { name: 'ESP32', icon: 'wifi', color: '#E7352C' },
+      { name: 'Raspberry Pi', icon: 'raspberry-pi', color: '#C51A4A' },
+      { name: 'Altium Designer', icon: 'layer-group', color: '#A5915F' },
+      { name: 'SolidWorks', icon: 'cube', color: '#DA291C' },
+    ],
+  },
+  {
+    labelKey: 'stack-cat-tools',
+    items: [
+      { name: 'Ollama', icon: 'terminal', color: 'var(--foreground-heading)' },
+      { name: 'Docker', icon: 'docker', color: '#2496ED' },
+      { name: 'Git', icon: 'git', color: '#F05032' },
+      { name: 'Linux', icon: 'linux', color: '#FCC624' },
+      { name: 'Supabase', icon: 'supabase', color: '#3ECF8E' },
+    ],
+  },
 ];
+
+interface ExperienceItem {
+  date: { en: string; tr: string };
+  org: string;
+  orgUrl?: string;
+  roleKey: string;
+  descKey: string;
+}
+
+const EXPERIENCE: ExperienceItem[] = [
+  {
+    date: { en: '2026 — Present', tr: '2026 — Günümüz' },
+    org: 'Elman Otomasyon',
+    orgUrl: 'https://elmantech.com/',
+    roleKey: 'exp-0-role',
+    descKey: 'exp-0-desc',
+  },
+  {
+    date: { en: '2022 — 2026', tr: '2022 — 2026' },
+    org: 'Çukurova University',
+    roleKey: 'edu-1-role',
+    descKey: 'edu-1-desc',
+  },
+  {
+    date: { en: '2025', tr: '2025' },
+    org: 'Iskar Technologies',
+    roleKey: 'edu-2-role',
+    descKey: 'edu-2-desc',
+  },
+  {
+    date: { en: '2024', tr: '2024' },
+    org: 'Statu.co',
+    roleKey: 'edu-3-role',
+    descKey: 'edu-3-desc',
+  },
+];
+
+const GALLERY = [
+  { src: '/assets/photo1.webp', alt: 'Lab bench', captionKey: 'gallery-1' },
+  { src: '/assets/photo2.webp', alt: 'PCB work', captionKey: 'gallery-2' },
+  { src: '/assets/photo3.gif', alt: 'Controller test rig', captionKey: 'gallery-3' },
+  { src: '/assets/photo4.webp', alt: 'Field work', captionKey: 'gallery-4' },
+];
+
+const CONTACT_LINKS = [
+  { label: 'Email', handle: 'mustafakemalgocer@gmail.com', href: 'mailto:mustafakemalgocer@gmail.com' },
+  { label: 'GitHub', handle: 'mustafakemalz', href: 'https://github.com/mustafakemalz' },
+  {
+    label: 'LinkedIn',
+    handle: 'mustafa-kemal-göçer',
+    href: 'https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255',
+  },
+  { label: 'Instagram', handle: '@jpeg.muskz', href: 'https://www.instagram.com/jpeg.muskz/' },
+];
+
+const scrollToTarget = (targetId: string) => {
+  const lenis = (window as any).lenis;
+  if (targetId === '#' || targetId === '' || targetId === '#top') {
+    if (lenis) lenis.scrollTo(0, { duration: 1.1 });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  const targetEl = document.querySelector(targetId);
+  if (!targetEl) return;
+  const navOffset = window.innerWidth <= 768 ? -64 : -72;
+  if (lenis) {
+    lenis.scrollTo(targetEl, { offset: navOffset, duration: 1.1 });
+  } else {
+    const targetY = targetEl.getBoundingClientRect().top + window.scrollY + navOffset;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  }
+};
 
 export const Home: React.FC = () => {
   const { t, language } = useTranslation();
   const location = useLocation();
 
-  const heroHeaderRef = useRef<HTMLDivElement>(null);
-
   const [formStatus, setFormStatus] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (location.state && (location.state as any).scrollTo) {
-      const targetId = (location.state as any).scrollTo;
-      window.history.replaceState({}, document.title);
-
-      const timer = setTimeout(() => {
-        if (targetId === '#' || targetId === '' || targetId === '#top') {
-          if ((window as any).lenis) {
-            (window as any).lenis.scrollTo(0, { duration: 1.1 });
-          } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-          return;
-        }
-
-        const targetEl = document.querySelector(targetId);
-        if (targetEl) {
-          const navOffset = window.innerWidth <= 768 ? -64 : -72;
-          if ((window as any).lenis) {
-            (window as any).lenis.scrollTo(targetEl, {
-              offset: navOffset,
-              duration: 1.1,
-            });
-          } else {
-            const targetY = targetEl.getBoundingClientRect().top + window.scrollY + navOffset;
-            window.scrollTo({
-              top: targetY,
-              behavior: 'smooth',
-            });
-          }
-        }
-      }, 150);
-
-      return () => clearTimeout(timer);
-    }
+    const state = location.state as { scrollTo?: string } | null;
+    if (!state?.scrollTo) return;
+    const targetId = state.scrollTo;
+    window.history.replaceState({}, document.title);
+    const timer = window.setTimeout(() => scrollToTarget(targetId), 150);
+    return () => window.clearTimeout(timer);
   }, [location]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -103,12 +163,9 @@ export const Home: React.FC = () => {
         headers: { Accept: 'application/json' },
       });
 
-      if (response.ok) {
-        setFormStatus(t('form-success'));
-        form.reset();
-      } else {
-        throw new Error();
-      }
+      if (!response.ok) throw new Error();
+      setFormStatus(t('form-success'));
+      form.reset();
     } catch {
       setFormStatus(t('form-error'));
     } finally {
@@ -116,23 +173,17 @@ export const Home: React.FC = () => {
     }
   };
 
-  const handleImageError = (
-    e: React.SyntheticEvent<HTMLImageElement, Event>,
-    fallbackUrl: string
-  ) => {
-    e.currentTarget.src = fallbackUrl;
-  };
-
   return (
     <>
       <AsciiHeroCanvas />
+
       {/* HERO */}
-      <header className="site-header reveal" ref={heroHeaderRef}>
+      <header className="site-header">
         <div className="hero-parallax-wrap">
           <div className="hero-grid">
             <div className="hero-avatar-col">
-              <div className="hero-avatar-frame" title="MKG // Hardware & Embedded Architecture">
-                <div className="hero-chip-badge" aria-label="MKG Hardware Architecture Emblem">
+              <div className="hero-avatar-frame" title="MKG">
+                <div className="hero-chip-badge">
                   <svg
                     viewBox="0 0 88 88"
                     fill="none"
@@ -140,7 +191,6 @@ export const Home: React.FC = () => {
                     className="hero-chip-svg"
                     aria-hidden="true"
                   >
-                    {/* Background Substrate Pin Leads */}
                     <path
                       d="M10 26H22M10 44H22M10 62H22M66 26H78M66 44H78M66 62H78M26 10V22M44 10V22M62 10V22M26 66V78M44 66V78M62 66V78"
                       stroke="currentColor"
@@ -148,7 +198,6 @@ export const Home: React.FC = () => {
                       strokeLinecap="round"
                       className="hero-chip-pins"
                     />
-                    {/* IC Carrier Package */}
                     <rect
                       x="22"
                       y="22"
@@ -159,9 +208,7 @@ export const Home: React.FC = () => {
                       strokeWidth="1.8"
                       className="hero-chip-body"
                     />
-                    {/* Pin 1 Index Dot */}
-                    <circle cx="28.5" cy="28.5" r="2" fill="#10b981" className="hero-chip-pin1" />
-                    {/* Silicon Core Die Boundary */}
+                    <circle cx="28.5" cy="28.5" r="2" fill="var(--live)" />
                     <rect
                       x="30"
                       y="30"
@@ -173,107 +220,75 @@ export const Home: React.FC = () => {
                       strokeDasharray="2 2"
                       className="hero-chip-die"
                     />
-                    {/* Internal Bus & Logic Routing Traces */}
-                    <path
-                      d="M37 37L44 44M51 37L44 44M44 44V51"
-                      stroke="currentColor"
-                      strokeWidth="1.3"
-                      strokeLinecap="round"
-                      className="hero-chip-trace"
-                    />
-                    {/* Laser Engraved Monogram & Clock */}
                     <text
                       x="44"
-                      y="42"
+                      y="47.5"
                       textAnchor="middle"
                       className="hero-chip-label"
                       fill="currentColor"
                     >
                       MKG
                     </text>
-                    <text
-                      x="44"
-                      y="52"
-                      textAnchor="middle"
-                      className="hero-chip-sub"
-                      fill="currentColor"
-                    >
-                      84MHz
-                    </text>
                   </svg>
                 </div>
-                <span className="hero-avatar-status" title={t('hero-status')} aria-label={t('hero-status')}>
+                <span className="hero-avatar-status" title={t('hero-status')}>
                   <span className="hero-avatar-dot" />
                 </span>
               </div>
               <div className="hero-avatar-meta">
-                <span className="hero-meta-label">MKG // 2026</span>
-                <span className="hero-meta-sub">Adana, TR</span>
+                <span className="hero-meta-label">Adana, TR</span>
                 <span className="hero-meta-status">{t('hero-status')}</span>
               </div>
             </div>
 
             <div className="header-info">
-              <h1 className="hero-name" data-lang="hero-name">
-                {t('hero-name')}
-              </h1>
-              <p className="hero-role" data-lang="hero-role">
-                {t('hero-role')}
-              </p>
-              <p className="hero-lead" data-lang="hero-lead">
-                {t('hero-lead')}
-              </p>
-              <nav aria-label="External links" className="hero-text-links">
-                <a
-                  href="https://github.com/mustafakemalz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  GitHub ↗
+              <h1 className="hero-name">{t('hero-name')}</h1>
+              <p className="hero-role">{t('hero-role')}</p>
+              <p className="hero-lead">{t('hero-lead')}</p>
+              <nav aria-label={t('aria-external-links')} className="hero-text-links">
+                <a href="https://github.com/mustafakemalz" target="_blank" rel="noopener noreferrer">
+                  GitHub
                 </a>
                 <a
                   href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  LinkedIn ↗
+                  LinkedIn
                 </a>
-                <a
-                  href="https://www.instagram.com/jpeg.muskz/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Instagram ↗
+                <a href="https://www.instagram.com/jpeg.muskz/" target="_blank" rel="noopener noreferrer">
+                  Instagram
                 </a>
-                <a href="mailto:mustafakemalgocer@gmail.com">
-                  mustafakemalgocer@gmail.com ↗
-                </a>
+                <a href="mailto:mustafakemalgocer@gmail.com">mustafakemalgocer@gmail.com</a>
               </nav>
             </div>
           </div>
         </div>
       </header>
 
-      {/* TECH STACK ROWS (Hover-colored brand icons, hairline rows) */}
+      {/* STACK */}
       <section id="about" className="section reveal" aria-labelledby="about-heading">
         <div className="section-head">
-          <h2 id="about-heading" className="section-title" data-lang="about-title">
+          <h2 id="about-heading" className="section-title">
             {t('about-title')}
           </h2>
         </div>
-        <div className="tech-ledger">
-          {TECH_ROWS.map((row, rowIndex) => (
-            <div className="tech-row" key={rowIndex}>
-              {row.map((item) => (
-                <div
-                  key={item.name}
-                  className="tech-item"
-                  style={{ '--brand-color': item.color } as React.CSSProperties}
-                >
-                  <Icon name={item.icon} className="tech-item-icon" size={20} />
-                  <span className="tech-item-name">{item.name}</span>
-                </div>
-              ))}
+        <div className="ledger">
+          {TECH_ROWS.map((row) => (
+            <div className="ledger-row tech-row" key={row.labelKey}>
+              <span className="ledger-meta">{t(row.labelKey)}</span>
+              <div className="tech-items">
+                {row.items.map((item) => (
+                  <div
+                    key={item.name}
+                    className="tech-item"
+                    style={{ '--brand-color': item.color } as React.CSSProperties}
+                  >
+                    <Icon name={item.icon} className="tech-item-icon" size={18} />
+                    <span className="tech-item-name">{item.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -282,91 +297,41 @@ export const Home: React.FC = () => {
       {/* EXPERIENCE & EDUCATION */}
       <section id="experience" className="section reveal" aria-labelledby="experience-heading">
         <div className="section-head">
-          <h2 id="experience-heading" className="section-title" data-lang="exp-title">
+          <h2 id="experience-heading" className="section-title">
             {t('exp-title')}
           </h2>
         </div>
-        <div className="exp-ledger">
-          <article className="exp-row">
-            <div className="exp-row-meta">
-              <span className="exp-date">
-                {language === 'tr' ? '2026 — Günümüz' : '2026 — Present'}
-              </span>
-              <a
-                href="https://elmantech.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="exp-company-link"
-              >
-                Elman Otomasyon ↗
-              </a>
-            </div>
-            <div className="exp-row-main">
-              <h3 className="exp-role" data-lang="exp-0-role">
-                {t('exp-0-role')}
-              </h3>
-              <p className="exp-desc" data-lang="exp-0-desc">
-                {t('exp-0-desc')}
-              </p>
-            </div>
-          </article>
-
-          <article className="exp-row">
-            <div className="exp-row-meta">
-              <span className="exp-date">2022 — 2026</span>
-              <span className="exp-company">Çukurova University</span>
-            </div>
-            <div className="exp-row-main">
-              <h3 className="exp-role" data-lang="edu-1-role">
-                {t('edu-1-role')}
-              </h3>
-              <p className="exp-desc" data-lang="edu-1-desc">
-                {t('edu-1-desc')}
-              </p>
-            </div>
-          </article>
-
-          <article className="exp-row">
-            <div className="exp-row-meta">
-              <span className="exp-date">2025</span>
-              <span className="exp-company">Iskar Technologies</span>
-            </div>
-            <div className="exp-row-main">
-              <h3 className="exp-role" data-lang="edu-2-role">
-                {t('edu-2-role')}
-              </h3>
-              <p className="exp-desc" data-lang="edu-2-desc">
-                {t('edu-2-desc')}
-              </p>
-            </div>
-          </article>
-
-          <article className="exp-row">
-            <div className="exp-row-meta">
-              <span className="exp-date">2024</span>
-              <span className="exp-company">Statu.co</span>
-            </div>
-            <div className="exp-row-main">
-              <h3 className="exp-role" data-lang="edu-3-role">
-                {t('edu-3-role')}
-              </h3>
-              <p className="exp-desc" data-lang="edu-3-desc">
-                {t('edu-3-desc')}
-              </p>
-            </div>
-          </article>
+        <div className="ledger">
+          {EXPERIENCE.map((item) => (
+            <article className="ledger-row" key={item.roleKey}>
+              <div className="ledger-meta">
+                <span>{item.date[language]}</span>
+                {item.orgUrl ? (
+                  <a href={item.orgUrl} target="_blank" rel="noopener noreferrer" className="ledger-meta-dim">
+                    {item.org} ↗
+                  </a>
+                ) : (
+                  <span className="ledger-meta-dim">{item.org}</span>
+                )}
+              </div>
+              <div className="ledger-main">
+                <h3 className="ledger-title">{t(item.roleKey)}</h3>
+                <p className="ledger-desc">{t(item.descKey)}</p>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
       {/* SELECTED WORK */}
       <section id="projects" className="section reveal" aria-labelledby="projects-heading">
         <div className="section-head">
-          <h2 id="projects-heading" className="section-title" data-lang="proj-title">
+          <h2 id="projects-heading" className="section-title">
             {t('proj-title')}
           </h2>
         </div>
 
-        <div className="projects-ledger">
+        <div className="ledger">
           <ProjectCard
             year="2026"
             title="OpenController"
@@ -374,6 +339,8 @@ export const Home: React.FC = () => {
             description={t('proj-opencontroller-desc')}
             link="https://github.com/mustafakemalz/opencontroller"
             linkText="GitHub ↗"
+            image="/assets/projects/opencontroller.webp"
+            imageAlt={t('proj-opencontroller-alt')}
           />
           <ProjectCard
             year="2025"
@@ -382,6 +349,8 @@ export const Home: React.FC = () => {
             description={t('proj-streamdoro-desc')}
             link="https://streamdoro.app"
             linkText="streamdoro.app ↗"
+            image="/assets/projects/streamdoro.webp"
+            imageAlt={t('proj-streamdoro-alt')}
           />
           <ProjectCard
             year="2025"
@@ -390,199 +359,95 @@ export const Home: React.FC = () => {
             description={t('proj-fragstat-desc')}
             link="https://faceitoverlay.vercel.app"
             linkText="faceitoverlay.vercel.app ↗"
+            image="/assets/projects/fragstat.webp"
+            imageAlt={t('proj-fragstat-alt')}
           />
           <ProjectCard
             year="2025"
             title="ShareRoute"
             tags="React Native · Expo · Supabase"
             description={t('proj-shareroute-desc')}
-            comingSoon={true}
+            comingSoon
+            statusText={t('proj-status-wip')}
           />
         </div>
       </section>
 
-      {/* LAB & FIELD NOTES (Gallery) */}
+      {/* LAB & FIELD NOTES */}
       <section id="gallery" className="section reveal" aria-labelledby="gallery-heading">
         <div className="section-head">
-          <h2 id="gallery-heading" className="section-title" data-lang="gallery-title">
+          <h2 id="gallery-heading" className="section-title">
             {t('gallery-title')}
           </h2>
         </div>
-        <div className="gallery-grid reveal-stagger">
-          <figure className="gallery-figure">
-            <div className="gallery-img-wrap">
-              <img
-                src="/assets/photo1.webp"
-                alt="Engineering Lab"
-                loading="lazy"
-                decoding="async"
-                onError={(e) =>
-                  handleImageError(
-                    e,
-                    'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600&auto=format&fit=crop'
-                  )
-                }
-              />
-            </div>
-            <figcaption className="gallery-caption" data-lang="gallery-1">
-              {t('gallery-1')}
-            </figcaption>
-          </figure>
-          <figure className="gallery-figure">
-            <div className="gallery-img-wrap">
-              <img
-                src="/assets/photo2.webp"
-                alt="Simulation"
-                loading="lazy"
-                decoding="async"
-                onError={(e) =>
-                  handleImageError(
-                    e,
-                    'https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=600&auto=format&fit=crop'
-                  )
-                }
-              />
-            </div>
-            <figcaption className="gallery-caption" data-lang="gallery-2">
-              {t('gallery-2')}
-            </figcaption>
-          </figure>
-          <figure className="gallery-figure">
-            <div className="gallery-img-wrap">
-              <img
-                src="/assets/photo3.gif"
-                alt="Hardware"
-                loading="lazy"
-                decoding="async"
-                onError={(e) =>
-                  handleImageError(
-                    e,
-                    'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600&auto=format&fit=crop'
-                  )
-                }
-              />
-            </div>
-            <figcaption className="gallery-caption" data-lang="gallery-3">
-              {t('gallery-3')}
-            </figcaption>
-          </figure>
-          <figure className="gallery-figure">
-            <div className="gallery-img-wrap">
-              <img
-                src="/assets/photo4.webp"
-                alt="Field Work"
-                loading="lazy"
-                decoding="async"
-                onError={(e) =>
-                  handleImageError(
-                    e,
-                    'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=600&auto=format&fit=crop'
-                  )
-                }
-              />
-            </div>
-            <figcaption className="gallery-caption" data-lang="gallery-4">
-              {t('gallery-4')}
-            </figcaption>
-          </figure>
+        <div className="gallery-grid">
+          {GALLERY.map((item) => (
+            <figure className="gallery-figure" key={item.src}>
+              <div className="gallery-img-wrap">
+                <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
+              </div>
+              <figcaption className="gallery-caption">{t(item.captionKey)}</figcaption>
+            </figure>
+          ))}
         </div>
       </section>
 
       {/* CONTACT */}
       <section id="contact" className="section reveal" aria-labelledby="contact-heading">
-        <div className="contact-split">
-          <div className="contact-meta">
-            <h2 id="contact-heading" className="section-title" data-lang="contact-cta">
-              {t('contact-cta')}
-            </h2>
-            <p className="contact-lead" data-lang="contact-lead">
-              {t('contact-lead')}
-            </p>
+        <div className="section-head">
+          <h2 id="contact-heading" className="section-title">
+            {t('contact-cta')}
+          </h2>
+        </div>
+        <div className="ledger">
+          <div className="ledger-row contact-row">
             <div className="contact-links-list">
-              <a href="mailto:mustafakemalgocer@gmail.com">
-                mustafakemalgocer@gmail.com ↗
-              </a>
-              <a
-                href="https://github.com/mustafakemalz"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                github.com/mustafakemalz ↗
-              </a>
-              <a
-                href="https://tr.linkedin.com/in/mustafa-kemal-g%C3%B6%C3%A7er-41409b255"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                linkedin.com/in/mustafa-kemal-göçer ↗
-              </a>
-              <a
-                href="https://www.instagram.com/jpeg.muskz/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                instagram.com/jpeg.muskz ↗
-              </a>
+              {CONTACT_LINKS.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                >
+                  <span className="contact-link-label">{link.label}</span>
+                  <span className="contact-link-handle">{link.handle}</span>
+                </a>
+              ))}
             </div>
-          </div>
 
-          <div id="contact-form-area" className="contact-form-col">
-            <form
-              id="contact-form"
-              className="contact-form"
-              action="https://formspree.io/f/xeeozdyd"
-              method="POST"
-              autoComplete="off"
-              onSubmit={handleFormSubmit}
-            >
-              <div className="form-group">
-                <label htmlFor="name" data-lang="form-name">
-                  {t('form-name')}
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  required
-                  autoComplete="off"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email" data-lang="form-email">
-                  {t('form-email')}
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  required
-                  autoComplete="off"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="message" data-lang="form-msg">
-                  {t('form-msg')}
-                </label>
-                <textarea
-                  name="message"
-                  id="message"
-                  required
-                  autoComplete="off"
-                ></textarea>
-              </div>
-              <div className="form-actions">
-                <button type="submit" className="form-submit-link" id="form-btn" disabled={isSubmitting}>
-                  <span data-lang="form-btn">
-                    {isSubmitting ? '...' : t('form-btn')}
-                  </span>
-                </button>
-                {formStatus && (
-                  <span id="form-status" className="form-status-msg">
-                    {formStatus}
-                  </span>
-                )}
-              </div>
-            </form>
+            <div className="ledger-main contact-main">
+              <p className="contact-lead">{t('contact-lead')}</p>
+              <form
+                id="contact-form"
+                className="contact-form"
+                action="https://formspree.io/f/xeeozdyd"
+                method="POST"
+                autoComplete="off"
+                onSubmit={handleFormSubmit}
+              >
+                <div className="form-group">
+                  <label htmlFor="name">{t('form-name')}</label>
+                  <input type="text" name="name" id="name" required maxLength={120} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">{t('form-email')}</label>
+                  <input type="email" name="email" id="email" required maxLength={200} />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="message">{t('form-msg')}</label>
+                  <textarea name="message" id="message" required maxLength={5000}></textarea>
+                </div>
+                <div className="form-actions">
+                  <button type="submit" className="form-submit-link" disabled={isSubmitting}>
+                    {isSubmitting ? t('form-sending') : t('form-btn')}
+                  </button>
+                  {formStatus && (
+                    <span className="form-status-msg" role="status">
+                      {formStatus}
+                    </span>
+                  )}
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </section>

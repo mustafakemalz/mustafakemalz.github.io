@@ -25,39 +25,6 @@ function hash(x: number, y: number, t: number) {
   return ((h ^ (h >> 16)) >>> 0) / 4294967295;
 }
 
-// 3D Polyhedron: Cube (8 vertices) + Dual Octahedron (6 vertices) = 14 vertices
-const VERTICES_3D: [number, number, number][] = [
-  // Cube vertices [-1..1]
-  [-1, -1, -1],
-  [1, -1, -1],
-  [1, 1, -1],
-  [-1, 1, -1],
-  [-1, -1, 1],
-  [1, -1, 1],
-  [1, 1, 1],
-  [-1, 1, 1],
-  // Octahedron outer vertices
-  [0, 0, -1.5],
-  [0, 0, 1.5],
-  [0, -1.5, 0],
-  [0, 1.5, 0],
-  [-1.5, 0, 0],
-  [1.5, 0, 0],
-];
-
-const EDGES_3D: [number, number][] = [
-  // Cube back face
-  [0, 1], [1, 2], [2, 3], [3, 0],
-  // Cube front face
-  [4, 5], [5, 6], [6, 7], [7, 4],
-  // Connecting edges
-  [0, 4], [1, 5], [2, 6], [3, 7],
-  // Octahedron edges connecting to axial vertices
-  [8, 10], [8, 11], [8, 12], [8, 13],
-  [9, 10], [9, 11], [9, 12], [9, 13],
-  [10, 12], [12, 11], [11, 13], [13, 10],
-];
-
 export const AsciiHeroCanvas: React.FC = () => {
   const { theme } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -136,13 +103,10 @@ export const AsciiHeroCanvas: React.FC = () => {
     const bucketsY: number[][] = Array.from({ length: 7 }, () => []);
     const bucketsChar: string[][] = Array.from({ length: 7 }, () => []);
 
-    // Pre-allocated 3D projection buffers for Phase 3 wireframe (eliminates per-frame heap churn)
-    const projX = new Float32Array(14);
-    const projY = new Float32Array(14);
-    const projZ = new Float32Array(14);
+    let heroFaded = false;
 
     const startLoop = () => {
-      if (!isMounted || isRunning || !isVisibleRef.current || !leftLoaded || !rightLoaded || !render) return;
+      if (!isMounted || isRunning || heroFaded || !isVisibleRef.current || !leftLoaded || !rightLoaded || !render) return;
       isRunning = true;
       forceNextRender = true;
       animationFrameId = requestAnimationFrame(render);
@@ -193,52 +157,31 @@ export const AsciiHeroCanvas: React.FC = () => {
       return el.getBoundingClientRect().top + window.scrollY;
     };
 
-    // Cached document positions to eliminate layout thrashing during scroll
-    let cachedHeroHeight = 800;
+    // Cached document position to avoid layout reads during scroll
     let cachedAboutTop = 800;
-    let cachedExpTop = 1500;
-    let cachedProjTop = 2100;
-    let cachedContactTop = 3200;
 
     const measureSectionPositions = () => {
-      const vh = window.innerHeight;
       const heroEl = document.querySelector('.site-header') as HTMLElement | null;
-      cachedHeroHeight = heroEl?.offsetHeight || vh;
-
-      const aboutEl = document.getElementById('about');
-      const expEl = document.getElementById('experience');
-      const projEl = document.getElementById('projects');
-      const contactEl = document.getElementById('contact');
-
-      cachedAboutTop = getAbsoluteTop(aboutEl, cachedHeroHeight);
-      cachedExpTop = getAbsoluteTop(expEl, cachedAboutTop + 600);
-      cachedProjTop = getAbsoluteTop(projEl, cachedExpTop + 600);
-      cachedContactTop = getAbsoluteTop(contactEl, cachedProjTop + 800);
+      const heroHeight = heroEl?.offsetHeight || window.innerHeight;
+      cachedAboutTop = getAbsoluteTop(document.getElementById('about'), heroHeight);
     };
 
-    // Continuous, C0-continuous piecewise scroll mapping across all 4 visual phases
+    // Scroll maps to the hands only: they meet, disperse, and the whole layer
+    // fades out before the first section so nothing draws behind content.
     const updateScrollProgress = () => {
       const scrollY = window.scrollY;
-      const vh = window.innerHeight;
+      const heroEnd = Math.max(120, cachedAboutTop - window.innerHeight * 0.45);
 
-      const y0 = 0;
-      const y1 = Math.max(120, cachedAboutTop - vh * 0.45);
-      const y2 = Math.max(y1 + 150, cachedExpTop - vh * 0.35);
-      const y3 = Math.max(y2 + 200, cachedContactTop - vh * 0.45);
+      targetPhase = cl(scrollY / heroEnd) * 0.85;
 
-      if (scrollY <= y0) {
-        targetPhase = 0;
-      } else if (scrollY < y1) {
-        targetPhase = scrollY / y1;
-      } else if (scrollY < y2) {
-        targetPhase = 1.0 + (scrollY - y1) / (y2 - y1);
-      } else if (scrollY < y3) {
-        targetPhase = 2.0 + (scrollY - y2) / (y3 - y2);
-      } else {
-        const extra = Math.min(1.0, (scrollY - y3) / Math.max(1, vh * 0.5));
-        targetPhase = 3.0 + extra * 0.15;
+      const fade = 1 - cl((scrollY - heroEnd * 0.5) / (heroEnd * 0.6));
+      container.style.opacity = fade.toFixed(3);
+      heroFaded = fade <= 0.001;
+
+      if (heroFaded) {
+        stopLoop();
+        return;
       }
-
       requestRender();
     };
 
@@ -255,11 +198,7 @@ export const AsciiHeroCanvas: React.FC = () => {
         '.hero-lead',
         '.hero-text-links',
         '.section-head',
-        '.tech-ledger',
-        '.exp-ledger',
-        '.projects-ledger',
-        '.gallery-grid',
-        '.contact-split',
+        '.ledger',
       ];
 
       const nameEl = document.querySelector<HTMLElement>('.hero-name');
@@ -410,7 +349,7 @@ export const AsciiHeroCanvas: React.FC = () => {
 
     const handleScroll = () => {
       updateScrollProgress();
-      updateTextMask();
+      if (!heroFaded) updateTextMask();
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
@@ -468,108 +407,8 @@ export const AsciiHeroCanvas: React.FC = () => {
 
     const t0 = performance.now();
 
-    // Helper drawing primitives directly onto the cell grid
-    const writeStr = (str: string, startX: number, startY: number, lum: number = 0.85) => {
-      if (startY < 0 || startY >= rows) return;
-      for (let i = 0; i < str.length; i++) {
-        const x = startX + i;
-        if (x >= 0 && x < cols) {
-          const idx = startY * cols + x;
-          cellL[idx] = Math.max(cellL[idx], lum);
-          cellChar[idx] = str.charCodeAt(i);
-        }
-      }
-    };
-
-    const drawHLine = (x0: number, x1: number, y: number, chStr: string = '-', lum: number = 0.65) => {
-      if (y < 0 || y >= rows) return;
-      const minX = Math.max(0, Math.min(x0, x1));
-      const maxX = Math.min(cols - 1, Math.max(x0, x1));
-      const code = chStr.charCodeAt(0);
-      for (let x = minX; x <= maxX; x++) {
-        const idx = y * cols + x;
-        cellL[idx] = Math.max(cellL[idx], lum);
-        cellChar[idx] = code;
-      }
-    };
-
-    const drawVLine = (x: number, y0: number, y1: number, chStr: string = '|', lum: number = 0.65) => {
-      if (x < 0 || x >= cols) return;
-      const minY = Math.max(0, Math.min(y0, y1));
-      const maxY = Math.min(rows - 1, Math.max(y0, y1));
-      const code = chStr.charCodeAt(0);
-      for (let y = minY; y <= maxY; y++) {
-        const idx = y * cols + x;
-        cellL[idx] = Math.max(cellL[idx], lum);
-        cellChar[idx] = code;
-      }
-    };
-
-    const drawBresenham = (
-      x0: number,
-      y0: number,
-      x1: number,
-      y1: number,
-      lum: number = 0.75,
-      customCh?: string
-    ) => {
-      let x = Math.round(x0);
-      let y = Math.round(y0);
-      const targetX = Math.round(x1);
-      const targetY = Math.round(y1);
-      const dx = Math.abs(targetX - x);
-      const dy = Math.abs(targetY - y);
-      const sx = x < targetX ? 1 : -1;
-      const sy = y < targetY ? 1 : -1;
-      let err = dx - dy;
-
-      let defaultCh = '-';
-      if (dx === 0) {
-        defaultCh = '|';
-      } else if (dy === 0) {
-        defaultCh = '-';
-      } else {
-        const slope = dy / dx;
-        if (slope < 0.45) {
-          defaultCh = '-';
-        } else if (slope > 2.2) {
-          defaultCh = '|';
-        } else {
-          defaultCh = sx === sy ? '\\' : '/';
-        }
-      }
-      const code = (customCh || defaultCh).charCodeAt(0);
-
-      while (true) {
-        if (x >= 0 && x < cols && y >= 0 && y < rows) {
-          const idx = y * cols + x;
-          cellL[idx] = Math.max(cellL[idx], lum);
-          cellChar[idx] = code;
-        }
-        if (x === targetX && y === targetY) break;
-        const e2 = 2 * err;
-        if (e2 > -dy) {
-          err -= dy;
-          x += sx;
-        }
-        if (e2 < dx) {
-          err += dx;
-          y += sy;
-        }
-      }
-    };
-
-    // Smooth bell curves / hermite weights centered at 0.0, 1.0, 2.0, 3.0
-    // Width 0.85 ensures adjacent phases cleanly isolate with zero bleed at phase centers (e.g. Phase 0 Hero is 100% pure at scroll 0)
-    const calcWeight = (val: number, center: number, width: number = 0.85) => {
-      const d = Math.abs(val - center);
-      if (d >= width) return 0;
-      const q = 1 - d / width;
-      return q * q * (3 - 2 * q); // smoothstep
-    };
-
     render = (now: number) => {
-      if (!isMounted || !isVisibleRef.current) {
+      if (!isMounted || !isVisibleRef.current || heroFaded) {
         stopLoop();
         return;
       }
@@ -609,24 +448,14 @@ export const AsciiHeroCanvas: React.FC = () => {
       cellL.fill(0);
       cellChar.fill(-1);
 
-      // Phase blending weights (C1 continuous hermite smoothstep)
-      // Width 0.80 ensures adjacent phases cleanly isolate at phase centers (e.g. Phase 0 Hero is 100% pure at scroll 0)
-      let w0 = calcWeight(smoothPhase, 0.0, 0.80);
-      let w1 = calcWeight(smoothPhase, 1.0, 0.80);
-      let w2 = calcWeight(smoothPhase, 2.0, 0.80);
-      let w3 = calcWeight(smoothPhase, 3.0, 0.80);
-      const sumW = w0 + w1 + w2 + w3 || 1;
-      w0 /= sumW;
-      w1 /= sumW;
-      w2 /= sumW;
-      w3 /= sumW;
-
+      // The hands are the only scene; the container fades out as the hero scrolls away
+      const w0 = 1;
       const t8 = Math.floor(t * 8);
 
       // ─────────────────────────────────────────────────────────────
-      // PHASE 1: Hero Michelangelo Hands (Creation of Adam)
+      // Hero Michelangelo Hands (Creation of Adam)
       // ─────────────────────────────────────────────────────────────
-      if (w0 > 0.005) {
+      {
         const app = lerp(0.72, 1, ease(cl(smoothPhase / 0.45)));
         const dis = ease(cl((smoothPhase - 0.45) / 0.40)) * 0.9;
 
@@ -723,351 +552,6 @@ export const AsciiHeroCanvas: React.FC = () => {
             }
           }
         }
-      }
-
-      // ─────────────────────────────────────────────────────────────
-      // PHASE 2: Stack & Tech — Microcontroller & PCB Schematic (STM32/ESP32)
-      // ─────────────────────────────────────────────────────────────
-      if (w1 > 0.005) {
-        const isMobile = W < 768;
-        const icCenterX = Math.round(cols * (isMobile ? 0.5 : 0.65));
-        const icCenterY = Math.round(rows * 0.48);
-        const icW = Math.min(Math.max(isMobile ? 18 : 24, Math.round(cols * 0.26)), 28);
-        const icH = Math.min(Math.max(12, Math.round(rows * 0.32)), 16);
-
-        const x0 = icCenterX - Math.floor(icW / 2);
-        const x1 = x0 + icW;
-        const y0 = icCenterY - Math.floor(icH / 2);
-        const y1 = y0 + icH;
-
-        // IC Chip Outer Outline
-        drawHLine(x0, x1, y0, '-', 0.85 * w1);
-        drawHLine(x0, x1, y1, '-', 0.85 * w1);
-        drawVLine(x0, y0, y1, '|', 0.85 * w1);
-        drawVLine(x1, y0, y1, '|', 0.85 * w1);
-
-        // IC Corners & Pin 1 Index Mark
-        const codeCorner = '+'.charCodeAt(0);
-        if (y0 >= 0 && y0 < rows) {
-          if (x0 >= 0 && x0 < cols) { cellL[y0 * cols + x0] = 0.9 * w1; cellChar[y0 * cols + x0] = codeCorner; }
-          if (x1 >= 0 && x1 < cols) { cellL[y0 * cols + x1] = 0.9 * w1; cellChar[y0 * cols + x1] = codeCorner; }
-        }
-        if (y1 >= 0 && y1 < rows) {
-          if (x0 >= 0 && x0 < cols) { cellL[y1 * cols + x0] = 0.9 * w1; cellChar[y1 * cols + x0] = codeCorner; }
-          if (x1 >= 0 && x1 < cols) { cellL[y1 * cols + x1] = 0.9 * w1; cellChar[y1 * cols + x1] = codeCorner; }
-        }
-        // Pin 1 Index Notch
-        if (y0 + 1 < rows && x0 + 1 < cols) {
-          cellL[(y0 + 1) * cols + (x0 + 1)] = 0.95 * w1;
-          cellChar[(y0 + 1) * cols + (x0 + 1)] = 'o'.charCodeAt(0);
-        }
-
-        // IC Markings
-        const label1 = isMobile ? 'STM32F4' : 'STM32F401RE';
-        const label2 = isMobile ? 'ARM-M4' : 'ARM CORTEX-M4';
-        const label3 = '[ 84 MHz ]';
-        const label4 = '[ USB-HID ]';
-
-        writeStr(label1, Math.round(icCenterX - label1.length / 2), y0 + 2, 0.92 * w1);
-        writeStr(label2, Math.round(icCenterX - label2.length / 2), y0 + 4, 0.80 * w1);
-        writeStr(label3, Math.round(icCenterX - label3.length / 2), y0 + 6, 0.70 * w1);
-        if (icH >= 13) {
-          writeStr(label4, Math.round(icCenterX - label4.length / 2), y0 + 8, 0.65 * w1);
-        }
-
-        // IC Pinouts & Extended Traces
-        const leftPins = ['VDD', 'PA0', 'PA1', 'PA2', 'PA3', 'NRST', 'GND', 'OSC'];
-        const rightPins = ['3V3', 'SWDIO', 'SWCLK', 'PB6', 'PB7', 'USB-', 'USB+', 'GND'];
-
-        const maxPins = Math.min(leftPins.length, icH - 2);
-        for (let pIdx = 0; pIdx < maxPins; pIdx++) {
-          const pinY = y0 + 1 + pIdx;
-          if (pinY >= y1) break;
-
-          // Left Pin Stub
-          drawHLine(x0 - 2, x0, pinY, '=', 0.8 * w1);
-          const lPinName = leftPins[pIdx];
-          if (!isMobile && x0 - 3 - lPinName.length >= 0) {
-            writeStr(lPinName, x0 - 2 - lPinName.length, pinY, 0.65 * w1);
-          }
-
-          // Left Copper Bus Route
-          const traceLen = isMobile ? 14 + (pIdx % 3) * 6 : Math.min(x0 - 4, Math.round(cols * 0.28) + (pIdx % 3) * 8);
-          const trEndX = Math.max(2, x0 - 3 - (isMobile ? 2 : lPinName.length + 1) - traceLen);
-          drawHLine(trEndX, x0 - 3 - (isMobile ? 2 : lPinName.length + 1), pinY, '-', 0.55 * w1);
-
-          // Animated pulse along left trace
-          const pulseOffsetL = (t * (10 + pIdx * 2.5)) % (traceLen + 6);
-          const pulseXL = Math.round(x0 - 5 - pulseOffsetL);
-          if (pulseXL >= trEndX && pulseXL < cols && pinY >= 0 && pinY < rows) {
-            const pIdxCell = pinY * cols + pulseXL;
-            cellL[pIdxCell] = Math.max(cellL[pIdxCell], 0.95 * w1);
-            cellChar[pIdxCell] = (pulseOffsetL % 2 === 0 ? '<' : '*').charCodeAt(0);
-          }
-
-          // Right Pin Stub
-          drawHLine(x1, x1 + 2, pinY, '=', 0.8 * w1);
-          const rPinName = rightPins[pIdx];
-          if (!isMobile && x1 + 3 + rPinName.length < cols) {
-            writeStr(rPinName, x1 + 3, pinY, 0.65 * w1);
-          }
-
-          // Right Copper Bus Route with 45-degree angled fanouts
-          const fanoutStartX = x1 + 3 + (isMobile ? 2 : rPinName.length + 1);
-          const trLenR = 12 + ((pIdx + 1) % 3) * 8;
-          const trMidX = fanoutStartX + 6;
-          const trEndY = cl(pinY + (pIdx < 4 ? -2 : 2), 0, rows - 1);
-          drawHLine(fanoutStartX, trMidX, pinY, '-', 0.55 * w1);
-          drawBresenham(trMidX, pinY, trMidX + 3, trEndY, 0.6 * w1);
-          drawHLine(trMidX + 3, Math.min(cols - 2, trMidX + 3 + trLenR), trEndY, '-', 0.55 * w1);
-
-          // Animated pulse along right trace
-          const pulseOffsetR = (t * (12 + pIdx * 2)) % (trLenR + 9);
-          const pulseXR = Math.round(fanoutStartX + pulseOffsetR);
-          if (pulseXR < cols) {
-            let currentY = pinY;
-            if (pulseXR > trMidX + 3) {
-              currentY = trEndY;
-            } else if (pulseXR >= trMidX) {
-              currentY = Math.round(lerp(pinY, trEndY, (pulseXR - trMidX) / 3));
-            }
-            if (currentY >= 0 && currentY < rows) {
-              const pIdxCell = currentY * cols + pulseXR;
-              if (pIdxCell >= 0 && pIdxCell < totalCells) {
-                cellL[pIdxCell] = Math.max(cellL[pIdxCell], 0.95 * w1);
-                cellChar[pIdxCell] = (pulseOffsetR % 2 === 0 ? '>' : '*').charCodeAt(0);
-              }
-            }
-          }
-        }
-
-        // SMD Passives & Peripherals
-        if (!isMobile) {
-          // Quartz Crystal Oscillator
-          const xtalX = Math.min(cols - 16, x1 + 18);
-          const xtalY = y0 + 2;
-          writeStr('[=16.000MHz=]', xtalX, xtalY, 0.72 * w1);
-
-          // Decoupling Capacitors
-          writeStr('-[||]-', xtalX + 2, xtalY + 3, 0.62 * w1);
-          writeStr('GND', xtalX + 9, xtalY + 3, 0.55 * w1);
-
-          // Blinking Status LED
-          const isLedOn = Math.sin(t * 8) > 0;
-          writeStr(`-[|>|]-${isLedOn ? '*' : ' '}`, xtalX, xtalY + 6, (isLedOn ? 0.95 : 0.5) * w1);
-          writeStr('PWR/STAT', xtalX + 9, xtalY + 6, 0.55 * w1);
-
-          // SWD Debug Header
-          writeStr('[ * * * * ] SWD', xtalX, xtalY + 9, 0.65 * w1);
-        }
-
-        // Interactive Logic Probe Status Tooltip on Mouse Proximity
-        const mouseCellX = mousePixelX >= 0 ? mousePixelX / cw : -1000;
-        const mouseCellY = mousePixelY >= 0 ? mousePixelY / ch : -1000;
-        if (
-          mouseCellX >= x0 - 10 &&
-          mouseCellX <= x1 + 20 &&
-          mouseCellY >= y0 - 3 &&
-          mouseCellY <= y1 + 3
-        ) {
-          const probeText = '[LOGIC PROBE: 3.3V HIGH · 84.000 MHz OK]';
-          writeStr(probeText, Math.max(2, Math.round(icCenterX - probeText.length / 2)), y0 - 2, 0.95 * w1);
-        }
-      }
-
-      // ─────────────────────────────────────────────────────────────
-      // PHASE 3: Experience & Projects — 3D Rotating Wireframe & Oscilloscope
-      // ─────────────────────────────────────────────────────────────
-      if (w2 > 0.005) {
-        const isMobile = W < 768;
-
-        // 1. 3D Rotating Polyhedron Wireframe
-        const center3dX = cols * (isMobile ? 0.5 : 0.68);
-        const center3dY = rows * (isMobile ? 0.38 : 0.36);
-        const scale3d = Math.min(cols, rows) * (isMobile ? 0.22 : 0.25);
-        const camDist = 3.6;
-
-        const rx = t * 0.45 + my * 1.4;
-        const ry = t * 0.65 + mx * 1.4;
-        const rz = t * 0.22;
-
-        const cx_rot = Math.cos(rx), sx_rot = Math.sin(rx);
-        const cy_rot = Math.cos(ry), sy_rot = Math.sin(ry);
-        const cz_rot = Math.cos(rz), sz_rot = Math.sin(rz);
-
-        for (let i = 0; i < 14; i++) {
-          const [vx, vy, vz] = VERTICES_3D[i];
-          // Euler Rotation X
-          const y1 = vy * cx_rot - vz * sx_rot;
-          const z1 = vy * sx_rot + vz * cx_rot;
-          // Euler Rotation Y
-          const x2 = vx * cy_rot + z1 * sy_rot;
-          const z2 = -vx * sy_rot + z1 * cy_rot;
-          // Euler Rotation Z
-          const x3 = x2 * cz_rot - y1 * sz_rot;
-          const y3 = x2 * sz_rot + y1 * cz_rot;
-
-          const sz = z2 + camDist;
-          projZ[i] = z2;
-          projX[i] = center3dX + (x3 / sz) * scale3d * 1.7; // 1.7 aspect ratio compensation
-          projY[i] = center3dY + (y3 / sz) * scale3d;
-        }
-
-        // Draw 3D Edges with depth shading
-        for (let e = 0; e < EDGES_3D.length; e++) {
-          const [i0, i1] = EDGES_3D[e];
-          const depthAvg = (projZ[i0] + projZ[i1]) * 0.5;
-          const edgeLum = cl(0.4 + (depthAvg + 1.5) * 0.18, 0.25, 0.95) * w2;
-          drawBresenham(projX[i0], projY[i0], projX[i1], projY[i1], edgeLum);
-        }
-
-        // Draw 3D Vertices
-        for (let i = 0; i < 14; i++) {
-          const vx = Math.round(projX[i]);
-          const vy = Math.round(projY[i]);
-          if (vx >= 0 && vx < cols && vy >= 0 && vy < rows) {
-            const vIdx = vy * cols + vx;
-            cellL[vIdx] = Math.max(cellL[vIdx], 0.98 * w2);
-            cellChar[vIdx] = (projZ[i] > 0 ? '*' : 'o').charCodeAt(0);
-          }
-        }
-
-        // 2. Dual-Channel Oscilloscope Waveform & Signal Graticule
-        const oscY = Math.round(rows * (isMobile ? 0.72 : 0.66));
-        const oscX0 = Math.max(2, Math.round(cols * (isMobile ? 0.05 : 0.15)));
-        const oscX1 = Math.min(cols - 3, Math.round(cols * (isMobile ? 0.95 : 0.88)));
-
-        // DSO Telemetry Header
-        const dsoHeader = isMobile
-          ? 'DSO [CH1: 500mV  TRIG: AUTO]'
-          : 'DSO-84M [CH1: 500mV/div  CH2: 3.3V  TB: 10us  TRIG: AUTO [OK]  f: 48.00 MHz]';
-        writeStr(dsoHeader, oscX0, oscY - 6, 0.70 * w2);
-
-        // DSO Graticule Grid (subtle crosshair dots every 8 cols, 3 rows)
-        for (let gy = oscY - 5; gy <= oscY + 5; gy += 2) {
-          for (let gx = oscX0; gx <= oscX1; gx += 6) {
-            if (gx < cols && gy >= 0 && gy < rows) {
-              const gIdx = gy * cols + gx;
-              if (cellL[gIdx] < 0.12) {
-                cellL[gIdx] = 0.12 * w2;
-                cellChar[gIdx] = (gx === Math.round((oscX0 + oscX1) / 2) || gy === oscY ? '+' : '·').charCodeAt(0);
-              }
-            }
-          }
-        }
-
-        // Channel 1: Analog Modulated Waveform
-        const amp1 = isMobile ? 3.2 : 4.0;
-        for (let x = oscX0; x <= oscX1; x++) {
-          const wave =
-            Math.sin(x * 0.08 + t * 4.2) * 0.68 +
-            Math.cos(x * 0.035 - t * 2.1) * 0.32;
-          const y = Math.round(oscY + wave * amp1);
-          if (y >= 0 && y < rows) {
-            const idx = y * cols + x;
-            cellL[idx] = Math.max(cellL[idx], 0.90 * w2);
-            cellChar[idx] = '~'.charCodeAt(0);
-          }
-        }
-
-        // Channel 2: Digital Clock / PWM Square Wave
-        const pwmPeriod = 16;
-        for (let x = oscX0; x <= oscX1; x++) {
-          const phase = ((x + t * 28) % pwmPeriod + pwmPeriod) % pwmPeriod;
-          const isHigh = phase < pwmPeriod * 0.5;
-          const y = oscY + (isHigh ? -3 : 3);
-          if (y >= 0 && y < rows) {
-            const idx = y * cols + x;
-            cellL[idx] = Math.max(cellL[idx], 0.65 * w2);
-            cellChar[idx] = '-'.charCodeAt(0);
-          }
-          const isEdge = phase === 0 || Math.floor(phase) === Math.floor(pwmPeriod * 0.5);
-          if (isEdge) {
-            for (let ey = oscY - 3; ey <= oscY + 3; ey++) {
-              if (ey >= 0 && ey < rows) {
-                const eIdx = ey * cols + x;
-                cellL[eIdx] = Math.max(cellL[eIdx], 0.75 * w2);
-                cellChar[eIdx] = '|'.charCodeAt(0);
-              }
-            }
-          }
-        }
-      }
-
-      // ─────────────────────────────────────────────────────────────
-      // PHASE 4: Contact & Telemetry — Low-Frequency Pulse & Radar Baseline
-      // ─────────────────────────────────────────────────────────────
-      if (w3 > 0.005) {
-        const isMobile = W < 768;
-        const pulseY = Math.round(rows * 0.65);
-        const xStart = Math.max(2, Math.round(cols * 0.06));
-        const xEnd = Math.min(cols - 3, Math.round(cols * 0.94));
-
-        // Horizontal Baseline with quiet carrier dots
-        for (let x = xStart; x <= xEnd; x++) {
-          const idx = pulseY * cols + x;
-          if (cellL[idx] < 0.14) {
-            cellL[idx] = 0.14 * w3;
-            cellChar[idx] = '·'.charCodeAt(0);
-          }
-        }
-
-        // Soliton / Heartbeat pulse moving smoothly across the baseline
-        const pulseCycle = (t * 16) % (xEnd - xStart + 24);
-        const pulseCenterX = xStart + pulseCycle - 12;
-
-        for (let dx = -10; dx <= 10; dx++) {
-          const px = Math.round(pulseCenterX + dx);
-          if (px >= xStart && px <= xEnd) {
-            // Bi-phasic QRS deflection
-            const dy =
-              -4.5 * Math.exp(-(dx * dx) / 5) +
-              2.2 * Math.exp(-((dx - 2.8) * (dx - 2.8)) / 3.5) -
-              1.4 * Math.exp(-((dx + 2.8) * (dx + 2.8)) / 3.5);
-
-            const py = Math.round(pulseY + dy);
-            if (py >= 0 && py < rows) {
-              const idx = py * cols + px;
-              cellL[idx] = Math.max(cellL[idx], 0.95 * w3);
-              let pChar = '-';
-              if (dy < -2.0) {
-                pChar = '^';
-              } else if (dy < -0.8) {
-                pChar = dx < 0 ? '/' : '\\';
-              } else if (dy > 0.8) {
-                pChar = 'v';
-              }
-              cellChar[idx] = pChar.charCodeAt(0);
-            }
-          }
-        }
-
-        // Expanding concentric radar ripples around current pulse position
-        const rippleRad = (t * 8) % 20;
-        const rippleFade = 1.0 - rippleRad / 20;
-        if (rippleFade > 0.05) {
-          for (let a = 0; a < 16; a++) {
-            const ang = (a / 16) * Math.PI * 2;
-            const rx = Math.round(pulseCenterX + Math.cos(ang) * rippleRad * 1.8);
-            const ry = Math.round(pulseY + Math.sin(ang) * rippleRad);
-            if (rx >= xStart && rx <= xEnd && ry >= 0 && ry < rows) {
-              const rIdx = ry * cols + rx;
-              cellL[rIdx] = Math.max(cellL[rIdx], 0.35 * rippleFade * w3);
-              cellChar[rIdx] = '·'.charCodeAt(0);
-            }
-          }
-        }
-
-        // Serene Terminal Telemetry Readout
-        const line1 = isMobile
-          ? 'STATUS: CARRIER READY · ADANA TR'
-          : 'STATUS: CARRIER READY · LAT: 37.0000°N  LON: 35.3213°E · TX: IDLE';
-        const line2 = isMobile
-          ? 'PING: 1ms · END TRANSMISSION'
-          : 'PACKETS: 0042 · LOSS: 0.00% · LINK: 100% · PING: 1ms · END TRANSMISSION';
-
-        writeStr(line1, xStart, pulseY + 4, 0.72 * w3);
-        writeStr(line2, xStart, pulseY + 6, 0.58 * w3);
       }
 
       // ─────────────────────────────────────────────────────────────
